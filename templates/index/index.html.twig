@@ -1,0 +1,145 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Horno de Gabriel S.L{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styleIndex.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid global-container">
+
+        <nav class="navbar navbar-expand-md bg-light">
+            <a class="navbar-brand" href="/">
+                <img src="{{ asset('images/logo.png') }}" class="logo">
+            </a>
+            <button class="navbar-light navbar-toggler" type="button" data-toggle="collapse" data-target="#collapse">
+                <span class="navbar-light navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">Sobre nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#opinions">Opiniones</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="slider parallax"></div>
+
+        <div class="products container-fluid" id="products">
+            <div class="section-title">
+                <h1>Nuestros productos</h1>
+            </div>
+            <div class="row">
+                <div class="pr1 card col-md-4">
+                    <img class="card-img-top product-img" src="{{ asset('images/img1.jpg') }}" alt="Producto 1">
+                    <div class="card-body">
+                        <h4 class="card-title product-name">Producto 1</h4>
+                        <p class="card-text product-desc">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elit sapien, vulputate gravida
+                            pulvinar eget, fringilla non erat. Fusce eget elit sed urna luctus consectetur vitae nec mauris. Sed hendrerit auctor
+                            purus, eu tempor risus gravida vel. Cras dignissim porta leo ut posuere. Nam sagittis odio mi, vel tincidunt nunc tincidunt
+                            quis. Ut ac diam eu mauris tincidunt suscipit sit amet vitae diam. Nulla molestie, ante sit amet rhoncus tempus, mauris neque
+                            aliquet orci, at vehicula erat purus in lacus. Pellentesque semper, purus in faucibus scelerisque, felis sapien finibus lectus,
+                            vel pretium lacus enim non sapien. Cras a libero sit amet diam ullamcorper egestas.
+                        </p>
+                    </div>
+                </div>
+                <div class="pr2 card col-md-4">
+                    <img class="card-img-top product-img" src="{{ asset('images/img2.jpg') }}" alt="Producto 2">
+                    <div class="card-body">
+                        <h4 class="card-title product-name">Producto 2</h4>
+                        <p class="card-text product-desc">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elit sapien, vulputate gravida
+                            pulvinar eget, fringilla non erat. Fusce eget elit sed urna luctus consectetur vitae nec mauris. Sed hendrerit auctor
+                            purus, eu tempor risus gravida vel. Cras dignissim porta leo ut posuere. Nam sagittis odio mi, vel tincidunt nunc tincidunt
+                            quis. Ut ac diam eu mauris tincidunt suscipit sit amet vitae diam. Nulla molestie, ante sit amet rhoncus tempus, mauris neque
+                            aliquet orci, at vehicula erat purus in lacus. Pellentesque semper, purus in faucibus scelerisque, felis sapien finibus lectus,
+                            vel pretium lacus enim non sapien. Cras a libero sit amet diam ullamcorper egestas.
+                        </p>
+                    </div>
+                </div>
+                <div class="pr3 card col-md-4">
+                    <img class="card-img-top product-img" src="{{ asset('images/img3.jpg') }}" alt="Producto 3">
+                    <div class="card-body">
+                        <h4 class="card-title product-name">Producto 3</h4>
+                        <p class="card-text product-desc">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elit sapien, vulputate gravida
+                            pulvinar eget, fringilla non erat. Fusce eget elit sed urna luctus consectetur vitae nec mauris. Sed hendrerit auctor
+                            purus, eu tempor risus gravida vel. Cras dignissim porta leo ut posuere. Nam sagittis odio mi, vel tincidunt nunc tincidunt
+                            quis. Ut ac diam eu mauris tincidunt suscipit sit amet vitae diam. Nulla molestie, ante sit amet rhoncus tempus, mauris neque
+                            aliquet orci, at vehicula erat purus in lacus. Pellentesque semper, purus in faucibus scelerisque, felis sapien finibus lectus,
+                            vel pretium lacus enim non sapien. Cras a libero sit amet diam ullamcorper egestas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="about container-fluid" id="about">
+            <div class="section-title">
+                <h1>Quienes somos</h1>
+            </div>
+            <div class="row">
+                <div class="about1 col-md-12">
+                    <p class="about-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elit sapien, vulputate gravida
+                        pulvinar eget, fringilla non erat. Fusce eget elit sed urna luctus consectetur vitae nec mauris. Sed hendrerit auctor
+                        purus, eu tempor risus gravida vel. Cras dignissim porta leo ut posuere. Nam sagittis odio mi, vel tincidunt nunc tincidunt
+                        quis. Ut ac diam eu mauris tincidunt suscipit sit amet vitae diam. Nulla molestie, ante sit amet rhoncus tempus, mauris neque
+                        aliquet orci, at vehicula erat purus in lacus. Pellentesque semper, purus in faucibus scelerisque, felis sapien finibus lectus,
+                        vel pretium lacus enim non sapien. Cras a libero sit amet diam ullamcorper egestas.
+                    </p>
+                </div>
+            </div>
+        </div>-->
+
+        <div class="opinions container-fluid" id="opinions">
+            <div class="section-title">
+                <h1>Opiniones</h1>
+            </div>
+            <div class="row">
+                <div class="op col-md-6">
+                    <img src="{{ asset('images/avatar.png') }}" class="op-avatar-img"> <span> Usuario 1</span>
+                    <p class="op-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elit sapien, vulputate gravida
+                        pulvinar eget, fringilla non erat.
+                    </p>
+                </div>
+                <div class="op col-md-6">
+                    <img src="{{ asset('images/avatar.png') }}" class="op-avatar-img"> <span> Usuario 2</span>
+                    <p class="op-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elit sapien, vulputate gravida
+                        pulvinar eget, fringilla non erat. Fusce eget elit sed urna luctus consectetur vitae nec mauris. Sed hendrerit auctor
+                        purus, eu tempor risus gravida vel. Cras dignissim porta leo ut posuere. Nam sagittis odio mi, vel tincidunt nunc tincidunt
+                        quis. Ut ac diam eu mauris tincidunt suscipit sit amet vitae diam.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!--<footer class="footer row">
+            <div class="col-md-6">
+                <div>
+                    <i class="fa fa-map-marker-alt"></i>
+                    <span>Calle lorem ipsum</span>
+                </div>
+                <div>
+                    <i class="fa fa-phone"></i>
+                    <span>+34 958 540 799</span>
+                </div>
+                <div>
+                    <i class="fa fa-envelope"></i>
+                    <span>contacto@hornodegabriel.es</span>
+                </div>
+            </div>
+        </footer>-->
+    </div>
+{% endblock %}
