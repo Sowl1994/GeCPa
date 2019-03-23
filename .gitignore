@@ -1,6 +1,7 @@
 ###> custom .gitignore ###
 .idea/
 /public/images
+/src/Migrations/
 
 ###< ###
 ###> symfony/framework-bundle ###
