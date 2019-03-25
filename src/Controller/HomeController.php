@@ -16,4 +16,14 @@ class HomeController extends AbstractController
             'worker_name' => 'Administrador',
         ]);
     }
+
+    /**
+     * @Route("/admin", name="app_admin")
+     */
+    public function admin()
+    {
+        return $this->render('home/index.html.twig', [
+            'worker_name' => 'Administrador',
+        ]);
+    }
 }
