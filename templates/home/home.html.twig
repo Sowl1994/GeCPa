@@ -1,0 +1,6 @@
+<div class="col-md-12">
+    <h1 class="welcomeTitle">Bienvenido {{ worker_name }}</h1>
+    {% if not is_granted('ROLE_ADMIN') %}
+        <h2><a href="#">Para hoy tienes <span>{{ commission }}</span> encargos pendientes</a> </h2>
+    {% endif %}
+</div>

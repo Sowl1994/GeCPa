@@ -12,8 +12,11 @@ class HomeController extends AbstractController
      */
     public function index()
     {
+        $name = $this->getUser()->getFirstName();
+        $commission = 3;
         return $this->render('home/index.html.twig', [
-            'worker_name' => 'Administrador',
+            'worker_name' => $name,
+            'commission' => $commission,
         ]);
     }
 

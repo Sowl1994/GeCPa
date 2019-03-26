@@ -35,3 +35,7 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/home, roles: IS_AUTHENTICATED_FULLY }
+         #REMEMBERED se utiliza en el caso de que se usen cookies para almacenar los datos de acceso de un usuario
+         #- { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }
