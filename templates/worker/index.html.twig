@@ -1,0 +1,21 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Área de trabajadores{% endblock %}
+
+{% block content %}
+    <div class="col-md-12"><h1>Trabajadores</h1></div>
+    <div class="col-md-12 clientOptions">
+        <input type="button" value="Añadir trabajador">
+        <input class="input" type="text" placeholder="Buscar...">
+    </div>
+    <div class="col-md-12 workerList">
+        {% for worker in workers %}
+            <a href="{{ path('worker_detail', {'id': worker.id}) }}">
+                <div>
+                    <div> {{ worker.firstName }} {{ worker.lastName }}</div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+{% endblock %}

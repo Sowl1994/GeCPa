@@ -1,0 +1,9 @@
+{% extends 'home/index.html.twig' %}
+{% block title %}Área de clientes{% endblock %}
+{% block content %}
+    <div class="col-md-12 clientName"><h1>{{ client.firstName }} {{ client.lastName }}{% if client.alias is not null %} "{{ client.alias }}" {% endif %}</h1></div>
+
+    <div class="col-md-12 clientDetails">
+
+    </div>
+{% endblock %}

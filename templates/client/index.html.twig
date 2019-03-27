@@ -11,9 +11,11 @@
     </div>
     <div class="col-md-12 clientList">
         {% for client in clients %}
-            <div>
-                <div> {{ client.firstName }} {{ client.lastName }} {% if client.alias is not null %} "{{ client.alias }}" {% endif %}</div>
-            </div>
+            <a href="{{ path('client_detail', {'id': client.id}) }}">
+                <div>
+                    <div> {{ client.firstName }} {{ client.lastName }} {% if client.alias is not null %} "{{ client.alias }}" {% endif %}</div>
+                </div>
+            </a>
         {% endfor %}
     </div>
 
