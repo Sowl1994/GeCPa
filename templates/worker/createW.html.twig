@@ -1,0 +1,9 @@
+{% extends 'worker/index.html.twig' %}
+{% block title %}Crear trabajador{% endblock %}
+{% block content %}
+    <div class="col-md-12"><h1>Crear trabajador</h1></div>
+    {{ form_start(workerForm) }}
+    {{ form_widget(workerForm) }}
+    <button type="submit" class="btn btn-primary">Crear trabajador</button>
+    {{ form_end(workerForm) }}
+{% endblock %}

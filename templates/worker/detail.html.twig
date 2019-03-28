@@ -1,9 +1,20 @@
 {% extends 'home/index.html.twig' %}
-{% block title %}Área de trabajadores{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styleWorker.css') }}">
+{% endblock %}
+{% block title %}Área de trabajadores - {{ worker.firstName }} {{ worker.lastName }}{% endblock %}
 {% block content %}
-    <div class="col-md-12 workerName"><h1>{{ worker.firstName }} {{ worker.lastName }}</h1></div>
-
-    <div class="col-md-12 workerDetails">
-
+    <div class="workerDetails">
+        <div class="col-md-2 workerBlock">
+            <img src="{{ asset('images/avatarW.png') }}" class="workerImage"><br>
+            <div><a class="" href="#">Editar</a></div>
+        </div>
+        <div class="col-md-9 workerBlock">
+            <div><h1>{{ worker.firstName }} {{ worker.lastName }}</h1></div>
+            <div><span>{{ worker.email }}</span></div>
+            <div><span>{{ worker.telephone }}</span></div>
+            <div><span>{{ worker.active }}</span></div>
+        </div>
     </div>
 {% endblock %}

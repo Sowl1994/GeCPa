@@ -5,7 +5,7 @@
 {% block content %}
     <div class="col-md-12"><h1>Trabajadores</h1></div>
     <div class="col-md-12 clientOptions">
-        <input type="button" value="Añadir trabajador">
+        <a href="{{ path('worker_new') }}"><input type="button" value="Añadir trabajador"></a>
         <input class="input" type="text" placeholder="Buscar...">
     </div>
     <div class="col-md-12 workerList">

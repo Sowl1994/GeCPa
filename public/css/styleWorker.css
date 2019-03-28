@@ -1,0 +1,10 @@
+.workerDetails{
+    padding: 5vh;
+}
+.workerBlock{
+    display: inline-block;
+    vertical-align: text-top;
+}
+.workerImage{
+    width: 150px;
+}

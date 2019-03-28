@@ -60,6 +60,16 @@ class User implements UserInterface
      */
     private $clients;
 
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $sex;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $avatar;
+
     public function __construct()
     {
         $this->clients = new ArrayCollection();
@@ -218,6 +228,30 @@ class User implements UserInterface
                 $client->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSex(): ?string
+    {
+        return $this->sex;
+    }
+
+    public function setSex(?string $sex): self
+    {
+        $this->sex = $sex;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }
