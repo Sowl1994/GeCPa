@@ -1,6 +1,10 @@
 {% extends 'home/index.html.twig' %}
 
 {% block title %}Área de clientes{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styleClient.css') }}">
+{% endblock %}
 
 {% block content %}
     <div class="col-md-12"><h1>Clientes</h1></div>
@@ -9,13 +13,17 @@
         <input class="input" type="text" placeholder="Buscar...">
 
     </div>
-    <div class="col-md-12 clientList">
+    <div class="col-md-12 clientList"><br>
         {% for client in clients %}
+            <div class="clientContainer col-md-3">
             <a href="{{ path('client_detail', {'id': client.id}) }}">
-                <div>
-                    <div> {{ client.firstName }} {{ client.lastName }} {% if client.alias is not null %} "{{ client.alias }}" {% endif %}</div>
-                </div>
+
+                    <div class="clientImageContainer"><img class="clientImage" src="{{ asset('images/avatar.png') }}"> {# {{ client.avatar }} #}</div><br>
+                    <div class="clientName"> {{ client.firstName }} {{ client.lastName }} {% if client.alias is not null %} "{{ client.alias }}" {% endif %}</div><br>
+                    <div class="clientAddress">{{ client.address }}</div><br>
+                    {% if client.telephone != null %}<div><i class="fa fa-phone"></i>{{ client.telephone }}</div><br>{% endif %}
             </a>
+            </div>
         {% endfor %}
     </div>
 

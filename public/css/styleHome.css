@@ -1,0 +1,11 @@
+/*Ajustes generales*/
+.bold{font-weight: bold;}
+.appContainer{
+    background-image: url("../images/texture2.jpg");
+    background-size: cover;
+}
+.appContainer,.appContent,.appMenu{/*todo Esto hay que cambiarlo para el responsive*/min-height: 100vh;}
+.appMenu{
+    background-color:rgba(255, 255, 255, 0.6);
+    border-right: 1px solid black;
+}

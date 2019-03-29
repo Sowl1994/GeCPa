@@ -3,16 +3,17 @@
 {% block title %}Home. ¡Bienvenido {{ worker_name }}!{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styleHome.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styleMenu.css') }}">
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid">
+<div class="container-fluid appContainer">
     <div class="row">
-        <div class="col-3">
+        <div class="col-md-2 appMenu">
             {{ include('home/menu.html.twig') }}
         </div>
-        <div class="col-9">
+        <div class="col-md-10 appContent">
             {% block content %}
                 {{ include('home/home.html.twig',{'worker_name': worker_name, 'commission':commission}) }}
             {%endblock %}
