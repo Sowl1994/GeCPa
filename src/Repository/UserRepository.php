@@ -21,20 +21,20 @@ class UserRepository extends ServiceEntityRepository
 
     // /**
     //  * @return User[] Returns an array of User objects
+    //  * Devuelve los usuarios que no son administrador
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function getNormalUsers()
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('u.roles NOT LIKE :rol')
+            ->setParameter('rol', '%ROLE_ADMIN%')
             ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?User

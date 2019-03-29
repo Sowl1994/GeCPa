@@ -22,11 +22,13 @@ class WorkerController extends AbstractController
 {
     /**
      * @Route("/workers", name="workers")
+     * Muestra una lista de los trabajadores
      */
     public function index(EntityManagerInterface $entityManager)
     {
         $repository = $entityManager->getRepository(User::class);
-        $workers = $repository->findAll();
+        //Cogemos los usuarios que no son administrador
+        $workers = $repository->getNormalUsers();
 
         return $this->render('worker/index.html.twig', [
             'workers' => $workers,
@@ -35,25 +37,28 @@ class WorkerController extends AbstractController
 
     /**
      * @Route("/worker/{id}", name="worker_detail")
+     * Muestra en detalle al trabajador por el id pasado por parametro
      */
     public function worker_detail($id, EntityManagerInterface $entityManager){
         $repository = $entityManager->getRepository(User::class);
         $worker = $repository->findOneBy(['id' => $id]);
 
         /**
-         * Si no existe el trabajador, nos mandará de vuelta a la zona de trabajadores
+         * Si no existe el trabajador o es otro admin, nos mandará de vuelta a la zona de trabajadores
          */
-        if ($worker == null){
+        if ($worker == null || in_array('ROLE_ADMIN',$worker->getRoles())){
             return new RedirectResponse("/workers");
         }
 
         return $this->render('worker/detail.html.twig', [
+            'id' => $id,
             'worker' => $worker,
         ]);
     }
 
     /**
      * @Route("/workers/new", name="worker_new")
+     * Encargada de la creación de trabajadores
      */
     public function new_worker(Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $entityManager){
 
@@ -83,5 +88,51 @@ class WorkerController extends AbstractController
         return $this->render('worker/createW.html.twig', [
             'workerForm' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/worker/edit/{id}", name="worker_edit")
+     * Edita a los trabajadores
+     */
+    public function edit_worker(User $user, EntityManagerInterface $entityManager, Request $request){
+        $form = $this->createForm(WorkerForm::class,$user);
+
+        //Para editar no necesitamos la contraseña, eso va aparte
+        $form->remove('password');
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            //Introducimos los datos en la bbdd
+            $entityManager->persist($user);
+            $entityManager->flush();
+            //Creamos mensaje para notificar de que se creó bien el trabajador
+            $this->addFlash('success', 'Trabajador editado con éxito');
+
+            return $this->redirectToRoute('workers');
+        }
+
+        return $this->render('worker/editW.html.twig', [
+            'workerForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/worker/activate/{id}", name="worker_activate")
+     * Funcion encargada de activar/desactivar trabajadores
+     */
+    public function activate_worker($id,EntityManagerInterface $entityManager){
+        $repository = $entityManager->getRepository(User::class);
+        $worker = $repository->findOneBy(['id' => $id]);
+        if ($worker->getActive() == true){
+            $worker->setActive(false);
+        }else{
+            $worker->setActive(true);
+        }
+        //Pasamos los cambios a la bbdd
+        $entityManager->persist($worker);
+        $entityManager->flush();
+
+        return new RedirectResponse("/workers");
     }
 }

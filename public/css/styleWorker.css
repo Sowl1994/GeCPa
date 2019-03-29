@@ -1,3 +1,11 @@
+/*index.html.twig*/
+.activeW{
+    background-color: lightgreen;
+}
+.inactiveW{
+    background-color: lightcoral;
+}
+/*Detail.html.twig*/
 .workerDetails{
     padding: 5vh;
 }

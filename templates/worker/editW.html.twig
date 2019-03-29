@@ -1,0 +1,15 @@
+{% extends 'worker/index.html.twig' %}
+{% block title %}Edición de trabajadores{% endblock %}
+{% block content %}
+    <div class="col-md-12">
+        <div><h1>Editar trabajador</h1></div>
+        {{ form_start(workerForm) }}
+            {{ form_row(workerForm.firstName) }}
+            {{ form_row(workerForm.lastName) }}
+            {{ form_row(workerForm.email) }}
+            {{ form_row(workerForm.telephone) }}
+            {{ form_row(workerForm.sex) }}
+            <button type="submit" class="btn btn-primary">Editar</button>
+        {{ form_end(workerForm) }}
+    </div>
+{% endblock %}

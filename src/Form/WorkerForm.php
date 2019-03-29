@@ -11,6 +11,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
@@ -25,9 +26,15 @@ class WorkerForm extends AbstractType
         $builder->add('firstName', TextType::class,['label'=> 'Nombre'])
             ->add('lastName', TextType::class,['label'=> 'Apellidos'])
             ->add('email', TextType::class,['label'=> 'Correo electrónico'])
-            ->add('password',PasswordType::class,['label'=> 'Contraseña', 'help' => 'Escriba su contraseña'])
+            ->add('password',PasswordType::class,['label'=> 'Contraseña'])
             ->add('telephone', TelType::class,['label'=> 'Teléfono'])
-            //->add('sex',TextType::class,['label'=> 'Sexo'])
+            ->add('sex',ChoiceType::class,['label'=> 'Sexo',
+                    'choices'  => [
+                        'Seleccione una opción' => '0',
+                        'Hombre' => '1',
+                        'Mujer' => '2',
+                    ],
+                ])
             //->add('avatar',FileType::class,['label'=> 'Avatar'])
         ;
     }
