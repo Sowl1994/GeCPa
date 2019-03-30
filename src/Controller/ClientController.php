@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Client;
 use App\Entity\User;
 use App\Form\ClientFormType;
+use App\Service\UploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -68,7 +69,7 @@ class ClientController extends AbstractController
      * @Route("/clients/new", name="client_new")
      * Encargada de la creación de clientes
      */
-    public function new_client(Request $request, EntityManagerInterface $entityManager){
+    public function new_client(Request $request, EntityManagerInterface $entityManager, UploaderService $uploaderService){
         $form = $this->createForm(ClientFormType::class);
         //Si el usuario no es un admin, quitamos la opción de asignar trabajador, ya que el cliente se asignará a él mismo
         if (!$this->isAdmin())  $form->remove('user');
@@ -87,13 +88,17 @@ class ClientController extends AbstractController
             /** @var UploadedFile $avatar */
             $avatar = $form['avatar']->getData();
             //Elegimos la carpeta de destino y le modificamos el nombre con un id unico
-            $destiny = $this->getParameter('kernel.project_dir').'/public/uploads';
+            /*$destiny = $this->getParameter('kernel.project_dir').'/public/uploads';
             $originalFilename = pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME);
             $newFilename = $originalFilename.'-'.uniqid().'.'.$avatar->guessExtension();
             //Movemos la imagen al directorio especificado
-            $avatar->move($destiny, $newFilename);
-            //Guardamos el nombre en la bbdd
-            $client->setAvatar($newFilename);
+            $avatar->move($destiny, $newFilename);*/
+            if($avatar){
+                $newFilename = $uploaderService->uploadClientImage($avatar);
+                //Guardamos el nombre en la bbdd
+                $client->setAvatar($newFilename);
+            }
+
 
             $entityManager->persist($client);
             $entityManager->flush();
