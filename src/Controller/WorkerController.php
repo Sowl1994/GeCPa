@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\WorkerForm;
+use App\Service\UploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,7 +62,7 @@ class WorkerController extends AbstractController
      * @Route("/workers/new", name="worker_new")
      * Encargada de la creación de trabajadores
      */
-    public function new_worker(Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $entityManager){
+    public function new_worker(Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $entityManager, UploaderService $uploaderService){
 
         $form = $this->createForm(WorkerForm::class);
 
@@ -75,6 +77,13 @@ class WorkerController extends AbstractController
             $worker->setPassword($encoded);
             $worker->setActive(1);
             $worker->setRoles(["ROLE_USER"]);
+
+            /** @var UploadedFile $avatar */
+            $avatar = $form['avatar']->getData();
+            if ($avatar){
+                $newFileName = $uploaderService->uploadImage($avatar,"worker_avatar");
+                $worker->setAvatar($newFileName);
+            }
 
             //Introducimos los datos en la bbdd
             $entityManager->persist($worker);
@@ -99,6 +108,7 @@ class WorkerController extends AbstractController
 
         //Para editar no necesitamos la contraseña, eso va aparte
         $form->remove('password');
+        $form->remove('avatar');
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

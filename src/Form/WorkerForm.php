@@ -28,14 +28,13 @@ class WorkerForm extends AbstractType
             ->add('email', TextType::class,['label'=> 'Correo electrónico'])
             ->add('password',PasswordType::class,['label'=> 'Contraseña'])
             ->add('telephone', TelType::class,['label'=> 'Teléfono'])
-            ->add('sex',ChoiceType::class,['label'=> 'Sexo',
+            ->add('sex',ChoiceType::class,['label'=> 'Sexo', 'required'=>false,
                     'choices'  => [
-                        'Seleccione una opción' => '0',
                         'Hombre' => '1',
                         'Mujer' => '2',
                     ],
                 ])
-            //->add('avatar',FileType::class,['label'=> 'Avatar'])
+            ->add('avatar', FileType::class,['label'=>'Avatar', 'required'=>false, 'data_class'=>null])
         ;
     }
 

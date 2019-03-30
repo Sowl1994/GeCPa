@@ -14,9 +14,9 @@ class UploaderService
         $this->uploadPath = $uploadPath;
     }
 
-    public function uploadClientImage(UploadedFile $avatar):string{
+    public function uploadImage(UploadedFile $avatar, $type):string{
         //Elegimos la carpeta de destino y le modificamos el nombre con un id unico
-        $destiny = $this->uploadPath.'/client_avatar';
+        $destiny = $this->uploadPath.'/'.$type;
         $originalFilename = pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME);
         $newFilename = uniqid().'.'.$avatar->guessExtension();
         //Movemos la imagen al directorio especificado

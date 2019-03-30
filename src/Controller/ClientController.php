@@ -94,7 +94,7 @@ class ClientController extends AbstractController
             //Movemos la imagen al directorio especificado
             $avatar->move($destiny, $newFilename);*/
             if($avatar){
-                $newFilename = $uploaderService->uploadClientImage($avatar);
+                $newFilename = $uploaderService->uploadImage($avatar,"client_avatar");
                 //Guardamos el nombre en la bbdd
                 $client->setAvatar($newFilename);
             }

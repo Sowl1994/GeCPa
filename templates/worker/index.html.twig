@@ -17,6 +17,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
+                    <th>Avatar</th>
                     <th>Nombre</th>
                     <th>Apellidos</th>
                     <th>Email</th>
@@ -28,6 +29,7 @@
 
                 {% for worker in workers %}
                         <tr {% if worker.active %} class="activeW"{% else %}class="inactiveW"{% endif %}>
+                            <td><img class="workerImage" {% if worker.avatar is null %} src="{{ asset('images/avatarW.png') }} {% else %} src="{{ asset('./uploads/worker_avatar/'~worker.avatar) }}" {% endif %}"> </td>
                             <td>{{ worker.firstName }}</td>
                             <td>{{ worker.lastName }}</td>
                             <td>{{ worker.email }}</td>
