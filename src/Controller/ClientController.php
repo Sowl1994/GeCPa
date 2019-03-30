@@ -4,14 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Client;
 use App\Entity\User;
+use App\Form\ClientFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class ClientController extends AbstractController
 {
+
     /**
      * @Route("/clients", name="clients")
      */
@@ -42,7 +47,7 @@ class ClientController extends AbstractController
         /**
          * Si somos trabajador, comprobamos si el cliente es nuestro.
          */
-        if (!in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
+        if (!$this->isAdmin()) {
             $client = $repository->findOneBy(['id' => $id, 'user' => $this->getUser()->getId()]);
         }
 
@@ -57,5 +62,57 @@ class ClientController extends AbstractController
         return $this->render("client/detail.html.twig",[
            "client" => $client,
         ]);
+    }
+
+    /**
+     * @Route("/clients/new", name="client_new")
+     * Encargada de la creación de clientes
+     */
+    public function new_client(Request $request, EntityManagerInterface $entityManager){
+        $form = $this->createForm(ClientFormType::class);
+        //Si el usuario no es un admin, quitamos la opción de asignar trabajador, ya que el cliente se asignará a él mismo
+        if (!$this->isAdmin())  $form->remove('user');
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $client = $form->getData();
+            $client->setActive(true);
+            $client->setLatitude(37.2369312);
+            $client->setLongitude(-3.5655489);
+
+            /**
+             * Funcionalidad de subir imágenes de perfil
+             */
+            //Obtenemos los datos del fichero
+            /** @var UploadedFile $avatar */
+            $avatar = $form['avatar']->getData();
+            //Elegimos la carpeta de destino y le modificamos el nombre con un id unico
+            $destiny = $this->getParameter('kernel.project_dir').'/public/uploads';
+            $originalFilename = pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME);
+            $newFilename = $originalFilename.'-'.uniqid().'.'.$avatar->guessExtension();
+            //Movemos la imagen al directorio especificado
+            $avatar->move($destiny, $newFilename);
+            //Guardamos el nombre en la bbdd
+            $client->setAvatar($newFilename);
+
+            $entityManager->persist($client);
+            $entityManager->flush();
+            //Creamos mensaje para notificar de que se creó bien el trabajador
+            $this->addFlash('success', 'Cliente creado con éxito');
+
+            return $this->redirectToRoute('clients');
+        }
+
+        return $this->render("client/createC.html.twig",[
+            'clientForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @return bool
+     * Comprueba si el usuario logueado es admin
+     */
+    public function isAdmin():bool {
+        return in_array('ROLE_ADMIN',$this->getUser()->getRoles());
     }
 }

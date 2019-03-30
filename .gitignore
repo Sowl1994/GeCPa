@@ -1,8 +1,10 @@
 ###> custom .gitignore ###
 .idea/
-/public/images
+/public/images/
 /src/Migrations/
 .env
+/public/uploads/
+
 
 ###< ###
 ###> symfony/framework-bundle ###
@@ -17,3 +19,4 @@
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
+

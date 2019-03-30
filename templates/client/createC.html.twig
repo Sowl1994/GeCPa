@@ -1,0 +1,19 @@
+{% extends 'client/index.html.twig' %}
+{% block title %}Creación de clientes{% endblock %}
+{% block content %}
+    <div class="col-md-12">
+        <div><h1>Crear cliente</h1></div>
+        {{ form_start(clientForm) }}
+        {{ form_row(clientForm.firstName) }}
+        {{ form_row(clientForm.lastName) }}
+        {{ form_row(clientForm.alias) }}
+        {{ form_row(clientForm.address) }}
+        {{ form_row(clientForm.email) }}
+        {{ form_row(clientForm.telephone) }}
+        {{ form_row(clientForm.sex) }}
+        {{ form_row(clientForm.avatar) }}
+        {% if is_granted('ROLE_ADMIN') %}{{ form_row(clientForm.user) }}{% endif %}
+        <button type="submit" class="btn btn-primary">Crear</button>
+        {{ form_end(clientForm) }}
+    </div>
+{% endblock %}
