@@ -23,13 +23,13 @@
 }
 .clientImage{
     width: 100px;
+    height: 100px;
 }
-.clientName,.clientAddress{
+.clientName,.clientAddress, .clientPhone{
     padding-left: 15px;
 }
 /*Detalles*/
-.clientDetails{
-    display: inline-flex;}
+.clientDetails{display: inline-flex;}
 .clientImageDetailContainer{
     margin-right: 5vw;
     text-align: center;
