@@ -1,9 +1,41 @@
-{% extends 'home/index.html.twig' %}
+{% extends 'client/index.html.twig' %}
 {% block title %}Área de clientes{% endblock %}
 {% block content %}
-    <div class="col-md-12 clientName"><h1>{{ client.firstName }} {{ client.lastName }}{% if client.alias is not null %} "{{ client.alias }}" {% endif %}</h1></div>
+    <div class="col-md-12"><h1>Detalles del cliente</h1></div>
 
     <div class="col-md-12 clientDetails">
-
+        <div class="col-md-3 clientImageDetailContainer">
+            <img class="clientImageDetail" {% if client.avatar is null %}  src="{{ asset('images/avatar.png') }}" {% else %} src="{{ asset('./uploads/client_avatar/'~client.avatar) }}" {% endif %}">
+            <br><br>
+            <a class="btn btn-primary" href="{{ path('client_edit', {'id': client.id}) }}">Editar cliente</a>
+            <br><br>
+            <a {% if client.active %} class="btn btn-danger"{% else %}class="btn btn-success"{% endif %} href="{{ path('client_activate', {'id': client.id}) }}">
+             {% if client.active %} Desactivar {% else %}Activar{% endif %}
+            </a>
+        </div>
+        <div class="col-md-9 clientData">
+            <label><span class="bold"> Nombre:</span> {{ client.firstName }}</label><br>
+            <label><span class="bold"> Apellidos:</span> {{ client.lastName }}</label><br>
+            {% if client.alias is not null %}<label><span class="bold"> Alias:</span> "{{ client.alias }}" </label><br>{% endif %}
+            <label><span class="bold"> Teléfono:</span>{% if client.telephone is not null %} {{ client.telephone }}{% else %} No tiene teléfono asignado{% endif %}</label><br>
+            <label><span class="bold"> Sexo:</span> {% if client.sex=="1" %} Hombre {% elseif client.sex==2 %} Mujer {% else %} No determinado {% endif %}</label><br>
+            <label><span class="bold"> Correo electrónico:</span>{% if client.email is not null %} {{ client.email }}{% else %} No tiene correo asignado{% endif %}</label><br>
+            <label><span class="bold"> Usuario {% if client.active=="0" %}no {% endif %} activo</span></label><br>
+            <label><span class="bold"> Dirección:</span> {{ client.address }}</label>
+            <a class="btn btn-primary" href="#" onclick="alert('TODO')">Cómo llegar</a><br><br>
+            <div id="map"></div><br>
+            <script>
+              var map;
+              function initMap() {
+                var address = {lat: {{ client.latitude }}, lng: {{ client.longitude }}};
+                map = new google.maps.Map(document.getElementById('map'), {
+                  center: address,zoom: 16
+                });
+                var marker = new google.maps.Marker({position:address,map:map});
+              }
+            </script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAv0FRuJbqPc2rIrb8ON4Nv1kasB-SvnAw&callback=initMap"
+            async defer></script>
+        </div>
     </div>
 {% endblock %}

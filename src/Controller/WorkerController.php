@@ -106,7 +106,7 @@ class WorkerController extends AbstractController
     public function edit_worker(User $user, EntityManagerInterface $entityManager, Request $request){
         $form = $this->createForm(WorkerForm::class,$user);
 
-        //Para editar no necesitamos la contraseña, eso va aparte
+        //Para editar no necesitamos la contraseña ni el avatar, eso va aparte
         $form->remove('password');
         $form->remove('avatar');
 

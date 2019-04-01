@@ -114,6 +114,63 @@ class ClientController extends AbstractController
     }
 
     /**
+     * @Route("/client/edit/{id}", name="client_edit")
+     * Encargada de la edición de clientes
+     */
+    public function edit_client(Client $client, EntityManagerInterface $entityManager, Request $request, UploaderService $uploaderService){
+        $form = $this->createForm(ClientFormType::class,$client);
+
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $avatar */
+            $avatar = $form['avatar']->getData();
+
+            if($avatar){
+                $newFilename = $uploaderService->uploadImage($avatar,"client_avatar");
+                //Guardamos el nombre en la bbdd
+                $client->setAvatar($newFilename);
+            }
+
+            //Introducimos los datos en la bbdd
+            $entityManager->persist($client);
+            $entityManager->flush();
+            //Creamos mensaje para notificar de que se creó bien el trabajador
+            $this->addFlash('success', 'Cliente editado con éxito');
+
+            return $this->redirectToRoute('clients');
+        }
+
+        return $this->render("client/editC.html.twig",[
+            'clientForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/client/activate/{id}", name="client_activate")
+     * Funcion encargada de activar/desactivar clientes
+     */
+    public function activate_worker($id,EntityManagerInterface $entityManager){
+        $repository = $entityManager->getRepository(Client::class);
+        $client = $repository->findOneBy(['id' => $id]);
+        if ($client->getActive() == true){
+            $client->setActive(false);
+            $msg = "Cliente desactivado con éxito";
+        }else{
+            $client->setActive(true);
+            $msg = "Cliente activado con éxito";
+        }
+        //Pasamos los cambios a la bbdd
+        $entityManager->persist($client);
+        $entityManager->flush();
+
+        //Creamos mensaje para notificar de que se editó bien el cliente
+        $this->addFlash('success', $msg);
+
+        return $this->redirectToRoute('client_detail',['id' => $id]);
+    }
+
+    /**
      * @return bool
      * Comprueba si el usuario logueado es admin
      */

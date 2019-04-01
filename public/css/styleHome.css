@@ -1,11 +1,34 @@
 /*Ajustes generales*/
-.bold{font-weight: bold;}
-.appContainer{
+body{
+    overflow-x: hidden;
     background-image: url("../images/texture2.jpg");
     background-size: cover;
+}
+.bold{font-weight: bold;}
+.appContainer{
 }
 .appContainer,.appContent,.appMenu{/*todo Esto hay que cambiarlo para el responsive*/min-height: 100vh;}
 .appMenu{
     background-color:rgba(255, 255, 255, 0.6);
     border-right: 1px solid black;
+    /*Ajustes para mantener el menú fixed*/
+    /*position: fixed;*/
+}
+.appContent{
+    /*Ajustes para mantener el menú fixed*/
+    /*position: relative;
+    left: 16.6666667%;*/
+}
+
+.alert {
+    position: fixed;
+    right: 0;
+    padding: 1.25rem 2.25rem;
+    margin: 1rem;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    z-index: 3;
+    -webkit-box-shadow: 4px 4px 9px -1px rgba(0,0,0,0.27);
+    -moz-box-shadow: 4px 4px 9px -1px rgba(0,0,0,0.27);
+    box-shadow: 4px 4px 9px -1px rgba(0,0,0,0.27);
 }

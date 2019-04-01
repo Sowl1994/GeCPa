@@ -1,3 +1,8 @@
+/*Opciones generales*/
+.clientName,.clientAddress,.clientImageDetailContainer,.clientData{
+    display: inline-block;
+}
+/*Listado de clientes*/
 .clientContainer{
     border: 1px solid black;
     /*width: 20vw;*/
@@ -10,9 +15,8 @@
     box-shadow: 4px 10px 7px 0px rgba(0,0,0,0.27);
     display: inline-table;
 }
-.clientName,.clientAddress{
-    display: inline-block;
-}
+.clientOptions{text-align: right;}
+
 .clientImageContainer{
     padding-top: 5px;
     text-align: center;
@@ -22,4 +26,18 @@
 }
 .clientName,.clientAddress{
     padding-left: 15px;
+}
+/*Detalles*/
+.clientDetails{
+    display: inline-flex;}
+.clientImageDetailContainer{
+    margin-right: 5vw;
+    text-align: center;
+}
+.clientImageDetail{
+    width: 200px;
+}
+#map {
+    width: 80%;
+    height: 100%;
 }

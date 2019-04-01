@@ -1,9 +1,14 @@
 /*index.html.twig*/
+.workerOptions{text-align: right;}
+thead,tbody{background-color: white;}
 .activeW{
     background-color: lightgreen;
 }
 .inactiveW{
     background-color: lightcoral;
+}
+.optionsTD > a{
+    width: 100%;
 }
 /*Detail.html.twig*/
 .workerDetails{

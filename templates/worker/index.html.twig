@@ -8,10 +8,10 @@
 
 {% block content %}
     <div class="col-md-12"><h1>Trabajadores</h1></div>
-    <div class="col-md-12 clientOptions">
+    <div class="col-md-12 workerOptions">
         <a href="{{ path('worker_new') }}"><input type="button" value="Añadir trabajador"></a>
         <input class="input" type="text" placeholder="Buscar...">
-    </div>
+    </div><br>
     <div class="col-md-12 workerList">
         <div class="container">
             <table class="table table-hover">
@@ -34,9 +34,9 @@
                             <td>{{ worker.lastName }}</td>
                             <td>{{ worker.email }}</td>
                             <td>{{ worker.telephone }}</td>
-                            <td>
-                                <a href="{{ path('worker_edit', {'id': worker.id}) }}"> Editar</a>
-                                <a href="{{ path('worker_activate', {'id': worker.id}) }}">{% if worker.active %} Desactivar{% else %}Activar{% endif %}</a>
+                            <td class="optionsTD">
+                                <a class="btn btn-warning" href="{{ path('worker_edit', {'id': worker.id}) }}"> Editar</a><br><br>
+                                <a {% if worker.active %} class="btn btn-danger"{% else %}class="btn btn-success"{% endif %} href="{{ path('worker_activate', {'id': worker.id}) }}">{% if worker.active %} Desactivar{% else %}Activar{% endif %}</a>
                                 <!--<a href="{{ path('worker_detail', {'id': worker.id}) }}">Detalle</a>-->
                             </td>
                         </tr>
