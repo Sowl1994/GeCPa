@@ -4,7 +4,7 @@
 /src/Migrations/
 .env
 /public/uploads/
-
+config.js
 
 ###< ###
 ###> symfony/framework-bundle ###

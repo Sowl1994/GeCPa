@@ -1,6 +1,8 @@
 {% extends 'client/index.html.twig' %}
 {% block title %}Área de clientes{% endblock %}
 {% block content %}
+    <script type='text/javascript' src='{{ asset('js/config.js') }}'></script>
+
     <div class="col-md-12"><h1>Detalles del cliente</h1></div>
 
     <div class="col-md-12 clientDetails">
@@ -25,6 +27,9 @@
             <a class="btn btn-primary" href="#" onclick="alert('TODO')">Cómo llegar</a><br><br>
             <div id="map"></div><br>
             <script>
+            var script = document.createElement("script");
+            script.setAttribute("src","https://maps.googleapis.com/maps/api/js?key="+config.GMAPS_KEY+"&callback=initMap");
+            document.getElementsByTagName("body")[0].appendChild(script);
               var map;
               function initMap() {
                 var address = {lat: {{ client.latitude }}, lng: {{ client.longitude }}};
@@ -34,8 +39,6 @@
                 var marker = new google.maps.Marker({position:address,map:map});
               }
             </script>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAv0FRuJbqPc2rIrb8ON4Nv1kasB-SvnAw&callback=initMap"
-            async defer></script>
         </div>
     </div>
 {% endblock %}

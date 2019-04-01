@@ -1,6 +1,7 @@
 {% extends 'client/index.html.twig' %}
 {% block title %}Creación de clientes{% endblock %}
 {% block content %}
+    <script type='text/javascript' src='{{ asset('js/config.js') }}'></script>
     <div class="col-md-12">
         <div><h1>Crear cliente</h1></div>
         {{ form_start(clientForm) }}
@@ -8,7 +9,23 @@
         {{ form_row(clientForm.lastName) }}
         {{ form_row(clientForm.alias) }}
         {{ form_row(clientForm.address) }}
-        <input type="button" class="btn btn-primary" value="Mostrar" onclick="showMap()">
+        {{ form_row(clientForm.latitude) }}
+        {{ form_row(clientForm.longitude) }}
+        <input type="button" class="btn btn-primary" value="Mostrar" onclick="showMap()"><br><br>
+        <div class="hiddenMap" id="map" style="height: 250px;"></div>
+        <script>
+            var script = document.createElement("script");
+            script.setAttribute("src","https://maps.googleapis.com/maps/api/js?key="+config.GMAPS_KEY+"&callback=initMap");
+            document.getElementsByTagName("body")[0].appendChild(script);
+            var map;
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: -34.397, lng: 150.644},
+                    zoom: 16
+                });
+            }
+        </script>
+        <br>
         {{ form_row(clientForm.email) }}
         {{ form_row(clientForm.telephone) }}
         {{ form_row(clientForm.sex) }}
@@ -19,7 +36,24 @@
     </div>
     <script>
         function showMap() {
+            //Ponemos la direccion en un formato adecuado. Espacios en blanco = %20, comas = %2C
+            var address = $( "#client_form_address" ).val().replace(/ /g, "%20").replace(/,/g, "%2C");
+            var addressURL = 'https://api.opencagedata.com/geocode/v1/json?q='+address+'&key='+config.OC_KEY;
 
+            $.getJSON(addressURL, function(data) {
+                //Obtenemos coordenadas y las trasladamos al mapa, el cual hacemos visible
+                var lat = data.results[0].bounds.northeast.lat;
+                var lng = data.results[0].bounds.northeast.lng;
+                $('.hiddenMap').show();
+
+                //Guardamos las variables en sus respectivos inputs
+                $("#client_form_latitude").text(lat);
+                $("#client_form_longitude").text(lng);
+
+                //Centramos el mapa en las coordenadas obtenidas y situamos un marcador
+                map.setCenter({lat:lat, lng:lng});
+                var marker = new google.maps.Marker({position:{lat:lat, lng:lng},map:map});
+            });
         }
     </script>
 {% endblock %}

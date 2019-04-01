@@ -78,9 +78,10 @@ class ClientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $client = $form->getData();
             $client->setActive(true);
+            dd($client);
             $client->setLatitude(37.2369312);
             $client->setLongitude(-3.5655489);
-
+            dd($client);
             /**
              * Funcionalidad de subir imágenes de perfil
              */
