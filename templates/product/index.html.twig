@@ -1,0 +1,28 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Productos{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styleProduct.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12"><h1>Productos</h1></div>
+    <div class="col-md-12 productOptions">
+        <a href="{{ path('product_new') }}"><input type="button" class="btn btn-success" value="Añadir producto"></a>
+        <input class="input search" type="text" placeholder="Buscar...">
+
+    </div>
+    <div class="col-md-12 productList"><br>
+        {% for product in products %}
+            <div class="productContainer col-md-3">
+                <a href="#{#{{ path('product_detail', {'id': product.id}) }}#}">
+                    <div class="productImageContainer"><img class="productImage"  src="{{ asset('./uploads/products/'~product.image) }}"></div><br>
+                    <div class="productName"> {{ product.name }}</div><br>
+                    <div class="productPrice">{{ product.price }} €</div><br>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

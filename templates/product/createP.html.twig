@@ -1,0 +1,18 @@
+{% extends 'product/index.html.twig' %}
+{% block title %}Creación de productos{% endblock %}
+{% block content %}
+    <div class="col-md-12">
+        <div><h1>Crear cliente</h1></div>
+        {{ form_start(productForm) }}
+        {{ form_row(productForm.name) }}
+        {{ form_row(productForm.price) }}
+        {{ form_row(productForm.image, {
+            attr: {
+                'placeholder': 'Clique aquí para seleccionar una imagen'
+            }
+        }) }}
+        {{ form_row(productForm.description) }}
+        <button type="submit" class="btn btn-primary">Crear</button>
+        {{ form_end(productForm) }}
+    </div>
+{% endblock %}

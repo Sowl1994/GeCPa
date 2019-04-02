@@ -1,0 +1,22 @@
+.productContainer{
+    border: 1px solid black;
+    /*width: 20vw;*/
+    height: 40vh;
+    margin-right: 5vw;
+    margin-bottom: 5vh;
+    background-color: rgba(255,255,255,1);
+    -webkit-box-shadow: 4px 10px 7px 0px rgba(0,0,0,0.27);
+    -moz-box-shadow: 4px 10px 7px 0px rgba(0,0,0,0.27);
+    box-shadow: 4px 10px 7px 0px rgba(0,0,0,0.27);
+    display: inline-table;
+}
+.productOptions{text-align: right;}
+
+.productImageContainer{
+    padding-top: 5px;
+    text-align: center;
+}
+.productImage{
+    width: 100px;
+    height: 100px;
+}
