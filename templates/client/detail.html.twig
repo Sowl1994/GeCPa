@@ -22,6 +22,8 @@
             <label><span class="bold"> Teléfono:</span>{% if client.telephone is not null %} {{ client.telephone }}{% else %} No tiene teléfono asignado{% endif %}</label><br>
             <label><span class="bold"> Sexo:</span> {% if client.sex=="1" %} Hombre {% elseif client.sex==2 %} Mujer {% else %} No determinado {% endif %}</label><br>
             <label><span class="bold"> Correo electrónico:</span>{% if client.email is not null %} {{ client.email }}{% else %} No tiene correo asignado{% endif %}</label><br>
+            {% if is_granted('ROLE_ADMIN') %}<label><span class="bold"> Trabajador asignado: </span><a href="{{ path('worker_detail', {'id': client.user.id}) }}">{{ client.user.firstName }} {{ client.user.lastName }}</a></label><br>{% endif %}
+
             <label><span class="bold"> Usuario {% if client.active=="0" %}no {% endif %} activo</span></label><br>
             <label><span class="bold"> Dirección:</span> {{ client.address }}</label>
             <a class="btn btn-primary" href="#" onclick="alert('TODO')">Cómo llegar</a><br><br>

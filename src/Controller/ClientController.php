@@ -78,6 +78,10 @@ class ClientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $client = $form->getData();
             $client->setActive(true);
+
+            //Si el usuario no es admin, le asignamos su id al cliente que está creando
+            if (!$this->isAdmin())  $client->setUser($this->getUser());
+            
             /**
              * Funcionalidad de subir imágenes de perfil
              */
@@ -95,7 +99,6 @@ class ClientController extends AbstractController
                 //Guardamos el nombre en la bbdd
                 $client->setAvatar($newFilename);
             }
-
 
             $entityManager->persist($client);
             $entityManager->flush();
@@ -117,6 +120,8 @@ class ClientController extends AbstractController
     public function edit_client(Client $client, EntityManagerInterface $entityManager, Request $request, UploaderService $uploaderService){
         $form = $this->createForm(ClientFormType::class,$client);
         $oldAvatar = $client->getAvatar();
+        //Si el usuario no es un admin, quitamos la opción de asignar trabajador, ya que el cliente se asignará a él mismo
+        if (!$this->isAdmin())  $form->remove('user');
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
