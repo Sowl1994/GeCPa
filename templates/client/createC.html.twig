@@ -32,11 +32,16 @@
         {{ form_row(clientForm.email) }}
         {{ form_row(clientForm.telephone) }}
         {{ form_row(clientForm.sex) }}
-        {{ form_row(clientForm.avatar) }}
+        {{ form_row(clientForm.avatar, {
+            attr: {
+                'placeholder': 'Clique aquí para seleccionar una imagen'
+            }
+        }) }}
         {% if is_granted('ROLE_ADMIN') %}{{ form_row(clientForm.user) }}{% endif %}
         <button type="submit" class="btn btn-primary">Crear</button>
         {{ form_end(clientForm) }}
     </div>
+
     <script>
         function showMap() {
             //Ponemos la direccion en un formato adecuado. Espacios en blanco = %20, comas = %2C
