@@ -122,9 +122,8 @@ class ClientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $avatar */
             $avatar = $form['avatar']->getData();
-
             //Si no hay cambio de imagen, nos saltamos este paso
-            if($avatar != "null"){
+            if($avatar != null){
                 $newFilename = $uploaderService->uploadImage($avatar,"client_avatar");
                 //Guardamos el nombre en la bbdd
                 $client->setAvatar($newFilename);

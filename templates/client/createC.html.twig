@@ -18,11 +18,14 @@
             script.setAttribute("src","https://maps.googleapis.com/maps/api/js?key="+config.GMAPS_KEY+"&callback=initMap");
             document.getElementsByTagName("body")[0].appendChild(script);
             var map;
+            var marker;
             function initMap() {
                 map = new google.maps.Map(document.getElementById('map'), {
                     center: {lat: -34.397, lng: 150.644},
                     zoom: 16
                 });
+                marker = new google.maps.Marker({position:{lat:-34.397, lng:150.644},map:map});
+
             }
         </script>
         <br>
@@ -40,7 +43,11 @@
             var address = $( "#client_form_address" ).val().replace(/ /g, "%20").replace(/,/g, "%2C");
             var addressURL = 'https://api.opencagedata.com/geocode/v1/json?q='+address+'&key='+config.OC_KEY;
 
+
             $.getJSON(addressURL, function(data) {
+                //Quitamos el anterior marcador
+                marker.setMap(null);
+
                 //Obtenemos coordenadas y las trasladamos al mapa, el cual hacemos visible
                 var lat = data.results[0].bounds.northeast.lat;
                 var lng = data.results[0].bounds.northeast.lng;
@@ -52,7 +59,15 @@
 
                 //Centramos el mapa en las coordenadas obtenidas y situamos un marcador
                 map.setCenter({lat:lat, lng:lng});
-                var marker = new google.maps.Marker({position:{lat:lat, lng:lng},map:map});
+                marker = new google.maps.Marker({position:{lat:lat, lng:lng},map:map,draggable:true});
+                //Permitimos el movimiento del marker, cambiando las coordenadas al soltarlo
+                marker.addListener('dragend', function() {
+                    lat = marker.getPosition().lat();
+                    lng = marker.getPosition().lng();
+                    //Guardamos las variables en sus respectivos inputs
+                    $("#client_form_latitude").val(lat);
+                    $("#client_form_longitude").val(lng);
+                });
             });
         }
     </script>

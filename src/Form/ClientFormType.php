@@ -42,7 +42,7 @@ class ClientFormType extends AbstractType
                     'Mujer' => '2',
                 ],
             ])
-            ->add('avatar', FileType::class,['label'=>'Avatar', 'required'=>false,'data_class'=>null, 'empty_data' => "null"])
+            ->add('avatar', FileType::class,['label'=>'Avatar', 'required'=>false,'data_class'=>null, 'mapped' => false])
             ->add('email',TextType::class,['label'=> 'Correo electrónico', 'required'=>false])
             ->add('user',EntityType::class, [
                 'label'=>'Asignar trabajador',
