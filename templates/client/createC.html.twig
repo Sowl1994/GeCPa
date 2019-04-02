@@ -47,8 +47,8 @@
                 $('.hiddenMap').show();
 
                 //Guardamos las variables en sus respectivos inputs
-                $("#client_form_latitude").text(lat);
-                $("#client_form_longitude").text(lng);
+                $("#client_form_latitude").val(lat);
+                $("#client_form_longitude").val(lng);
 
                 //Centramos el mapa en las coordenadas obtenidas y situamos un marcador
                 map.setCenter({lat:lat, lng:lng});

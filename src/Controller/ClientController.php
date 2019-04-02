@@ -78,10 +78,6 @@ class ClientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $client = $form->getData();
             $client->setActive(true);
-            dd($client);
-            $client->setLatitude(37.2369312);
-            $client->setLongitude(-3.5655489);
-            dd($client);
             /**
              * Funcionalidad de subir imágenes de perfil
              */
@@ -120,17 +116,23 @@ class ClientController extends AbstractController
      */
     public function edit_client(Client $client, EntityManagerInterface $entityManager, Request $request, UploaderService $uploaderService){
         $form = $this->createForm(ClientFormType::class,$client);
-
+        $oldAvatar = $client->getAvatar();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $avatar */
             $avatar = $form['avatar']->getData();
 
-            if($avatar){
+            //Si no hay cambio de imagen, nos saltamos este paso
+            if($avatar != "null"){
                 $newFilename = $uploaderService->uploadImage($avatar,"client_avatar");
                 //Guardamos el nombre en la bbdd
                 $client->setAvatar($newFilename);
+            }
+
+            //Si no se quiere modificar la foto, dejamos la que tenia puesta anteriormente
+            if (!$avatar instanceof UploadedFile) {
+                $client->setAvatar($oldAvatar);
             }
 
             //Introducimos los datos en la bbdd
@@ -143,7 +145,8 @@ class ClientController extends AbstractController
         }
 
         return $this->render("client/editC.html.twig",[
-            'clientForm' => $form->createView()
+            'clientForm' => $form->createView(),
+            'client' => $client
         ]);
     }
 
