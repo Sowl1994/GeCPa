@@ -30,7 +30,7 @@ class WorkerController extends AbstractController
     {
         $repository = $entityManager->getRepository(User::class);
         //Cogemos los usuarios que no son administrador
-        $workers = $repository->getNormalUsers();
+        $workers = $repository->getWorkers();
 
         return $this->render('worker/index.html.twig', [
             'workers' => $workers,

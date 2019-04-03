@@ -45,7 +45,7 @@ class ClientFormType extends AbstractType
             ->add('user',EntityType::class, [
                 'label'=>'Asignar trabajador',
                 'class' => User::class,
-                'choices'=> $this->userRepository->getNormalUsers(),
+                'choices'=> $this->userRepository->getAvailableWorkers(),
                 'choice_label' => function ($user) {
                     return $user->getCompleteName();
                 }

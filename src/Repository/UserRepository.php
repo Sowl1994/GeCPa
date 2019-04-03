@@ -21,10 +21,10 @@ class UserRepository extends ServiceEntityRepository
 
     // /**
     //  * @return User[] Returns an array of User objects
-    //  * Devuelve los usuarios que no son administrador
+    //  * Devuelve los usuarios que no son administrador (trabajadores)
     //  */
 
-    public function getNormalUsers()
+    public function getWorkers()
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.roles NOT LIKE :rol')
@@ -33,6 +33,23 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    // /**
+    //  * @return User[] Returns an array of User objects
+    //  * Devuelve los trabajadores disponibles para ser asignados (no pueden estar desactivados)
+    //  */
+
+    public function getAvailableWorkers()
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.roles NOT LIKE :rol')
+            ->andWhere('u.active = 1')
+            ->setParameter('rol', '%ROLE_ADMIN%')
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
 
