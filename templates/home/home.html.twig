@@ -1,6 +1,24 @@
 <div class="col-md-12">
-    <h1 class="welcomeTitle">Bienvenido {{ worker_name }}</h1>
-    {% if not is_granted('ROLE_ADMIN') %}
+    <h1 class="welcomeTitle center">Bienvenido {{ worker.firstName }}</h1>
+    <div class="commissionArea col-md-5">
+        <h2 class="center" >Encargos</h2>
+
+        {% if not is_granted('ROLE_ADMIN') %}
         <h2><a href="#">Para hoy tienes <span>{{ commission }}</span> encargos pendientes</a> </h2>
-    {% endif %}
+        {% endif %}
+    </div>
+    <div class="personalArea col-md-6">
+        <h2 class="center" >Área personal</h2>
+        <div class="avatarContainerHome col-md-5">
+            <img class="avatarHome" {% if worker.avatar is null  %} src="{{ asset('images/avatarW.png') }}"{% else %} src="{{ asset('./uploads/worker_avatar/'~worker.avatar) }}" {% endif %}>
+        </div>
+        <div class="dataHome col-md-6">
+            <label class="bold">Nombre: </label><span> {{ worker.firstName }}</span><br>
+            <label class="bold">Apellidos: </label><span> {{ worker.lastName }}</span><br>
+            <label class="bold">Teléfono: </label><span> {{ worker.telephone }}</span><br>
+            <label class="bold">Sexo: </label><span>{% if worker.sex == 1 %} Hombre {% elseif worker.sex == 2 %} Mujer {% else %} No determinado {% endif %}</span><br>
+            <a href="{{ path('user_edit') }}" class="btn btn-primary"> Editar datos </a><br><br>
+            <a href="{{ path('change_pass') }}" class="btn btn-warning"> Cambiar contraseña </a>
+        </div>
+    </div>
 </div>

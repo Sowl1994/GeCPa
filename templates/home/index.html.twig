@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home. ¡Bienvenido {{ worker_name }}!{% endblock %}
+{% block title %}Home. ¡Bienvenido {{ worker.firstName }}!{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/styleHome.css') }}">
@@ -15,7 +15,7 @@
         </div>
         <div class="col-md-10 appContent">
             {% block content %}
-                {{ include('home/home.html.twig',{'worker_name': worker_name, 'commission':commission}) }}
+                {{ include('home/home.html.twig') }}
             {%endblock %}
         </div>
     </div>

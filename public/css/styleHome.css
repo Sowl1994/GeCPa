@@ -5,17 +5,19 @@ body{
     background-size: cover;
 }
 .bold{font-weight: bold;}
+.center{text-align: center;}
 .appContainer{
 }
 .appContainer,.appContent,.appMenu{/*todo Esto hay que cambiarlo para el responsive*/min-height: 100vh;}
 .appMenu{
     background-color:rgba(255, 255, 255, 0.6);
     border-right: 1px solid black;
-    /*Ajustes para mantener el menú fixed*/
+    /*todo Ajustes para mantener el menú fixed*/
     /*position: fixed;*/
 }
 .appContent{
-    /*Ajustes para mantener el menú fixed*/
+    padding: 0;
+    /*todo Ajustes para mantener el menú fixed*/
     /*position: relative;
     left: 16.6666667%;*/
 }
@@ -31,4 +33,24 @@ body{
     -webkit-box-shadow: 4px 4px 9px -1px rgba(0,0,0,0.27);
     -moz-box-shadow: 4px 4px 9px -1px rgba(0,0,0,0.27);
     box-shadow: 4px 4px 9px -1px rgba(0,0,0,0.27);
+}
+
+/*Ajustes del home*/
+.commissionArea,.personalArea{
+    min-height: 100vh;
+}
+.commissionArea,.personalArea{
+    display: inline-table;
+}
+.avatarContainerHome{
+    display: inline-grid;
+}
+.dataHome{
+    display: inline-block;
+}
+.personalArea{
+    border-left: 1px solid black;
+}
+.avatarHome{
+    width: 200px;
 }

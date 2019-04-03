@@ -1,0 +1,11 @@
+{% extends 'home/index.html.twig' %}
+{% block title %}Cambiar contraseña{% endblock %}
+{% block content %}
+    <div class="col-md-12">
+        <div><h1>Cambiar contraseña</h1></div>
+        {{ form_start(changePassForm) }}
+        {{ form_widget(changePassForm) }}
+        <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+        {{ form_end(changePassForm) }}
+    </div>
+{% endblock %}
