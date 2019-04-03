@@ -17,8 +17,8 @@ class ProductFormType extends AbstractType
         $builder
             ->add('name', TextType::class, ['label' => 'Nombre'])
             ->add('price', NumberType::class, ['label' => 'Precio'])
-            ->add('image', FileType::class, ['label' => 'Imagen representativa'])
-            ->add('description', TextType::class, ['label' => 'Descripción'])
+            ->add('image', FileType::class, ['label' => 'Imagen representativa', 'data_class' => null, 'required' => false, 'mapped' => false])
+            ->add('description', TextType::class, ['label' => 'Descripción', 'required' => false])
         ;
     }
 

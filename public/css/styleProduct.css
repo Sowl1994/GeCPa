@@ -20,3 +20,12 @@
     width: 100px;
     height: 100px;
 }
+.productEdit, .productActivation{
+    display: inline-block;
+}
+.productEdit{
+    margin-right: 3px;
+}
+.productEdit>a, .productActivation > a {
+    width: 8vw;
+}

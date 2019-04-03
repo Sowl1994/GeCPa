@@ -18,8 +18,15 @@
             <div class="productContainer col-md-3">
                 <a href="#{#{{ path('product_detail', {'id': product.id}) }}#}">
                     <div class="productImageContainer"><img class="productImage"  src="{{ asset('./uploads/products/'~product.image) }}"></div><br>
-                    <div class="productName"> {{ product.name }}</div><br>
-                    <div class="productPrice">{{ product.price }} €</div><br>
+                    <div class="productName"> {{ product.name }}</div>
+                    <div class="productPrice">{{ product.price }} €</div>
+                    <div class="productEdit"><a href="{{ path('product_edit',{'id': product.id}) }}" class="btn btn-warning">Editar</a> </div>
+                    <div class="productActivation">
+                        <a href="{{ path('product_activate', {'id': product.id}) }}"
+                        {% if product.active %} class="btn btn-danger">Desactivar
+                        {% else %} class="btn btn-success"> Activar {% endif %} </a>
+                    </div>
+
                 </a>
             </div>
         {% endfor %}
