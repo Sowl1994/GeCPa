@@ -1,0 +1,32 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Facturación{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styleDebt.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12"><h1>Gestionar clientes con deuda</h1></div>
+    <div class="col-md-12">
+        <input class="input search" type="text" placeholder="Buscar...">
+
+    </div>
+    <div class="col-md-12 clientDebtsList"><br>
+        {% for client in clients_debts %}
+            <div class="clientContainer col-md-12">
+                <a href="{{ path('client_detail', {'id': client.id}) }}">
+                    <div class="clientImageContainer"><img class="clientImage" {% if client.avatar is null %}  src="{{ asset('images/avatar.png') }}" {% else %} src="{{ asset('./uploads/client_avatar/'~client.avatar) }}" {% endif %}  > {# {{ client.avatar }} #}</div>
+                    <div class="clientName"> {{ client.firstName }} {{ client.lastName }} {% if client.alias is not null %} "{{ client.alias }}" {% endif %}</div>
+                    <div class="clientDebtsOptions">
+                        <a class="btn btn-primary" href="{{ path('add_product', {'id': client.id}) }}">Añadir productos a la deuda</a>
+                        <a class="btn btn-primary" href="#">Cobrar deuda</a>
+                        <a class="btn btn-primary" href="#">Desglose</a>
+
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

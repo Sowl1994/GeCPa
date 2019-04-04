@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -76,6 +78,16 @@ class Client
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $email;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Debt", mappedBy="client")
+     */
+    private $debts;
+
+    public function __construct()
+    {
+        $this->debts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -222,6 +234,37 @@ class Client
     public function setEmail(?string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Debt[]
+     */
+    public function getDebts(): Collection
+    {
+        return $this->debts;
+    }
+
+    public function addDebt(Debt $debt): self
+    {
+        if (!$this->debts->contains($debt)) {
+            $this->debts[] = $debt;
+            $debt->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDebt(Debt $debt): self
+    {
+        if ($this->debts->contains($debt)) {
+            $this->debts->removeElement($debt);
+            // set the owning side to null (unless already changed)
+            if ($debt->getClient() === $this) {
+                $debt->setClient(null);
+            }
+        }
 
         return $this;
     }

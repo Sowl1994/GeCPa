@@ -1,0 +1,29 @@
+/*Opciones generales*/
+.clientName,.clientAddress,.clientImageDetailContainer,.clientData, .clientDebtsOptions{
+    display: inline-block;
+}
+/*Listado de clientes*/
+.clientContainer{
+    border: 1px solid black;
+    margin-right: 5vw;
+    margin-bottom: 3vh;
+    background-color: rgba(255,255,255,1);
+    -webkit-box-shadow: 4px 10px 7px 0px rgba(0,0,0,0.27);
+    -moz-box-shadow: 4px 10px 7px 0px rgba(0,0,0,0.27);
+    box-shadow: 4px 10px 7px 0px rgba(0,0,0,0.27);
+    display: inline-table;
+}
+.debtOptions{text-align: right;}
+
+.clientImageContainer{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: inline-block;
+}
+.clientImage{
+    width: 100px;
+    height: 100px;
+}
+.clientName{
+    padding-left: 15px;
+}
