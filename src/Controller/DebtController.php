@@ -88,9 +88,43 @@ class DebtController extends AbstractController
         $debtRepository = $entityManager->getRepository(Debt::class);
         $bd = $debtRepository->getClientBreakdown($id);
 
+        //$count = $this->calculate_debt($id, $bd,new \DateTime('2019-04-02'),new \DateTime('2019-04-04'));
+        $count = $this->calculate_debt($id, $bd);
+
         return $this->render('debt/breakdown.html.twig',[
-            'products' => $bd
+            'products' => $bd,
+            'count' => $count,
         ]);
 
+    }
+
+    /**
+     * @param $id
+     * @param $bd
+     * @param null $date1
+     * @param null $date2
+     * @return float
+     */
+    public function calculate_debt($id, $bd, $date1 = null, $date2 = null ):float {
+        $count = 0;
+        if ($date1 != null && $date2 != null){
+            foreach($bd as $product){
+                if ($product['purchaseDate'] >= $date1 && $product['purchaseDate'] <= $date2){
+                    $q = $product['quantity'];
+                    $p = $product['price'];
+
+                    $count += $q * $p;
+                }
+            }
+        }else{
+            foreach($bd as $product){
+                $q = $product['quantity'];
+                $p = $product['price'];
+
+                $count += $q * $p;
+            }
+        }
+
+        return $count;
     }
 }

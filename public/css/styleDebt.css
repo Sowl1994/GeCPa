@@ -2,7 +2,7 @@
 .clientName,.clientAddress,.clientImageDetailContainer,.clientData, .clientDebtsOptions{
     display: inline-block;
 }
-/*Listado de clientes*/
+/*Listado de clientes con deuda*/
 .clientContainer{
     border: 1px solid black;
     margin-right: 5vw;
@@ -37,5 +37,13 @@
 
 .productName,.productPrice, .productQuantity,.productItem {
     display: inline-block;
+}
+
+/*Desglose de productos*/
+.breakdownTable> thead{
+    background-color: rgba(255,255,255,1);
+}
+.breakdownTable> tbody{
+    background-color: rgba(255,255,255,0.7);
 }
 

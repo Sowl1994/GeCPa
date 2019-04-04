@@ -7,15 +7,47 @@
 {% endblock %}
 
 {% block content %}
-    <div class="col-md-12"><h1>Desglose de la deuda</h1></div>
-    <div class="col-md-12 clientDebtsList"><br>
+    <div class="col-md-12"><h1>Desglose de la deuda</h1></div><br>
+    <div class="col-md-12 clientDebtsList">
+        {#{% set pdate = '2016-01-01' %}
         {% for product in products %}
+            {% if product.purchaseDate != pdate %}
+                {% set pdate = product.purchaseDate %}
+                <br><div>
+                    <h2>{{ pdate|date('d-m-Y') }}</h2>
+                </div>
+            {% endif %}
+
             <div>
-                {{ product.name }}
-                {{ product.price }}
+                {{ product.name }} ({{ product.price }}€):
                 {{ product.quantity }}
             </div>
+        {% endfor %}#}
+        <table class="table table-hover breakdownTable">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad adquirida</th>
+                    <th>Fecha de compra</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }} €</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.purchaseDate|date('d-m-Y') }}</td>
+            </tr>
         {% endfor %}
+            </tbody>
+        </table>
+
+        <div>
+            <h2> Total de la deuda: {{ count }} €</h2>
+        </div>
+
     </div>
 
 {% endblock %}
