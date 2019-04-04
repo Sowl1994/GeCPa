@@ -21,7 +21,7 @@
                     <div class="clientDebtsOptions">
                         <a class="btn btn-primary" href="{{ path('add_product', {'id': client.id}) }}">Añadir productos a la deuda</a>
                         <a class="btn btn-primary" href="#">Cobrar deuda</a>
-                        <a class="btn btn-primary" href="#">Desglose</a>
+                        <a class="btn btn-primary" href="{{ path('breakdown', {'id': client.id}) }}">Desglose</a>
 
                     </div>
                 </a>

@@ -22,6 +22,7 @@ class DebtRepository extends ServiceEntityRepository
 
     // /**
     //  * @return Debt[] Returns an array of Debt objects
+    //  * Nos devuelve los clientes que posean al menos un producto en deuda
     //  */
 
     public function getClientsWithDebt()
@@ -35,6 +36,26 @@ class DebtRepository extends ServiceEntityRepository
             ->getResult()
         ;
         return $clients;
+    }
+
+    // /**
+    //  * @return Debt[] Returns an array of Debt objects
+    //  * Obtenemos el listado de los porductos que debe un cliente (TODO)
+    //  */
+
+    public function getClientBreakdown($id)
+    {
+        $bd = $this->createQueryBuilder('d')
+            ->innerJoin('d.product','p')
+            ->select('p.id, p.name, p.price, d.quantity')
+            ->andWhere('d.paymentDate IS NULL')
+            ->andWhere('d.client = :id')
+            ->setParameter('id', $id)
+            ->orderBy('d.client', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+        return $bd;
     }
 
 
