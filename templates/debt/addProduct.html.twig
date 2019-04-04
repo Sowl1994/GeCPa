@@ -1,0 +1,24 @@
+{% extends 'debt/index.html.twig' %}
+{% block title %}Añadir productos{% endblock %}
+{% block content %}
+    <div class="col-md-12">
+        <div><h1>Añadir productos al cliente</h1></div>
+        {{ form_start(addPForm) }}
+        {{ form_row(addPForm.purchaseDate) }}
+        <h2>Productos</h2>
+        <div class="productContainer">
+            {#{{ form_row(addPForm.product) }}
+            <a class="btn btn-primary">Nuevo producto a la deuda</a>#}
+            {% for product in products %}
+                <div class="productItem" id="{{ product.id }}">
+                    <div class="productName col-md-12"> {{ product }}</div><br>
+                    <div class="productQuantity col-md-1">
+                        <input type="number" name="debt_form[quantity][{{ product.id }}]">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <br><button type="submit" class="btn btn-primary">Añadir producto/s</button>
+        {{ form_end(addPForm) }}
+    </div>
+{% endblock %}

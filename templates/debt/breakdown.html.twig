@@ -1,0 +1,21 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Desglose{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styleDebt.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12"><h1>Desglose de la deuda</h1></div>
+    <div class="col-md-12 clientDebtsList"><br>
+        {% for product in products %}
+            <div>
+                {{ product.name }}
+                {{ product.price }}
+                {{ product.quantity }}
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
