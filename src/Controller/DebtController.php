@@ -20,9 +20,13 @@ class DebtController extends AbstractController
     {
         //Obtenemos los id de los clientes que tengan alguna deuda pendiente (administrador)
         $debtRepository = $entityManager->getRepository(Debt::class);
-        $clients_debts = $debtRepository->getClientsWithDebt();
 
-        //todo hay que filtrar los clientes segun el trabajador
+        //El admin verá todos los clientes, mientras que los usuarios normales solo verán a susu clientes asignados
+        if($this->getUser()->isAdmin()){
+            $clients_debts = $debtRepository->getClientsWithDebt();
+        }else{
+            $clients_debts = $debtRepository->getMyClientsWithDebt($this->getUser()->getId());
+        }
 
         return $this->render('debt/index.html.twig', [
             'clients_debts' => $clients_debts,
@@ -40,7 +44,19 @@ class DebtController extends AbstractController
         //Solo cogemos los productos que están activos
         $products = $productR->findBy(['active' => true]);
         //Obtenemos los datos del cliente al que vamos a modificar su deuda
-        $client = $clientR->findOneBy(['id' => $id]);
+        //El administrador podrá obtener los datos de cualquier cliente, mientras que un trabajador solo podrá obtenerlo de sus propios clientes
+        if ($this->getUser()->isAdmin()){
+            $client = $clientR->findOneBy(['id' => $id]);
+        }else{
+            $client = $clientR->findOneBy(['id' => $id, 'user' => $this->getUser()->getId()]);
+        }
+
+        /**
+         * Si el cliente no es nuestro, nos mandará de vuelta a la zona de facturación
+         */
+        if ($client == null){
+            return $this->redirectToRoute('debt');
+        }
 
         $form = $this->createForm(DebtFormType::class);
 
@@ -86,10 +102,27 @@ class DebtController extends AbstractController
      */
     public function see_breakdown($id, EntityManagerInterface $entityManager){
         $debtRepository = $entityManager->getRepository(Debt::class);
-        $bd = $debtRepository->getClientBreakdown($id);
+        $clientR = $entityManager->getRepository(Client::class);
 
-        //$count = $this->calculate_debt($id, $bd,new \DateTime('2019-04-02'),new \DateTime('2019-04-04'));
-        $count = $this->calculate_debt($id, $bd);
+        //El administrador podrá obtener los datos de cualquier cliente, mientras que un trabajador solo podrá obtenerlo de sus propios clientes
+        if ($this->getUser()->isAdmin()){
+            $client = $clientR->findOneBy(['id' => $id]);
+        }else{
+            $client = $clientR->findOneBy(['id' => $id, 'user' => $this->getUser()->getId()]);
+        }
+
+        /**
+         * Si el cliente no es nuestro, nos mandará de vuelta a la zona de facturación
+         */
+        if ($client == null){
+            return $this->redirectToRoute('debt');
+        }else{
+            $bd = $debtRepository->getClientBreakdown($id);
+
+            //$count = $this->calculate_debt($id, $bd,new \DateTime('2019-04-02'),new \DateTime('2019-04-04'));
+            $count = $this->calculate_debt($id, $bd);
+        }
+
 
         return $this->render('debt/breakdown.html.twig',[
             'products' => $bd,

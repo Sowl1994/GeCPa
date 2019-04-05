@@ -40,6 +40,27 @@ class DebtRepository extends ServiceEntityRepository
 
     // /**
     //  * @return Debt[] Returns an array of Debt objects
+    //  * Nos devuelve los clientes que están asignados al id del trabajador que pasamos por parámetro que posean al menos un producto en deuda
+    //  */
+
+    public function getMyClientsWithDebt($idWorker)
+    {
+        $clients = $this->createQueryBuilder('d')
+            ->innerJoin('d.client','c')
+            ->innerJoin('c.user', 'u')
+            ->select('DISTINCT c.id, c.firstName, c.lastName, c.avatar, c.alias')
+            ->andWhere('d.paymentDate IS NULL')
+            ->andWhere('u.id = :id')
+            ->setParameter('id', $idWorker)
+            ->orderBy('d.client', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+        return $clients;
+    }
+
+    // /**
+    //  * @return Debt[] Returns an array of Debt objects
     //  * Obtenemos el listado de los porductos que debe un cliente (TODO)
     //  */
 
