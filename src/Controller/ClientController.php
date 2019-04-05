@@ -117,9 +117,31 @@ class ClientController extends AbstractController
      * @Route("/client/edit/{id}", name="client_edit")
      * Encargada de la edición de clientes
      */
-    public function edit_client(Client $client, EntityManagerInterface $entityManager, Request $request, UploaderService $uploaderService){
+    public function edit_client($id, Client $client, EntityManagerInterface $entityManager, Request $request, UploaderService $uploaderService){
+        //Primero comprobamos si el cliente lo tenemos asignado
+        $repository = $entityManager->getRepository(Client::class);
+        $cl = $repository->findOneBy(['id' => $id]);
+        /**
+         * Si somos trabajador, comprobamos si el cliente es nuestro.
+         */
+        if (!$this->getUser()->isAdmin()) {
+            $cl = $repository->findOneBy(['id' => $id, 'user' => $this->getUser()->getId()]);
+        }
+
+        /**
+         * Si el cliente no es nuestro, nos mandará de vuelta a la zona de clientes
+         */
+        if ($cl == null){
+            return new RedirectResponse("/clients");
+        }
+
+
         $form = $this->createForm(ClientFormType::class,$client);
+        //Guardamos el antiguo avatar
         $oldAvatar = $client->getAvatar();
+
+
+
         //Si el usuario no es un admin, quitamos la opción de asignar trabajador, ya que el cliente se asignará a él mismo
         if (!$this->getUser()->isAdmin())  $form->remove('user');
 
@@ -158,9 +180,24 @@ class ClientController extends AbstractController
      * @Route("/client/activate/{id}", name="client_activate")
      * Funcion encargada de activar/desactivar clientes
      */
-    public function activate_worker($id,EntityManagerInterface $entityManager){
+    public function activate_client($id,EntityManagerInterface $entityManager){
         $repository = $entityManager->getRepository(Client::class);
         $client = $repository->findOneBy(['id' => $id]);
+
+        /**
+         * Si somos trabajador, comprobamos si el cliente es nuestro.
+         */
+        if (!$this->getUser()->isAdmin()) {
+            $client = $repository->findOneBy(['id' => $id, 'user' => $this->getUser()->getId()]);
+        }
+
+        /**
+         * Si el cliente no es nuestro, nos mandará de vuelta a la zona de clientes
+         */
+        if ($client == null){
+            return new RedirectResponse("/clients");
+        }
+
         if ($client->getActive() == true){
             $client->setActive(false);
             $msg = "Cliente desactivado con éxito";
