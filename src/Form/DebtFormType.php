@@ -36,8 +36,8 @@ class DebtFormType extends AbstractType
                     return $prod;
                 }
             ])*/
-            /*->add('paymentDate',DateType::class,['label' => 'Fecha de pago'])
-            ->add('isPaid',CheckboxType::class,['label' => 'Pagado'])*/
+            ->add('paymentDate',DateType::class,['label' => 'Fecha de pago','format' => 'dd/MM/yyyy'])
+            /*->add('isPaid',CheckboxType::class,['label' => 'Pagado'])*/
             /*->add('client',TextType::class,['mapped'=> false])
             ->add('product',TextType::class,['mapped'=> false])*/
         ;

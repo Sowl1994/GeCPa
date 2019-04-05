@@ -1,0 +1,36 @@
+{% extends 'debt/index.html.twig' %}
+{% block title %}Cobrar deuda{% endblock %}
+{% block content %}
+    <div class="col-md-12">
+        <div><h1>Cobrar deuda a {{ client.firstName }} {{ client.lastName }}</h1></div>
+        {{ form_start(cDebtForm) }}
+        {{ form_row(cDebtForm.paymentDate) }}
+        <h2>Desglose</h2>
+        <div class="clientDebtsList">
+            <table class="table table-hover breakdownTable">
+                <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad adquirida</th>
+                    <th>Fecha de compra</th>
+                    <!--<th>Pagado</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.product.name }}</td>
+                        <td>{{ product.product.price }} €</td>
+                        <td>{{ product.quantity }}</td>
+                        <td>{{ product.purchaseDate|date('d-m-Y') }}</td>
+                        <!--<td><input type="checkbox"></td>-->
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <br><button type="submit" class="btn btn-primary">Marcar como cobrado</button>
+        {{ form_end(cDebtForm) }}
+    </div>
+{% endblock %}

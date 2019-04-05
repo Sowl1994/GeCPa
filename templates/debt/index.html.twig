@@ -20,7 +20,7 @@
                     <div class="clientName"> {{ client.firstName }} {{ client.lastName }} {% if client.alias is not null %} "{{ client.alias }}" {% endif %}</div>
                     <div class="clientDebtsOptions">
                         <a class="btn btn-primary" href="{{ path('add_product', {'id': client.id}) }}">Añadir productos a la deuda</a>
-                        <a class="btn btn-primary" href="#">Cobrar deuda</a>
+                        <a class="btn btn-primary" href="{{ path('collect_debt', {'id': client.id}) }}">Cobrar deuda</a>
                         <a class="btn btn-primary" href="{{ path('breakdown', {'id': client.id}) }}">Desglose</a>
 
                     </div>

@@ -59,7 +59,7 @@ class DebtController extends AbstractController
         }
 
         $form = $this->createForm(DebtFormType::class);
-
+        $form->remove('paymentDate');
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $data = $request->request->get("debt_form");
@@ -132,6 +132,59 @@ class DebtController extends AbstractController
     }
 
     /**
+     * @Route("/collectdebt/{id}", name="collect_debt")
+     */
+    public function collect_debt($id, EntityManagerInterface $entityManager, Request $request){
+        $clientR = $entityManager->getRepository(Client::class);
+        $debtRepository = $entityManager->getRepository(Debt::class);
+
+        //El administrador podrá obtener los datos de cualquier cliente, mientras que un trabajador solo podrá obtenerlo de sus propios clientes
+        if ($this->getUser()->isAdmin()){
+            $client = $clientR->findOneBy(['id' => $id]);
+        }else{
+            $client = $clientR->findOneBy(['id' => $id, 'user' => $this->getUser()->getId()]);
+        }
+
+        /**
+         * Si el cliente no es nuestro, nos mandará de vuelta a la zona de facturación
+         */
+        if ($client == null){
+            return $this->redirectToRoute('debt');
+        }
+
+        $bd = $debtRepository->getClientBreakdown($client->getId());
+
+        $form = $this->createForm(DebtFormType::class);
+        $form->remove('purchaseDate');
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $data = $request->request->get("debt_form");
+            //Formateamos la fecha de forma adecuada
+            $payDate = $data['paymentDate']['year']."-".$data['paymentDate']['month']."-".$data['paymentDate']['day'];
+
+            foreach($bd as $debt){
+                $debt->setPaymentDate(new \DateTime($payDate));
+                $debt->setIsPaid(true);
+
+                $entityManager->persist($debt);
+                $entityManager->flush();
+            }
+
+            //Mensaje de éxito
+            $this->addFlash('success', "Deuda marcada como pagada");
+            //Volvemos a la zona de facturación
+            return $this->redirectToRoute("debt");
+
+        }
+
+        return $this->render('debt/collectDebt.html.twig',[
+            'cDebtForm' => $form->createView(),
+            'products' => $bd,
+            'client' => $client,
+        ]);
+    }
+
+    /**
      * @param $bd
      * @param null $date1
      * @param null $date2
@@ -141,9 +194,9 @@ class DebtController extends AbstractController
         $count = 0;
 
         foreach($bd as $product){
-            $q = $product['quantity'];
-            $p = $product['price'];
-            if ( ($date1 != null && $date2 != null) && ($product['purchaseDate'] < $date1 || $product['purchaseDate'] > $date2) ){
+            $q = $product->getQuantity();
+            $p = $product->getProduct()->getPrice();
+            if ( ($date1 != null && $date2 != null) && ($product->getPurchaseDate() < $date1 || $product->getPurchaseDate() > $date2) ){
                 $q = $p = 0;
             }
 

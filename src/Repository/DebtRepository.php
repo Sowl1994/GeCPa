@@ -68,7 +68,7 @@ class DebtRepository extends ServiceEntityRepository
     {
         $bd = $this->createQueryBuilder('d')
             ->innerJoin('d.product','p')
-            ->select('p.id, p.name, p.price, d.quantity, d.purchaseDate')
+            ->select('d, p')
             ->andWhere('d.paymentDate IS NULL')
             ->andWhere('d.client = :id')
             ->setParameter('id', $id)
