@@ -259,4 +259,12 @@ class User implements UserInterface
     public function getCompleteName(): ?string{
         return $this->getFirstName()." ".$this->getLastName();
     }
+
+    /**
+     * @return bool
+     * Comprueba si el usuario logueado es admin
+     */
+    public function isAdmin():bool {
+        return in_array('ROLE_ADMIN',$this->getRoles());
+    }
 }

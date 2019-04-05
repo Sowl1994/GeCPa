@@ -48,7 +48,7 @@ class ClientController extends AbstractController
         /**
          * Si somos trabajador, comprobamos si el cliente es nuestro.
          */
-        if (!$this->isAdmin()) {
+        if (!$this->getUser()->isAdmin()) {
             $client = $repository->findOneBy(['id' => $id, 'user' => $this->getUser()->getId()]);
         }
 
@@ -72,7 +72,7 @@ class ClientController extends AbstractController
     public function new_client(Request $request, EntityManagerInterface $entityManager, UploaderService $uploaderService){
         $form = $this->createForm(ClientFormType::class);
         //Si el usuario no es un admin, quitamos la opción de asignar trabajador, ya que el cliente se asignará a él mismo
-        if (!$this->isAdmin())  $form->remove('user');
+        if (!$this->getUser()->isAdmin())  $form->remove('user');
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -80,7 +80,7 @@ class ClientController extends AbstractController
             $client->setActive(true);
 
             //Si el usuario no es admin, le asignamos su id al cliente que está creando
-            if (!$this->isAdmin())  $client->setUser($this->getUser());
+            if (!$this->getUser()->isAdmin())  $client->setUser($this->getUser());
             
             /**
              * Funcionalidad de subir imágenes de perfil
@@ -121,7 +121,7 @@ class ClientController extends AbstractController
         $form = $this->createForm(ClientFormType::class,$client);
         $oldAvatar = $client->getAvatar();
         //Si el usuario no es un admin, quitamos la opción de asignar trabajador, ya que el cliente se asignará a él mismo
-        if (!$this->isAdmin())  $form->remove('user');
+        if (!$this->getUser()->isAdmin())  $form->remove('user');
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -176,13 +176,5 @@ class ClientController extends AbstractController
         $this->addFlash('success', $msg);
 
         return $this->redirectToRoute('client_detail',['id' => $id]);
-    }
-
-    /**
-     * @return bool
-     * Comprueba si el usuario logueado es admin
-     */
-    public function isAdmin():bool {
-        return in_array('ROLE_ADMIN',$this->getUser()->getRoles());
     }
 }
