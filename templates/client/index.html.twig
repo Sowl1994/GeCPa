@@ -18,9 +18,9 @@
             <div class="clientContainer col-md-3">
             <a href="{{ path('client_detail', {'id': client.id}) }}">
                     <div class="clientImageContainer"><img class="clientImage" {% if client.avatar is null %}  src="{{ asset('images/avatar.png') }}" {% else %} src="{{ asset('./uploads/client_avatar/'~client.avatar) }}" {% endif %}  > {# {{ client.avatar }} #}</div><br>
-                    <div class="clientName"> {{ client.firstName }} {{ client.lastName }} <br>{% if client.alias is not null %} "{{ client.alias }}" {% endif %}</div><br>
-                    <div class="clientAddress">{{ client.address }}</div><br>
-                    {% if client.telephone != null %}<div class="clientPhone"><i class="fa fa-phone"></i>{{ client.telephone }}</div><br>{% endif %}
+                    <div class="clientName"> {{ client.firstName }} {{ client.lastName }} <br>{% if client.alias is not null %} "{{ client.alias }}" {% endif %}</div>
+                    <div class="clientAddress">{{ client.address }}</div>
+                {#{% if client.telephone != null %}<div class="clientPhone"><i class="fa fa-phone"></i>{{ client.telephone }}</div><br>{% endif %}#}
             </a>
             </div>
         {% endfor %}

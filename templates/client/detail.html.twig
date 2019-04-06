@@ -26,20 +26,47 @@
 
             <label><span class="bold"> Usuario {% if client.active=="0" %}no {% endif %} activo</span></label><br>
             <label><span class="bold"> Dirección:</span> {{ client.address }}</label>
-            <a class="btn btn-primary" href="#" onclick="alert('TODO')">Cómo llegar</a><br><br>
+            <a class="btn btn-primary" href="#" onclick="directions()">Cómo llegar</a><br><br>
             <div id="map"></div><br>
             <script>
-            var script = document.createElement("script");
-            script.setAttribute("src","https://maps.googleapis.com/maps/api/js?key="+config.GMAPS_KEY+"&callback=initMap");
-            document.getElementsByTagName("body")[0].appendChild(script);
-              var map;
-              function initMap() {
-                var address = {lat: {{ client.latitude }}, lng: {{ client.longitude }}};
-                map = new google.maps.Map(document.getElementById('map'), {
-                  center: address,zoom: 16
-                });
-                var marker = new google.maps.Marker({position:address,map:map});
-              }
+                var script = document.createElement("script");
+                script.setAttribute("src","https://maps.googleapis.com/maps/api/js?key="+config.GMAPS_KEY+"&callback=initMap");
+                document.getElementsByTagName("body")[0].appendChild(script);
+                var map;
+                function initMap() {
+                    var address = {lat: {{ client.latitude }}, lng: {{ client.longitude }}};
+                    map = new google.maps.Map(document.getElementById('map'), {
+                    center: address,zoom: 16
+                    });
+                    var marker = new google.maps.Marker({position:address,map:map});
+                }
+
+                var options = {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                };
+
+                function success(pos){
+                    var crd = pos.coords;
+                    var lat = crd.latitude;
+                    var lng = crd.longitude;
+                    var url = "https://graphhopper.com/maps/?point="+lat+"%2C"+lng+"&point={{ client.latitude }}%2C{{ client.longitude }}&locale=es-es&vehicle=car&weighting=fastest&elevation=true&use_miles=false&layer=Omniscale";
+                    var win = window.open(url, '_blank');
+
+                }
+
+                function error(err) {
+                    console.warn('ERROR(' + err.code + '): ' + err.message);
+                };
+
+                function directions() {
+                    if (navigator.geolocation) {
+                      navigator.geolocation.getCurrentPosition(success, error, options);
+                    } else {
+                      alert("Este navegador no admite geolocalización.");
+                    }
+                }
             </script>
         </div>
     </div>

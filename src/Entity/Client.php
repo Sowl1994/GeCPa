@@ -60,7 +60,7 @@ class Client
     private $user;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $alias;
 
@@ -195,7 +195,7 @@ class Client
         return $this->alias;
     }
 
-    public function setAlias(string $alias): self
+    public function setAlias(?string $alias): self
     {
         $this->alias = $alias;
 
