@@ -6,9 +6,12 @@ use App\Entity\Client;
 use App\Entity\Debt;
 use App\Entity\Product;
 use App\Form\DebtFormType;
+use App\Repository\ClientRepository;
+use App\Repository\DebtRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DebtController extends AbstractController
@@ -117,10 +120,12 @@ class DebtController extends AbstractController
         if ($client == null){
             return $this->redirectToRoute('debt');
         }else{
-            $bd = $debtRepository->getClientBreakdown($id);
-
-            //$count = $this->calculate_debt($bd,new \DateTime('2019-04-02'),new \DateTime('2019-04-02'));
+            //$bd = $debtRepository->getClientBreakdown($id);
+            $bd = $this->breakdown_api($id, $debtRepository, $clientR);
+            $bd = json_decode($bd->getContent(),true);
+            //$count = $this->calculate_debt($bd,new \DateTime('2019-04-01'),new \DateTime('2019-04-07'));
             $count = $this->calculate_debt($bd);
+
         }
 
 
@@ -152,7 +157,9 @@ class DebtController extends AbstractController
             return $this->redirectToRoute('debt');
         }
 
-        $bd = $debtRepository->getClientBreakdown($client->getId());
+        //Obtenemos los datos del desglose por la api
+        $bd = $this->breakdown_api($client->getId(), $debtRepository, $clientR);
+        $bd = json_decode($bd->getContent(),true);
 
         $form = $this->createForm(DebtFormType::class);
         $form->remove('purchaseDate');
@@ -190,18 +197,45 @@ class DebtController extends AbstractController
      * @param null $date2
      * @return float
      */
-    public function calculate_debt($bd, $date1 = null, $date2 = null ):float {
+    public function calculate_debt($bd, $date1 = null, $date2 = null):float {
         $count = 0;
 
         foreach($bd as $product){
-            $q = $product->getQuantity();
-            $p = $product->getProduct()->getPrice();
-            if ( ($date1 != null && $date2 != null) && ($product->getPurchaseDate() < $date1 || $product->getPurchaseDate() > $date2) ){
+            $q = $product['quantity'];
+            $p = $product['product']['price'];
+
+            if ( ($date1 != null && $date2 != null) && ($product['purchaseDate'] < $date1->format('Y-m-d') || $product['purchaseDate'] > $date2->format('Y-m-d')) ){
                 $q = $p = 0;
             }
 
             $count += $q * $p;
         }
         return $count;
+    }
+
+    /**
+     * @Route("/bdapi/{id}/{date1}/{date2}", methods="GET", name="breakdown_api")
+     */
+    public function breakdown_api($id, DebtRepository $debtRepository, ClientRepository $clientR, $date1 = null, $date2 = null){
+
+        //El administrador podrá obtener los datos de cualquier cliente, mientras que un trabajador solo podrá obtenerlo de sus propios clientes
+        if ($this->getUser()->isAdmin()){
+            $client = $clientR->findOneBy(['id' => $id]);
+        }else{
+            $client = $clientR->findOneBy(['id' => $id, 'user' => $this->getUser()->getId()]);
+        }
+
+        /**
+         * Si el cliente no es nuestro, nos mandará de vuelta a la zona de facturación
+         */
+        if ($client == null){
+            return $this->redirectToRoute('debt');
+        }else{
+            //Si no tenemos fechas, devolvemos el desglose completo
+            $bd = $debtRepository->getClientBreakdown($id);
+            //Si hay fechas limite, filtramos los pedidos del desglose en función a esas fechas
+            if($date1 != null && $date2 != null)$bd = $debtRepository->getClientBreakdown($id,$date1,$date2);
+            return $this->json($bd, 200, [], ['groups'=>['bdapi']]);
+        }
     }
 }

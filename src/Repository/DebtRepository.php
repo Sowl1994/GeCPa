@@ -64,7 +64,7 @@ class DebtRepository extends ServiceEntityRepository
     //  * Obtenemos el listado de los porductos que debe un cliente (TODO)
     //  */
 
-    public function getClientBreakdown($id)
+    public function getClientBreakdown($id, $d1=null, $d2=null)
     {
         $bd = $this->createQueryBuilder('d')
             ->innerJoin('d.product','p')
@@ -76,6 +76,22 @@ class DebtRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+
+        if($d1 != null && $d2 != null){
+            $bd = $this->createQueryBuilder('d')
+                ->innerJoin('d.product','p')
+                ->select('d, p')
+                ->andWhere('d.paymentDate IS NULL')
+                ->andWhere('d.client = :id')
+                ->andWhere("d.purchaseDate >= '$d1'")
+                ->andWhere("d.purchaseDate <= '$d2'")
+                ->setParameter('id', $id)
+                ->orderBy('d.purchaseDate', 'ASC')
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+
         return $bd;
     }
 

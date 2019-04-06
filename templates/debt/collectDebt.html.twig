@@ -3,7 +3,7 @@
 {% block content %}
     <div class="col-md-12">
         <div><h1>Cobrar deuda a {{ client.firstName }} {{ client.lastName }}</h1></div>
-        {{ form_start(cDebtForm) }}
+        {{ form_start(cDebtForm, {'attr': {'onsubmit': 'return confirm("¿Está todo correcto?")'}}) }}
         {{ form_row(cDebtForm.paymentDate) }}
         <h2>Desglose</h2>
         <div class="clientDebtsList">

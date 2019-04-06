@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -18,11 +19,13 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("bdapi")
      */
     private $name;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("bdapi")
      */
     private $price;
 

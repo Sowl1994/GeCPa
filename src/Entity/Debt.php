@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DebtRepository")
@@ -13,6 +14,7 @@ class Debt
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("bdapi")
      */
     private $id;
 
@@ -25,16 +27,19 @@ class Debt
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("bdapi")
      */
     private $product;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("bdapi")
      */
     private $quantity;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("bdapi")
      */
     private $purchaseDate;
 
