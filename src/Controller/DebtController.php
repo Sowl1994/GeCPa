@@ -157,8 +157,9 @@ class DebtController extends AbstractController
             return $this->redirectToRoute('debt');
         }
 
-        //Cargamos todas las deudas que tenga el cliente
+        //Cargamos todas las deudas que tenga el cliente y calculamos el coste total
         $bd = $debtRepository->getClientBreakdown($client->getId());
+        $count = $this->calculate_debt($bd);
 
         $form = $this->createForm(DebtFormType::class);
         $form->remove('purchaseDate');
@@ -195,7 +196,7 @@ class DebtController extends AbstractController
             'cDebtForm' => $form->createView(),
             'products' => $bd,
             'client' => $client,
-            'count' => $this->calculate_debt($bd)
+            'count' => $count
         ]);
     }
 
@@ -212,9 +213,9 @@ class DebtController extends AbstractController
             $q = $product->getQuantity();
             $p = $product->getProduct()->getPrice();
 
-            if ( ($date1 != null && $date2 != null) && ($product->getPurchaseDate() < $date1->format('Y-m-d') || $product->getPurchaseDate() > $date2->format('Y-m-d')) ){
+            /*if ( ($date1 != null && $date2 != null) && ($product->getPurchaseDate() < $date1 || $product->getPurchaseDate() > $date2) ){
                 $q = $p = 0;
-            }
+            }*/
 
             $count += $q * $p;
         }
@@ -241,9 +242,12 @@ class DebtController extends AbstractController
         }else{
             //Si no tenemos fechas, devolvemos el desglose completo
             $bd = $debtRepository->getClientBreakdown($id);
-            //Si hay fechas limite, filtramos los pedidos del desglose en función a esas fechas
-            if($date1 != null && $date2 != null)$bd = $debtRepository->getClientBreakdown($id,$date1,$date2);
-            //dd($this->json($bd, 200, ['application/json'], ['groups'=>['bdapi']]));
+
+            //Si hay fechas limite, filtramos los pedidos del desglose en función a esas fechas y recalculamos el importe de la deuda
+            if($date1 != null && $date2 != null){
+                $bd = $debtRepository->getClientBreakdown($id,$date1,$date2);
+                $bd = array("debts" => $bd, "count" => $this->calculate_debt($bd,$date1,$date2));
+            }
             return $this->json($bd, 200, ['application/json'], ['groups'=>['bdapi']]);
         }
     }

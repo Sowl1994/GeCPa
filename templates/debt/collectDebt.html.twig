@@ -1,6 +1,7 @@
 {% extends 'debt/index.html.twig' %}
 {% block title %}Cobrar deuda{% endblock %}
 {% block content %}
+    <script type='text/javascript' src='{{ asset('js/config.js') }}'></script>
     <div class="col-md-12">
         <div><h1>Cobrar deuda a {{ client.firstName }} {{ client.lastName }}</h1></div>
         {{ form_start(cDebtForm, {'attr': {'onsubmit': 'return confirm("¿Está todo correcto?")'}}) }}
@@ -33,6 +34,7 @@
                 </tbody>
             </table>
         </div>
+        <h2>Valor del desglose: <span class="count">{{ count }}</span> €</h2>
         <br><button type="submit" class="btn btn-primary">Marcar como cobrado</button>
         {{ form_end(cDebtForm) }}
     </div>
@@ -44,13 +46,14 @@
             $(document).ready(function() {
                 var d1 = $('#d1').val();
                 var d2 = $('#d2').val();
-                var url = "http://localhost:8000/bdapi/{{ client.id }}/"+d1+"/"+d2;
+                var url = "http://"+config.HOST+"/bdapi/{{ client.id }}/"+d1+"/"+d2;
 
                 $.ajax({
                     url: url, success: function (result) {
                         var resultJSON = JSON.stringify(result);
+                        $('.count').text(JSON.parse(resultJSON).count);
                         $('.breakdownTable').find('tbody').empty();
-                        $.each(JSON.parse(resultJSON), function(index, value){
+                        $.each(JSON.parse(resultJSON).debts, function(index, value){
                             var d = new Date(value.purchaseDate);
                             $('.breakdownTable').find('tbody')
                                 .append( $('<tr>')
