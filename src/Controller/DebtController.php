@@ -202,20 +202,14 @@ class DebtController extends AbstractController
 
     /**
      * @param $bd
-     * @param null $date1
-     * @param null $date2
      * @return float
      */
-    public function calculate_debt($bd, $date1 = null, $date2 = null):float {
+    public function calculate_debt($bd):float {
         $count = 0;
 
         foreach($bd as $product){
             $q = $product->getQuantity();
             $p = $product->getProduct()->getPrice();
-
-            /*if ( ($date1 != null && $date2 != null) && ($product->getPurchaseDate() < $date1 || $product->getPurchaseDate() > $date2) ){
-                $q = $p = 0;
-            }*/
 
             $count += $q * $p;
         }
@@ -242,11 +236,12 @@ class DebtController extends AbstractController
         }else{
             //Si no tenemos fechas, devolvemos el desglose completo
             $bd = $debtRepository->getClientBreakdown($id);
+            $bd = array("debts" => $bd, "count" => $this->calculate_debt($bd));
 
             //Si hay fechas limite, filtramos los pedidos del desglose en función a esas fechas y recalculamos el importe de la deuda
             if($date1 != null && $date2 != null){
                 $bd = $debtRepository->getClientBreakdown($id,$date1,$date2);
-                $bd = array("debts" => $bd, "count" => $this->calculate_debt($bd,$date1,$date2));
+                $bd = array("debts" => $bd, "count" => $this->calculate_debt($bd));
             }
             return $this->json($bd, 200, ['application/json'], ['groups'=>['bdapi']]);
         }
