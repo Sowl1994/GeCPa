@@ -5,7 +5,12 @@
         <div><h1>Cobrar deuda a {{ client.firstName }} {{ client.lastName }}</h1></div>
         {{ form_start(cDebtForm, {'attr': {'onsubmit': 'return confirm("¿Está todo correcto?")'}}) }}
         {{ form_row(cDebtForm.paymentDate) }}
-        <h2>Desglose</h2>
+        <h2>Desglose</h2><span><a href="#" onclick="$('.newDates').show();">Cambiar fechas</a></span>
+        <div class="newDates">
+            <label>Fecha inicio</label><input type="date" name="debt_form[d1]" id="d1">
+            <label>Fecha fin</label><input type="date" name="debt_form[d2]" id="d2">
+            <a href="#" onclick="changeBD()">Cambiar</a>
+        </div>
         <div class="clientDebtsList">
             <table class="table table-hover breakdownTable">
                 <thead>
@@ -14,7 +19,6 @@
                     <th>Precio</th>
                     <th>Cantidad adquirida</th>
                     <th>Fecha de compra</th>
-                    <!--<th>Pagado</th>-->
                 </tr>
                 </thead>
                 <tbody>
@@ -24,7 +28,6 @@
                         <td>{{ product.product.price }} €</td>
                         <td>{{ product.quantity }}</td>
                         <td>{{ product.purchaseDate|date('d-m-Y') }}</td>
-                        <!--<td><input type="checkbox"></td>-->
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -33,4 +36,41 @@
         <br><button type="submit" class="btn btn-primary">Marcar como cobrado</button>
         {{ form_end(cDebtForm) }}
     </div>
+{% endblock %}
+{% block headjs %}
+    {{ parent() }}
+    <script>
+        function changeBD(){
+            $(document).ready(function() {
+                var d1 = $('#d1').val();
+                var d2 = $('#d2').val();
+                var url = "http://localhost:8000/bdapi/{{ client.id }}/"+d1+"/"+d2;
+
+                $.ajax({
+                    url: url, success: function (result) {
+                        var resultJSON = JSON.stringify(result);
+                        $('.breakdownTable').find('tbody').empty();
+                        $.each(JSON.parse(resultJSON), function(index, value){
+                            var d = new Date(value.purchaseDate);
+                            $('.breakdownTable').find('tbody')
+                                .append( $('<tr>')
+                                    .append($('<td>')
+                                        .text(value.product.name)
+                                    )
+                                    .append($('<td>')
+                                        .text(value.product.price+" €")
+                                    )
+                                    .append($('<td>')
+                                        .text(value.quantity)
+                                    )
+                                    .append($('<td>')
+                                        .text(d.getDay()+"-"+(d.getMonth()+1)+"-"+d.getFullYear())
+                                    )
+                                )
+                        })
+                    }
+                });
+            });
+        }
+    </script>
 {% endblock %}

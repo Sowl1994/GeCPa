@@ -157,18 +157,26 @@ class DebtController extends AbstractController
             return $this->redirectToRoute('debt');
         }
 
-        //Obtenemos los datos del desglose por la api
-        $bd = $this->breakdown_api($client->getId(), $debtRepository, $clientR);
-        $bd = json_decode($bd->getContent(),true);
+        //Cargamos todas las deudas que tenga el cliente
+        $bd = $debtRepository->getClientBreakdown($client->getId());
 
         $form = $this->createForm(DebtFormType::class);
         $form->remove('purchaseDate');
+
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            //Obtenemos los datos del formulario que no están mapeados o registrados en DebtFormType
             $data = $request->request->get("debt_form");
+
             //Formateamos la fecha de forma adecuada
             $payDate = $data['paymentDate']['year']."-".$data['paymentDate']['month']."-".$data['paymentDate']['day'];
 
+            //Si hay cambio de fechas, cargamos las deudas del intervalo fijado
+            if($data['d1'] != "" && $data['d2'] != ""){
+                $bd = $debtRepository->getClientBreakdown($client->getId(),$data['d1'], $data['d2']);
+            }
+
+            //Cobramos las deudas que tengamos cargadas
             foreach($bd as $debt){
                 $debt->setPaymentDate(new \DateTime($payDate));
                 $debt->setIsPaid(true);
@@ -181,13 +189,13 @@ class DebtController extends AbstractController
             $this->addFlash('success', "Deuda marcada como pagada");
             //Volvemos a la zona de facturación
             return $this->redirectToRoute("debt");
-
         }
 
         return $this->render('debt/collectDebt.html.twig',[
             'cDebtForm' => $form->createView(),
             'products' => $bd,
             'client' => $client,
+            'count' => $this->calculate_debt($bd)
         ]);
     }
 
@@ -201,10 +209,10 @@ class DebtController extends AbstractController
         $count = 0;
 
         foreach($bd as $product){
-            $q = $product['quantity'];
-            $p = $product['product']['price'];
+            $q = $product->getQuantity();
+            $p = $product->getProduct()->getPrice();
 
-            if ( ($date1 != null && $date2 != null) && ($product['purchaseDate'] < $date1->format('Y-m-d') || $product['purchaseDate'] > $date2->format('Y-m-d')) ){
+            if ( ($date1 != null && $date2 != null) && ($product->getPurchaseDate() < $date1->format('Y-m-d') || $product->getPurchaseDate() > $date2->format('Y-m-d')) ){
                 $q = $p = 0;
             }
 
@@ -235,7 +243,8 @@ class DebtController extends AbstractController
             $bd = $debtRepository->getClientBreakdown($id);
             //Si hay fechas limite, filtramos los pedidos del desglose en función a esas fechas
             if($date1 != null && $date2 != null)$bd = $debtRepository->getClientBreakdown($id,$date1,$date2);
-            return $this->json($bd, 200, [], ['groups'=>['bdapi']]);
+            //dd($this->json($bd, 200, ['application/json'], ['groups'=>['bdapi']]));
+            return $this->json($bd, 200, ['application/json'], ['groups'=>['bdapi']]);
         }
     }
 }

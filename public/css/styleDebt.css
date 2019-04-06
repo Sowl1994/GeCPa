@@ -46,4 +46,8 @@
 .breakdownTable> tbody{
     background-color: rgba(255,255,255,0.7);
 }
+/*Cobrar deuda*/
+.newDates{
+    display: none;
+}
 
