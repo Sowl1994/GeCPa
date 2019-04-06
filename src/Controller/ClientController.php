@@ -96,8 +96,17 @@ class ClientController extends AbstractController
             $avatar->move($destiny, $newFilename);*/
             if($avatar){
                 $newFilename = $uploaderService->uploadImage($avatar,"client_avatar");
-                //Guardamos el nombre en la bbdd
-                $client->setAvatar($newFilename);
+                //Si no ha habido problemas en la subida, procedemos
+                if($newFilename != "0"){
+                    //Guardamos el nombre en la bbdd
+                    $client->setAvatar($newFilename);
+                }
+                //Si no, mandamos mensaje de error y lo redireccionamos
+                else{
+                    //Creamos mensaje para notificar error al subir la imagen
+                    $this->addFlash('danger', 'Solo se permiten ficheros de imagen, inténtelo de nuevo (jpg, png, gif, jpeg)');
+                    return $this->redirectToRoute('clients');
+                }
             }
 
             $entityManager->persist($client);
@@ -135,12 +144,9 @@ class ClientController extends AbstractController
             return new RedirectResponse("/clients");
         }
 
-
         $form = $this->createForm(ClientFormType::class,$client);
         //Guardamos el antiguo avatar
         $oldAvatar = $client->getAvatar();
-
-
 
         //Si el usuario no es un admin, quitamos la opción de asignar trabajador, ya que el cliente se asignará a él mismo
         if (!$this->getUser()->isAdmin())  $form->remove('user');
@@ -152,8 +158,18 @@ class ClientController extends AbstractController
             //Si no hay cambio de imagen, nos saltamos este paso
             if($avatar != null){
                 $newFilename = $uploaderService->uploadImage($avatar,"client_avatar");
-                //Guardamos el nombre en la bbdd
-                $client->setAvatar($newFilename);
+                //Si no ha habido problemas en la subida, procedemos
+                if($newFilename != "0"){
+                    //Guardamos el nombre en la bbdd
+                    $client->setAvatar($newFilename);
+                }
+                //Si no, mandamos mensaje de error y lo redireccionamos
+                else{
+                    //Creamos mensaje para notificar error al subir la imagen
+                    $this->addFlash('danger', 'Solo se permiten ficheros de imagen, inténtelo de nuevo (jpg, png, gif, jpeg)');
+                    return $this->redirectToRoute('clients');
+                }
+
             }
 
             //Si no se quiere modificar la foto, dejamos la que tenia puesta anteriormente

@@ -56,8 +56,17 @@ class HomeController extends AbstractController
             //Si no hay cambio de imagen, nos saltamos este paso
             if($avatar != null){
                 $newFilename = $uploaderService->uploadImage($avatar,"worker_avatar");
-                //Guardamos el nombre en la bbdd
-                $user->setAvatar($newFilename);
+                //Si no ha habido problemas en la subida, procedemos
+                if($newFilename != "0"){
+                    //Guardamos el nombre en la bbdd
+                    $avatar->setAvatar($newFilename);
+                }
+                //Si no, mandamos mensaje de error y lo redireccionamos
+                else{
+                    //Creamos mensaje para notificar error al subir la imagen
+                    $this->addFlash('danger', 'Solo se permiten ficheros de imagen, inténtelo de nuevo (jpg, png, gif, jpeg)');
+                    return $this->redirectToRoute('app_home');
+                }
             }
 
             //Si no se quiere modificar la foto, dejamos la que tenia puesta anteriormente

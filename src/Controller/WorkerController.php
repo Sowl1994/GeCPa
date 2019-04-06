@@ -82,7 +82,17 @@ class WorkerController extends AbstractController
             $avatar = $form['avatar']->getData();
             if ($avatar){
                 $newFileName = $uploaderService->uploadImage($avatar,"worker_avatar");
-                $worker->setAvatar($newFileName);
+                //Si no ha habido problemas en la subida, procedemos
+                if($newFileName != "0"){
+                    //Guardamos el nombre en la bbdd
+                    $worker->setAvatar($newFileName);
+                }
+                //Si no, mandamos mensaje de error y lo redireccionamos
+                else{
+                    //Creamos mensaje para notificar error al subir la imagen
+                    $this->addFlash('danger', 'Solo se permiten ficheros de imagen, inténtelo de nuevo (jpg, png, gif, jpeg)');
+                    return $this->redirectToRoute('workers');
+                }
             }
 
             //Introducimos los datos en la bbdd

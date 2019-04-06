@@ -43,7 +43,17 @@ class ProductController extends AbstractController
 
             if ($image){
                 $newName = $uploaderService->uploadImage($image,'products');
-                $product->setImage($newName);
+                //Si no ha habido problemas en la subida, procedemos
+                if($newName != "0"){
+                    //Guardamos el nombre en la bbdd
+                    $image->setAvatar($newName);
+                }
+                //Si no, mandamos mensaje de error y lo redireccionamos
+                else{
+                    //Creamos mensaje para notificar error al subir la imagen
+                    $this->addFlash('danger', 'Solo se permiten ficheros de imagen, inténtelo de nuevo (jpg, png, gif, jpeg)');
+                    return $this->redirectToRoute('products');
+                }
             }
 
             $entityManager->persist($product);
@@ -75,7 +85,17 @@ class ProductController extends AbstractController
 
             if ($image != null){
                 $newName = $uploaderService->uploadImage($image,'products');
-                $product->setImage($newName);
+                //Si no ha habido problemas en la subida, procedemos
+                if($newName != "0"){
+                    //Guardamos el nombre en la bbdd
+                    $image->setAvatar($newName);
+                }
+                //Si no, mandamos mensaje de error y lo redireccionamos
+                else{
+                    //Creamos mensaje para notificar error al subir la imagen
+                    $this->addFlash('danger', 'Solo se permiten ficheros de imagen, inténtelo de nuevo (jpg, png, gif, jpeg)');
+                    return $this->redirectToRoute('products');
+                }
             }
             
             //Si no se quiere modificar la foto, dejamos la que tenia puesta anteriormente
@@ -98,6 +118,7 @@ class ProductController extends AbstractController
         ]);
 
     }
+
     /**
      * @Route("/product/activate/{id}", name="product_activate")
      * Funcion encargada de activar/desactivar productos
