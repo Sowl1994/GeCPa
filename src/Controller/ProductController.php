@@ -46,7 +46,7 @@ class ProductController extends AbstractController
                 //Si no ha habido problemas en la subida, procedemos
                 if($newName != "0"){
                     //Guardamos el nombre en la bbdd
-                    $image->setAvatar($newName);
+                    $product->setImage($newName);
                 }
                 //Si no, mandamos mensaje de error y lo redireccionamos
                 else{
@@ -88,7 +88,7 @@ class ProductController extends AbstractController
                 //Si no ha habido problemas en la subida, procedemos
                 if($newName != "0"){
                     //Guardamos el nombre en la bbdd
-                    $image->setAvatar($newName);
+                    $product->setImage($newName);
                 }
                 //Si no, mandamos mensaje de error y lo redireccionamos
                 else{
