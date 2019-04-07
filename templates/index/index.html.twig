@@ -39,7 +39,7 @@
             </div>
             <div class="row">
                 <div class="pr1 card col-md-4">
-                    <img class="card-img-top product-img" src="{{ asset('images/img1.jpg') }}" alt="Producto 1">
+                    <img class="card-img-top product-img mx-auto" src="{{ asset('images/img1.jpg') }}" alt="Producto 1">
                     <div class="card-body">
                         <h4 class="card-title product-name">Producto 1</h4>
                         <p class="card-text product-desc">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div class="pr2 card col-md-4">
-                    <img class="card-img-top product-img" src="{{ asset('images/img2.jpg') }}" alt="Producto 2">
+                    <img class="card-img-top product-img mx-auto" src="{{ asset('images/img2.jpg') }}" alt="Producto 2">
                     <div class="card-body">
                         <h4 class="card-title product-name">Producto 2</h4>
                         <p class="card-text product-desc">
@@ -67,7 +67,7 @@
                     </div>
                 </div>
                 <div class="pr3 card col-md-4">
-                    <img class="card-img-top product-img" src="{{ asset('images/img3.jpg') }}" alt="Producto 3">
+                    <img class="card-img-top product-img mx-auto" src="{{ asset('images/img3.jpg') }}" alt="Producto 3">
                     <div class="card-body">
                         <h4 class="card-title product-name">Producto 3</h4>
                         <p class="card-text product-desc">
@@ -82,24 +82,6 @@
                 </div>
             </div>
         </div>
-
-        <!--<div class="about container-fluid" id="about">
-            <div class="section-title">
-                <h1>Quienes somos</h1>
-            </div>
-            <div class="row">
-                <div class="about1 col-md-12">
-                    <p class="about-text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elit sapien, vulputate gravida
-                        pulvinar eget, fringilla non erat. Fusce eget elit sed urna luctus consectetur vitae nec mauris. Sed hendrerit auctor
-                        purus, eu tempor risus gravida vel. Cras dignissim porta leo ut posuere. Nam sagittis odio mi, vel tincidunt nunc tincidunt
-                        quis. Ut ac diam eu mauris tincidunt suscipit sit amet vitae diam. Nulla molestie, ante sit amet rhoncus tempus, mauris neque
-                        aliquet orci, at vehicula erat purus in lacus. Pellentesque semper, purus in faucibus scelerisque, felis sapien finibus lectus,
-                        vel pretium lacus enim non sapien. Cras a libero sit amet diam ullamcorper egestas.
-                    </p>
-                </div>
-            </div>
-        </div>-->
 
         <div class="opinions container-fluid" id="opinions">
             <div class="section-title">
@@ -125,21 +107,67 @@
             </div>
         </div>
 
-        <!--<footer class="footer row">
-            <div class="col-md-6">
-                <div>
-                    <i class="fa fa-map-marker-alt"></i>
-                    <span>Calle lorem ipsum</span>
+        <div class="about container-fluid" id="contact">
+            <div class="section-title">
+                <h1>Contacto</h1>
+            </div>
+            <div class="row">
+                <form class="col-md-12">
+                    <div class="form-group col-md-6">
+                        <label for="name">Nombre</label>
+                        <input type="text" class="form-control" id="name" placeholder="Introduzca su nombre">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Introduzca su correo electrónico">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="contactText">Su consulta</label>
+                        <textarea class="form-control" rows="5">
+                        </textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Contactar</button>
+                </form>
+            </div>
+        </div>
+
+        <footer class="page-footer font-small mdb-color pt-4">
+            <div class="container text-center text-md-left">
+                <div class="row text-center text-md-left mt-3 pb-3">
+                    <div class="col-md-5 col-lg-5 col-xl-5 mx-auto mt-3">
+                        <h6 class="text-uppercase mb-4 font-weight-bold">Dónde estamos</h6>
+                        <div style="width: 100%"><iframe width="100%" height="150" src="https://maps.google.com/maps?width=100%&height=600&hl=es&q=Horno%20de%20Gabriel%2C%20Alfacar+(Horno%20de%20Gabriel)&ie=UTF8&t=&z=17&iwloc=B&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe></div><br />
+                    </div>
+                    <hr class="w-100 clearfix d-md-none">
+                    <hr class="w-100 clearfix d-md-none">
+                    <div class="col-md-5 col-lg-2 col-xl-2 mx-auto mt-3">
+                        <h6 class="text-uppercase mb-4 font-weight-bold">Sobre nosotros</h6>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elit sapien, vulputate gravida pulvinar eget, fringilla non erat. </p>
+                    </div>
+                    <hr class="w-100 clearfix d-md-none">
+                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                        <h6 class="text-uppercase mb-4 font-weight-bold">Contacto</h6>
+                        <p>
+                            <i class="fas fa-home mr-3"></i> Calle Prueba, -xxxxx-</p>
+                        <p>
+                            <i class="fas fa-envelope mr-3"></i> contact@hdg.es</p>
+                        <p>
+                            <i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
+                        <p>
+                            <i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
+                    </div>
                 </div>
-                <div>
-                    <i class="fa fa-phone"></i>
-                    <span>+34 958 540 799</span>
-                </div>
-                <div>
-                    <i class="fa fa-envelope"></i>
-                    <span>contacto@hornodegabriel.es</span>
+                <hr>
+                <div class="row d-flex align-items-center">
+                    <div class="col-md-7 col-lg-8">
+                        <p class="text-center text-md-left">© 2019 Copyright:
+                            <a href="#">
+                                <strong> Horno de Gabriel S.L </strong>
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </div>
-        </footer>-->
+        </footer>
     </div>
 {% endblock %}

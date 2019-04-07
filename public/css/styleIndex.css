@@ -23,7 +23,7 @@ body{
 
 /*Products*/
 .products > .row > .card {border: none;}
-.product-img{width: 30vw; height: 50vh;}
+.product-img{/*width: 30vw;*/ height: 50vh;}
 .product-name{text-align: center;}
 .product-desc{text-align: justify;}
 
@@ -36,8 +36,13 @@ body{
 .op-avatar-img{width: 50px;}
 .op-text{text-align: justify;}
 
+/*Formulario de contacto*/
+form{
+    padding: 2vh 0;
+}
+
 /*Footer*/
-.footer{
-    background-color: #282c2f;
-    color: #DDDDDD;
+footer{
+    background-color: #263238!important;
+    color: white;
 }
