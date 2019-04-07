@@ -45,6 +45,15 @@
     display: inline-block;
 }
 
+@media only screen and (min-width: 760px) {
+    .appMenu{
+        min-height: 100vh;
+    }
+    .appMenu .wrapper{
+        position: fixed;
+    }
+}
+
 @media only screen and (max-width: 760px) {
     .appMenu{
         width: 100vw;
