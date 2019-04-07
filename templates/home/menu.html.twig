@@ -1,53 +1,64 @@
-<ul class="nav flex-column">
-    <li class="nav-item">
-        <span class="bold" style="font-size: 2rem">GeCPa</span><br>
-        <p>Horno de Gabriel</p>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" href="{{ path('app_home') }}">
-            <div class="col-md-1 menuIcon"><i class="fas fa-home"></i></div>
-            <span>Inicio</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ path('clients') }}">
-            <div class="col-md-1 menuIcon"><i class="fas fa-users"></i></div>
-            <span>Clientes</span></a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ path('products') }}">
-            <div class="col-md-1 menuIcon"><i class="fas fa-bread-slice"></i></div>
-            <span>Productos</span></a>
-    </li>
-    {% if is_granted('ROLE_ADMIN') %}
-    <li class="nav-item">
-        <a class="nav-link" href="{{ path('workers') }}">
-            <div class="col-md-1 menuIcon"><i class="fas fa-briefcase"></i></div>
-            <span>Trabajadores</span></a>
-    </li>
-    {% endif %}
-    <li class="nav-item">
-        <a class="nav-link" href="{{ path('debt') }}">
-            <div class="col-md-1 menuIcon"><i class="fas fa-euro-sign"></i></div>
-            <span>Facturación</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link disabled" href="#">
-            <div class="col-md-1 menuIcon"><i class="fas fa-box"></i></div>
-            <span>Encargos</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ path('app_logout') }}">
-            <div class="col-md-1 menuIcon"><i class="fas fa-sign-out-alt"></i></div>
-            <span>Cerrar sesión</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link disabled" href="#">
-            <div class="col-md-1 menuIcon"><i class="fas fa-angle-left"></i></div>
-            <span>Contraer</span>
-        </a>
-    </li>
-</ul>
+<div class="wrapper">
+    <button class="navbar-light navbar-toggler" type="button" data-toggle="collapse" data-target="#collapse" onclick="toggleMenu()">
+        <span class="navbar-light navbar-toggler-icon"></span>
+    </button>
+    <nav id="sidemenu">
+        <div class="menuHeader">
+            <span class="bold" style="font-size: 1.7rem">GeCPa</span><br>
+            <p>Horno de Gabriel</p>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('app_home') }}">
+                    <div class="col-md-1 menuIcon"><i class="fas fa-home"></i></div>
+                    <span>Inicio</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('clients') }}">
+                    <div class="col-md-1 menuIcon"><i class="fas fa-users"></i></div>
+                    <span>Clientes</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('products') }}">
+                    <div class="col-md-1 menuIcon"><i class="fas fa-bread-slice"></i></div>
+                    <span>Productos</span></a>
+            </li>
+            {% if is_granted('ROLE_ADMIN') %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('workers') }}">
+                    <div class="col-md-1 menuIcon"><i class="fas fa-briefcase"></i></div>
+                    <span>Trabajadores</span></a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('debt') }}">
+                    <div class="col-md-1 menuIcon"><i class="fas fa-euro-sign"></i></div>
+                    <span>Facturación</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">
+                    <div class="col-md-1 menuIcon"><i class="fas fa-box"></i></div>
+                    <span>Encargos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_logout') }}">
+                    <div class="col-md-1 menuIcon"><i class="fas fa-sign-out-alt"></i></div>
+                    <span>Cerrar sesión</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link contract" href="#" onclick="toggleMenu()">
+                    <div class="col-md-1 menuIcon"><i class="fas fa-angle-left"></i></div>
+                    <span>Contraer</span>
+                </a>
+                <a class="nav-link contractM" href="#" onclick="toggleMenu()">
+                    <div class="col-md-1 menuIcon"><i class="fas fa-angle-up"></i></div>
+                    <span>Contraer</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

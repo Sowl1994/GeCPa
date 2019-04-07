@@ -8,7 +8,7 @@ body{
 .center{text-align: center;}
 .appContainer{
 }
-.appContainer,.appContent,.appMenu{/*todo Esto hay que cambiarlo para el responsive*/min-height: 100vh;}
+/*.appContainer,.appContent,.appMenu{min-height: 100vh;}*/
 .appMenu{
     background-color:rgba(255, 255, 255, 0.6);
     border-right: 1px solid black;

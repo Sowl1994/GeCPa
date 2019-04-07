@@ -1,3 +1,65 @@
+/*Tamaño menú*/
+.appMenu{
+    width: 16%;
+}
+.appMenu.active{
+    width: 56px;
+    height: 40px;
+    background-color: transparent;
+    border-right:none;
+}
+
+.appMenu.active #sidemenu{
+    display: none;
+}
+
+/*Cambios en la cabecera*/
+.appMenu .menuHeader strong {
+    display: none;
+}
+.appMenu.active .menuHeader h3 {
+    display: none;
+}
+.appMenu.active .menuHeader strong {
+    display: block;
+}
+
+/**/
+.appMenu.active .nav-link>span{
+    display: none;
+}
+
+/*Cambios en el boton final*/
+.appMenu .navbar-toggler, .appMenu.active .contract {
+    display: none;
+}
+.appMenu.active .navbar-toggler, .appMenu .contract {
+    display: block;
+}
+.contractM{
+    display: none;
+}
+
+/*Iconos*/
 .menuIcon{
     display: inline-block;
+}
+
+@media only screen and (max-width: 760px) {
+    .appMenu{
+        width: 100vw;
+        text-align: center;
+        border-right: none;
+    }
+    #sidemenu{
+        -webkit-box-shadow: 4px 4px 9px -1px rgba(0,0,0,0.27);
+        -moz-box-shadow: 4px 4px 9px -1px rgba(0,0,0,0.27);
+        box-shadow: 4px 4px 9px -1px rgba(0,0,0,0.27);
+    }
+    .contract{
+        display: none!important;
+    }
+    .contractM{
+        display: block;
+    }
 }
