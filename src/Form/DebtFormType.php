@@ -25,9 +25,13 @@ class DebtFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $day = date('d');
+        $month = date('m');
+        $year = date('Y');
         $builder
             //->add('quantity',NumberType::class,['label' => 'Cantidad', 'mapped' => false])
-            ->add('purchaseDate',DateType::class,['label' => 'Fecha de compra','format' => 'dd/MM/yyyy'])
+            ->add('purchaseDate',DateType::class,['label' => 'Fecha de compra','format' => 'dd/MM/yyyy','data' => new \DateTime('@'.strtotime('now'))
+            ])
             /*->add('product',EntityType::class, [
                 'label'=>' ',
                 'class' => Product::class,
@@ -36,7 +40,7 @@ class DebtFormType extends AbstractType
                     return $prod;
                 }
             ])*/
-            ->add('paymentDate',DateType::class,['label' => 'Fecha de pago','format' => 'dd/MM/yyyy'])
+            ->add('paymentDate',DateType::class,['label' => 'Fecha de pago','format' => 'dd/MM/yyyy','data' => new \DateTime('@'.strtotime('now'))])
             /*->add('isPaid',CheckboxType::class,['label' => 'Pagado'])*/
             /*->add('client',TextType::class,['mapped'=> false])
             ->add('product',TextType::class,['mapped'=> false])*/
