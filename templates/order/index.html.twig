@@ -1,0 +1,25 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Encargos{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styleOrder.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12"><h1>Encargos</h1></div>
+    <div class="col-md-12">
+        <a href="{{ path('add_order') }}"><input type="button" class="btn btn-success" value="Crear encargo"></a>
+        <input class="input search" type="text" placeholder="Buscar...">
+    </div>
+    <div class="col-md-12 clientOrderList"><br>
+        {% for order in orders %}
+            <a href="#">
+                <div>
+                    Encargo de {{ order.client.firstName }}
+                </div>
+            </a>
+
+        {% endfor %}
+    </div>
+{% endblock %}

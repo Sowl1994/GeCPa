@@ -84,9 +84,15 @@ class Client
      */
     private $debts;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderP", mappedBy="client")
+     */
+    private $orderPs;
+
     public function __construct()
     {
         $this->debts = new ArrayCollection();
+        $this->orderPs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -263,6 +269,37 @@ class Client
             // set the owning side to null (unless already changed)
             if ($debt->getClient() === $this) {
                 $debt->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrderP[]
+     */
+    public function getOrderPs(): Collection
+    {
+        return $this->orderPs;
+    }
+
+    public function addOrderP(OrderP $orderP): self
+    {
+        if (!$this->orderPs->contains($orderP)) {
+            $this->orderPs[] = $orderP;
+            $orderP->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderP(OrderP $orderP): self
+    {
+        if ($this->orderPs->contains($orderP)) {
+            $this->orderPs->removeElement($orderP);
+            // set the owning side to null (unless already changed)
+            if ($orderP->getClient() === $this) {
+                $orderP->setClient(null);
             }
         }
 

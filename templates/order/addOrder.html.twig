@@ -1,0 +1,12 @@
+{% extends 'order/index.html.twig' %}
+{% block title %}Crear encargo{% endblock %}
+{% block content %}
+    <div class="col-md-12">
+        <div><h1>Crear encargo</h1></div>
+        {{ form_start(addOrderForm) }}
+        {{ form_row(addOrderForm.order_date) }}
+        {{ form_row(addOrderForm.delivery_date) }}
+        <br><button type="submit" class="btn btn-primary">Añadir producto/s</button>
+        {{ form_end(addOrderForm) }}
+    </div>
+{% endblock %}
