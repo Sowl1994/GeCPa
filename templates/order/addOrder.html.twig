@@ -4,8 +4,21 @@
     <div class="col-md-12">
         <div><h1>Crear encargo</h1></div>
         {{ form_start(addOrderForm) }}
-        {{ form_row(addOrderForm.order_date) }}
-        {{ form_row(addOrderForm.delivery_date) }}
+        {{ form_row(addOrderForm.client) }}
+        {{ form_row(addOrderForm.orderDate) }}
+        {{ form_row(addOrderForm.deliveryDate) }}
+        <h2>Productos</h2>
+        <div class="productContainer">
+            {% for product in products %}
+                <div class="productItem" id="{{ product.id }}">
+                    <div class="productName col-md-12"> {{ product }}</div><br>
+                    <div class="productQuantity col-md-1">
+                        <input type="number" name="order_form[quantity][{{ product.id }}]">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {{ form_row(addOrderForm.description) }}
         <br><button type="submit" class="btn btn-primary">Añadir producto/s</button>
         {{ form_end(addOrderForm) }}
     </div>
