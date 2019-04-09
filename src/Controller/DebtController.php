@@ -97,6 +97,7 @@ class DebtController extends AbstractController
         return $this->render('debt/addProduct.html.twig',[
             'addPForm' => $form->createView(),
             'products' => $products,
+            'client' => $client,
         ]);
     }
 

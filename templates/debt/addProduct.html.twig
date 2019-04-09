@@ -2,7 +2,7 @@
 {% block title %}Añadir productos{% endblock %}
 {% block content %}
     <div class="col-md-12">
-        <div><h1>Añadir productos al cliente</h1></div>
+        <div><h2>Añadir productos a la deuda de <a href="{{ path('client_detail', {'id': client.id}) }}">{{ client.firstName }} {{ client.lastName }}</a></h2></div>
         {{ form_start(addPForm) }}
         {{ form_row(addPForm.purchaseDate) }}
         <h2>Productos</h2>
