@@ -49,6 +49,19 @@ class OrdersController extends AbstractController
     }
 
     /**
+     * @Route("/order/{id}", name="order_details")
+     */
+    public function order_details($id, EntityManagerInterface $entityManager){
+        $orderR = $entityManager->getRepository(Orders::class)->findOneBy(['id'=>$id]);
+        $orderProductsR = $entityManager->getRepository(OrderProduct::class)->findOneBy(['orders'=>$orderR->getId()]);
+        // dd($orderR);
+        return $this->render('order/details.html.twig',[
+            'order' => $orderR,
+            'products' => $orderProductsR,
+        ]);
+    }
+
+    /**
      * @Route("/addorder", name="add_order")
      */
     public function add_order(EntityManagerInterface $entityManager, Request $request){

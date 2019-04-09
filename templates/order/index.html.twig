@@ -14,7 +14,7 @@
     </div>
     <div class="col-md-12 clientOrderList"><br>
         {% for order in orders %}
-            <a href="#">
+            <a href="{{ path('order_details', {'id': order.id}) }}">
                 <div>
                     Encargo de {{ order.client.firstName }}
                 </div>
