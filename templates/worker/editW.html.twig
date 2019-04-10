@@ -11,14 +11,23 @@
             {{ form_row(workerForm.firstName) }}
             {{ form_row(workerForm.lastName) }}
             {{ form_row(workerForm.email) }}
-            {# Los avatares solo se podrán modificar en el área personal de cada usuario #}
-            {% if app.request.pathinfo == "/user/edit/" %}
-                {{ form_row(workerForm.avatar, {
-                    attr: {
-                        'placeholder': 'Clique aquí para seleccionar una imagen'
-                    }
-                }) }}
-            {% endif %}
+
+            <div class="col-sm-8" style="display: inline-block; padding: 0;">
+                {# Los avatares solo se podrán modificar en el área personal de cada usuario #}
+                {% if app.request.pathinfo == "/user/edit/" %}
+                    {{ form_row(workerForm.avatar, {
+                        attr: {
+                            'placeholder': 'Clique aquí para seleccionar una imagen'
+                        }
+                    }) }}
+                {% endif %}
+            </div>
+            {# Pintamos la imagen actual #}
+            <div class="col-sm-3 imagePreview" style="display: inline-block">
+                {% if workerForm.vars.data.avatar %}
+                    <img src="{{ asset('./uploads/worker_avatar/'~workerForm.vars.data.avatar) }}" id="imgPreview" height="100">
+                {% endif %}
+            </div>
             {{ form_row(workerForm.telephone) }}
             {{ form_row(workerForm.sex) }}
             <button type="submit" class="btn btn-primary">Editar</button>

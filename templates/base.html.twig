@@ -42,6 +42,14 @@
                 $(inputFile).parent()
                     .find('.custom-file-label')
                     .html(inputFile.files[0].name);
+                // Mostramos la imagen
+                if (this.files && this.files[0]){
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#imgPreview').attr('src',e.target.result)
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                }
             });
         </script>
     {% endblock %}

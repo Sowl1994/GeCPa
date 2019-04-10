@@ -32,11 +32,16 @@
         {{ form_row(clientForm.email) }}
         {{ form_row(clientForm.telephone) }}
         {{ form_row(clientForm.sex) }}
-        {{ form_row(clientForm.avatar, {
-            attr: {
-                'placeholder': 'Clique aquí para seleccionar una imagen'
-            }
-        }) }}
+        <div class="col-sm-8" style="display: inline-block; padding: 0;">
+            {{ form_row(clientForm.avatar, {
+                attr: {
+                    'placeholder': 'Clique aquí para seleccionar una imagen'
+                }
+            }) }}
+        </div>
+        <div class="col-sm-3 imagePreview" style="display: inline-block">
+            <img src="" id="imgPreview" height="100">
+        </div>
         {% if is_granted('ROLE_ADMIN') %}{{ form_row(clientForm.user) }}{% endif %}
         <button type="submit" class="btn btn-primary">Crear</button>
         {{ form_end(clientForm) }}

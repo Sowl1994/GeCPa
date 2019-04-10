@@ -6,11 +6,19 @@
         {{ form_start(productForm) }}
         {{ form_row(productForm.name) }}
         {{ form_row(productForm.price) }}
-        {{ form_row(productForm.image, {
-            attr: {
-                'placeholder': 'Clique aquí para seleccionar una imagen'
-            }
-        }) }}
+        <div class="col-sm-8" style="display: inline-block; padding: 0;">
+            {{ form_row(productForm.image, {
+                attr: {
+                    'placeholder': 'Clique aquí para seleccionar una imagen'
+                }
+            }) }}
+        </div>
+        {# Pintamos la imagen actual #}
+        <div class="col-sm-3 imagePreview" style="display: inline-block">
+            {% if productForm.vars.data.image %}
+                <img src="{{ asset('./uploads/products/'~productForm.vars.data.image) }}" id="imgPreview" height="100">
+            {% endif %}
+        </div>
         {{ form_row(productForm.description) }}
         <button type="submit" class="btn btn-primary">Editar</button>
         {{ form_end(productForm) }}

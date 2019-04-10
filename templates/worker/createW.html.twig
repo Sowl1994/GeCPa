@@ -4,7 +4,22 @@
     <div class="col-md-12">
         <div><h1>Crear trabajador</h1></div>
         {{ form_start(workerForm) }}
-        {{ form_widget(workerForm) }}
+        {{ form_row(workerForm.firstName) }}
+        {{ form_row(workerForm.lastName) }}
+        {{ form_row(workerForm.email) }}
+        {{ form_row(workerForm.password) }}
+        {{ form_row(workerForm.telephone) }}
+        {{ form_row(workerForm.sex) }}
+        <div class="col-sm-8" style="display: inline-block; padding: 0;">
+            {{ form_row(workerForm.avatar,{
+                attr: {
+                    'placeholder': 'Clique aquí para seleccionar una imagen',
+                }
+            }) }}
+        </div>
+        <div class="col-sm-3 imagePreview" style="display: inline-block">
+            <img src="" id="imgPreview" height="100">
+        </div><br>
         <button type="submit" class="btn btn-primary">Crear</button>
         {{ form_end(workerForm) }}
     </div>
