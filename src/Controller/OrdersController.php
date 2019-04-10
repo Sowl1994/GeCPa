@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\Entity\Client;
+use App\Entity\Debt;
 use App\Entity\OrderProduct;
 use App\Entity\Orders;
 use App\Entity\Product;
@@ -150,4 +151,32 @@ class OrdersController extends AbstractController
         return $this->redirectToRoute("orders");
     }
 
+    /**
+     * @Route("/ordertodebt/{id}", name="order_debt")
+     */
+    public function add_order_debt($id, EntityManagerInterface $entityManager){
+        $orderR = $entityManager->getRepository(Orders::class)->findOneBy(['id'=>$id]);
+        $products = $orderR->getOrderProducts();
+
+        //Marcamos el encargo como finalizado
+        $orderR->setIsFinish(true);
+        $entityManager->persist($orderR);
+
+        //Cada producto lo vamos metiendo en la deuda
+        foreach($products as $idp => $value){
+            $debt = new Debt();
+            $debt->setClient($orderR->getClient());
+            $debt->setIsPaid(false);
+            $debt->setPurchaseDate(new \DateTime($orderR->getDeliveryDate()->format('Y-m-d')));
+            $debt->setProduct($value->getProduct());
+            $debt->setQuantity($value->getQuantity());
+
+            //Para cada producto, hacemos una inserción en la deuda
+            $entityManager->persist($debt);
+            $entityManager->flush();
+        }
+
+        $this->addFlash('success','El encargo ha pasado a la deuda del cliente correctamente');
+        return $this->redirectToRoute("orders");
+    }
 }

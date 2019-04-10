@@ -11,14 +11,19 @@
 
     <div class="col-md-12 clientOrderDetail"><br>
 
-        <h3>Datos del cliente</h3>
         <div class="clientData">
+            <h3>Datos del cliente</h3>
             <label>Nombre: </label><p>{{ order.client.firstName }} {{ order.client.lastName }} {{ order.client.alias }}</p>
             <label>Domicilio: </label><p>{{ order.client.address }}</p>
         </div>
+        <div style="float: right;">
+            <h2>Opciones</h2>
+            <a class="btn btn-primary" href="{{ path('order_debt', {'id': order.id}) }}">Añadir encargo a la deuda</a>
+            <a class="btn btn-success" href="{{ path('finish_order', {'id': order.id}) }}">Finalizar encargo</a>
+        </div>
         <br><br>
-        <h3>Fechas</h3>
         <div class="dates">
+            <h3>Fechas</h3>
             <div>
                 <label>Fecha de encargo:</label> <p>{{ order.orderDate|date('d-m-Y') }}</p>
                 <label>Fecha de entrega:</label> <p>{{ order.deliveryDate|date('d-m-Y') }}</p>
