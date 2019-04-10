@@ -4,7 +4,15 @@
     <div class="col-md-12">
         <div><h1>Crear encargo</h1></div>
         {{ form_start(addOrderForm) }}
-        {{ form_row(addOrderForm.client) }}
+        {#{{ form_row(addOrderForm.client) }}#}
+        <div class="form-group">
+            <label class="required" for="order_form_client">Asignar cliente</label>
+            <select id="order_form_client" name="order_form[client]" class="form-control">
+                {% for client in clients %}
+                    <option value="{{ client.id }}">{{ client.firstName }} {{ client.lastName }} {{ client.alias }} </option>
+                {% endfor %}
+            </select>
+        </div>
         {{ form_row(addOrderForm.orderDate) }}
         {{ form_row(addOrderForm.deliveryDate) }}
         <h2>Productos</h2>

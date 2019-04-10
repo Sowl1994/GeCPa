@@ -69,6 +69,11 @@ class OrdersController extends AbstractController
     public function add_order(EntityManagerInterface $entityManager, Request $request){
         $productR = $entityManager->getRepository(Product::class);
         $clientR = $entityManager->getRepository(Client::class);
+        $myClients = $clientR->findAll();
+
+        if (!$this->getUser()->isAdmin()){
+            $myClients = $clientR->findBy(['user' => $this->getUser()->getId()]);
+        }
 
         //Solo cogemos los productos que están activos
         $products = $productR->findBy(['active' => true]);
@@ -119,6 +124,7 @@ class OrdersController extends AbstractController
         return $this->render('order/addOrder.html.twig',[
             'addOrderForm' => $form->createView(),
             'products' => $products,
+            'clients' => $myClients,
         ]);
     }
 
