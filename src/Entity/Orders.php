@@ -44,6 +44,11 @@ class Orders
      */
     private $orderProducts;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isFinish;
+
     public function __construct()
     {
         $this->orderProducts = new ArrayCollection();
@@ -129,6 +134,18 @@ class Orders
                 $orderProduct->setOrders(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsFinish(): ?bool
+    {
+        return $this->isFinish;
+    }
+
+    public function setIsFinish(bool $isFinish): self
+    {
+        $this->isFinish = $isFinish;
 
         return $this;
     }

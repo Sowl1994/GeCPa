@@ -19,18 +19,30 @@ class OrdersRepository extends ServiceEntityRepository
         parent::__construct($registry, Orders::class);
     }
 
+    public function getClientsWithActiveOrder(){
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.isFinish = :var')
+            ->setParameter('var',false)
+            ->orderBy('o.deliveryDate', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Orders[] Returns an array of Orders objects
     //  */
-    public function getMyClients($idWorker)
+    public function getMyClientsWithActiveOrder($idWorker)
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.client','c')
             ->innerJoin('c.user', 'u')
             ->select('o, c')
             ->andWhere('u.id = :id')
+            ->andWhere('o.isFinish = :var')
+            ->setParameter('var',false)
             ->setParameter('id', $idWorker)
-            ->orderBy('o.client', 'ASC')
+            ->orderBy('o.deliveryDate', 'ASC')
             ->getQuery()
             ->getResult()
             ;

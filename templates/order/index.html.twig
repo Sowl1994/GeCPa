@@ -16,7 +16,7 @@
         {% for order in orders %}
             <a href="{{ path('order_details', {'id': order.id}) }}">
                 <div>
-                    Encargo de {{ order.client.firstName }}
+                    Encargo de {{ order.client.firstName }} (Fecha de entrega: {{ order.deliveryDate|date('d/m/Y') }}) <a href="{{ path('finish_order', {'id': order.id}) }}" class="btn btn-success">Marcar como finalizado</a>
                 </div>
             </a>
 

@@ -38,9 +38,9 @@ class OrdersController extends AbstractController
          * Si somos el administrador, obtenemos todos los encargos; si somos trabajador solo obtenemos los de nuestros clientes
          */
         if ($this->getUser()->isAdmin()) {
-            $orders = $repository->findAll();
+            $orders = $repository->getClientsWithActiveOrder();
         }else{
-            $orders = $repository->getMyClients($this->getUser()->getId());
+            $orders = $repository->getMyClientsWithActiveOrder($this->getUser()->getId());
         }
 
         return $this->render('order/index.html.twig', [
@@ -91,6 +91,7 @@ class OrdersController extends AbstractController
             $order->setOrderDate(new \DateTime($orderDate));
             $order->setDeliveryDate(new \DateTime($deliveryDate));
             $order->setClient($clientR->findOneBy(['id'=>$data['client']]));
+            $order->setIsFinish(false);
 
             foreach ($quantity as $idp => $value) {
                 if($value > 0){
@@ -110,7 +111,7 @@ class OrdersController extends AbstractController
             $entityManager->flush();
 
             //Mensaje de éxito
-            $this->addFlash('success', "Encargop creado correctamente");
+            $this->addFlash('success', "Encargo creado correctamente");
             //Volvemos a la zona de facturación
             return $this->redirectToRoute("orders");
         }
@@ -119,6 +120,28 @@ class OrdersController extends AbstractController
             'addOrderForm' => $form->createView(),
             'products' => $products,
         ]);
+    }
+
+    /**
+     * @Route("/finishorder/{id}", name="finish_order")
+     */
+    public function finish_order($id, EntityManagerInterface $entityManager){
+        $order = $entityManager->getRepository(Orders::class)->findOneBy(['id' => $id]);
+
+        // Si no es admin, se comprueba que el encargo a finalizar pertenezca a un cliente cuyo trabajador
+        // sea el usuario que intenta finalizar el encargo
+        if (!$this->getUser()->isAdmin()){
+            if($order->getClient()->getUser()->getId() != $this->getUser()->getId()){
+                $this->addFlash('danger','Error en la finalización del encargo');
+                return $this->redirectToRoute("orders");
+            }
+        }
+
+        $order->setIsFinish(true);
+
+        $entityManager->persist($order); $entityManager->flush();
+        $this->addFlash('success','Encargo marcado como finalizado correctamente');
+        return $this->redirectToRoute("orders");
     }
 
 }
