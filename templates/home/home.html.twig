@@ -4,7 +4,23 @@
         <h2 class="center" >Encargos</h2>
 
         {% if not is_granted('ROLE_ADMIN') %}
-        <h2><a href="#">Para hoy tienes <span>{{ commission }}</span> encargos pendientes</a> </h2>
+        <h2>Para hoy tienes <span>{{ nOrders }}</span> encargo/s pendientes </h2>
+            {% if nOrders > 0 %}
+                <ul>
+                    {% for order in orders %}
+                        <a href="{{ path('order_details', {'id': order.id}) }}"><li>Encargo de: {{ order.client.firstName }}</li></a>
+                        <ul>
+                            {% for product in order.orderProducts %}
+                                <li>{{ product.quantity }} {{ product.product }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if nOrdersTomorrow > 0 %}
+                <h2>Y para mañana tienes <span>{{ nOrdersTomorrow }}</span> encargos pendientes </h2>
+            {% endif %}
+            <a href="{{ path('orders') }}" class="btn btn-primary"> Ver más</a>
         {% endif %}
     </div>
     <div class="personalArea col-md-6">

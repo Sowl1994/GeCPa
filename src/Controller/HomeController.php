@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Orders;
 use App\Form\ChangePasswordFormType;
 use App\Form\WorkerForm;
 use App\Service\UploaderService;
@@ -17,13 +18,20 @@ class HomeController extends AbstractController
     /**
      * @Route("/home", name="app_home")
      */
-    public function index()
+    public function index(EntityManagerInterface $entityManager)
     {
         $user = $this->getUser();
-        $commission = 3;
+        $today = new \DateTime('now');
+        $orders = $entityManager->getRepository(Orders::class)->getOrders($today->format('Y-m-d'),$this->getUser()->getId());
+        $tomorrow = new \DateTime('tomorrow');
+        $tomorrowOrders = $entityManager->getRepository(Orders::class)->getOrders($tomorrow->format('Y-m-d'),$this->getUser()->getId());
+
         return $this->render('home/index.html.twig', [
             'worker' => $user,
-            'commission' => $commission,
+            'orders' => $orders,
+            'nOrders' => count($orders),
+            'nOrdersTomorrow' => count($tomorrowOrders),
+            'today' => $today
         ]);
     }
 

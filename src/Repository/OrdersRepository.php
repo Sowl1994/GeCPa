@@ -48,6 +48,22 @@ class OrdersRepository extends ServiceEntityRepository
             ;
     }
 
+    public function getOrders($date,$idWorker){
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.client','c')
+            ->innerJoin('c.user', 'u')
+            ->andWhere('u.id = :id')
+            ->andWhere('o.isFinish = :var')
+            ->andWhere('o.deliveryDate = :date')
+            ->setParameter('var',false)
+            ->setParameter('id', $idWorker)
+            ->setParameter('date', $date)
+            ->orderBy('o.deliveryDate', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     /*
     public function findOneBySomeField($value): ?Orders
     {
