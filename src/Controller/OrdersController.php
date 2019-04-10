@@ -53,11 +53,13 @@ class OrdersController extends AbstractController
      */
     public function order_details($id, EntityManagerInterface $entityManager){
         $orderR = $entityManager->getRepository(Orders::class)->findOneBy(['id'=>$id]);
-        $orderProductsR = $entityManager->getRepository(OrderProduct::class)->findOneBy(['orders'=>$orderR->getId()]);
-        // dd($orderR);
+        $count = 0;
+        foreach ($orderR->getOrderProducts() as $product)
+            $count += $product->getQuantity() * $product->getProduct()->getPrice();
+
         return $this->render('order/details.html.twig',[
             'order' => $orderR,
-            'products' => $orderProductsR,
+            'count' => $count,
         ]);
     }
 

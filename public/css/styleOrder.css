@@ -40,10 +40,10 @@
 }
 
 /*Desglose de productos*/
-.breakdownTable> thead{
+table > thead{
     background-color: rgba(255,255,255,1);
 }
-.breakdownTable> tbody{
+table > tbody{
     background-color: rgba(255,255,255,0.7);
 }
 /*Cobrar deuda*/
