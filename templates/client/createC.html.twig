@@ -12,9 +12,9 @@
         {{ form_row(clientForm.latitude) }}
         {{ form_row(clientForm.longitude) }}
         <input type="button" class="btn btn-primary" value="Mostrar" onclick="showMap()"><br><br>
-        <div class="hiddenMap" id="map" style="height: 250px;"></div>
+        <div class="" id="map" style="height: 250px;"></div>
         <script>
-            var script = document.createElement("script");
+            /*var script = document.createElement("script");
             script.setAttribute("src","https://maps.googleapis.com/maps/api/js?key="+config.GMAPS_KEY+"&callback=initMap");
             document.getElementsByTagName("body")[0].appendChild(script);
             var map;
@@ -25,8 +25,13 @@
                     zoom: 16
                 });
                 marker = new google.maps.Marker({position:{lat:-34.397, lng:150.644},map:map});
-
-            }
+            }*/
+            var map = L.map('map').setView([ -34.397 , 150.644], 16);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 25,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            var marker = L.marker([-34.397,150.644]).addTo(map);
         </script>
         <br>
         {{ form_row(clientForm.email) }}
@@ -53,10 +58,10 @@
             var address = $( "#client_form_address" ).val().replace(/ /g, "%20").replace(/,/g, "%2C");
             var addressURL = 'https://api.opencagedata.com/geocode/v1/json?q='+address+'&key='+config.OC_KEY;
 
-
             $.getJSON(addressURL, function(data) {
                 //Quitamos el anterior marcador
-                marker.setMap(null);
+                // marker.setMap(null);
+                map.removeLayer(marker);
 
                 //Obtenemos coordenadas y las trasladamos al mapa, el cual hacemos visible
                 var lat = data.results[0].bounds.northeast.lat;
@@ -68,16 +73,28 @@
                 $("#client_form_longitude").val(lng);
 
                 //Centramos el mapa en las coordenadas obtenidas y situamos un marcador
-                map.setCenter({lat:lat, lng:lng});
-                marker = new google.maps.Marker({position:{lat:lat, lng:lng},map:map,draggable:true});
+                //map.setCenter({lat:lat, lng:lng});
+                map.panTo([lat,lng], 16);
+
+                //marker = new google.maps.Marker({position:{lat:lat, lng:lng},map:map,draggable:true});
+                marker = L.marker([lat,lng], {draggable: true}).addTo(map);
+
                 //Permitimos el movimiento del marker, cambiando las coordenadas al soltarlo
-                marker.addListener('dragend', function() {
+                marker.on('dragend',function (ev) {
+                    var pos = ev.target.getLatLng();
+                    lat = pos.lat; lng = pos.lng;
+
+                    //Guardamos las variables en sus respectivos inputs
+                    $("#client_form_latitude").val(lat);
+                    $("#client_form_longitude").val(lng);
+                })
+                /*marker.addListener('dragend', function() {
                     lat = marker.getPosition().lat();
                     lng = marker.getPosition().lng();
                     //Guardamos las variables en sus respectivos inputs
                     $("#client_form_latitude").val(lat);
                     $("#client_form_longitude").val(lng);
-                });
+                });*/
             });
         }
     </script>

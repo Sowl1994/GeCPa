@@ -27,19 +27,26 @@
             <label><span class="bold"> Usuario {% if client.active=="0" %}no {% endif %} activo</span></label><br>
             <label><span class="bold"> Dirección:</span> {{ client.address }}</label>
             <a class="btn btn-primary" href="#" onclick="directions()">Cómo llegar</a><br><br>
-            <div id="map"></div><br>
+            <div class="map" id="map"></div><br>
             <script>
-                var script = document.createElement("script");
+                /*var script = document.createElement("script");
                 script.setAttribute("src","https://maps.googleapis.com/maps/api/js?key="+config.GMAPS_KEY+"&callback=initMap");
-                document.getElementsByTagName("body")[0].appendChild(script);
-                var map;
+                document.getElementsByTagName("body")[0].appendChild(script);*/
+                /*var map;
                 function initMap() {
                     var address = {lat: {{ client.latitude }}, lng: {{ client.longitude }}};
                     map = new google.maps.Map(document.getElementById('map'), {
                     center: address,zoom: 16
                     });
                     var marker = new google.maps.Marker({position:address,map:map});
-                }
+                }*/
+                var map = L.map('map').setView([{{ client.latitude }}, {{ client.longitude }}], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 25,
+                    minZoom: 16,
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+                var marker = L.marker([{{ client.latitude }}, {{ client.longitude }}]).addTo(map);
 
                 var options = {
                     enableHighAccuracy: true,

@@ -1,10 +1,10 @@
 {% extends 'client/index.html.twig' %}
-{% block title %}Creación de clientes{% endblock %}
+{% block title %}Edición de clientes{% endblock %}
 {% block content %}
     <script type='text/javascript' src='{{ asset('js/config.js') }}'></script>
 
     <div class="col-md-12">
-        <div><h1>Crear cliente</h1></div>
+        <div><h1>Editar cliente</h1></div>
         {{ form_start(clientForm) }}
         {{ form_row(clientForm.firstName) }}
         {{ form_row(clientForm.lastName) }}
@@ -15,14 +15,14 @@
         <input type="button" class="btn btn-primary" value="Mostrar" onclick="showMap()"><br><br>
         <div id="map" style="height: 250px;"></div>
         <script>
-            var script = document.createElement("script");
+           /* var script = document.createElement("script");
             script.setAttribute("src","https://maps.googleapis.com/maps/api/js?key="+config.GMAPS_KEY+"&callback=initMap");
-            document.getElementsByTagName("body")[0].appendChild(script);
-            var map;
+            document.getElementsByTagName("body")[0].appendChild(script);*/
+            //var map;
             var lat = {{ client.latitude }};
             var lng = {{ client.longitude}};
-            var marker;
-            function initMap() {
+            //var marker;
+            /*function initMap() {
                 map = new google.maps.Map(document.getElementById('map'), {
                     center: {lat: lat, lng: lng },
                     zoom: 16
@@ -36,7 +36,24 @@
                     $("#client_form_latitude").val(lat);
                     $("#client_form_longitude").val(lng);
                 });
-            }
+            }*/
+           var map = L.map('map').setView([{{ client.latitude }}, {{ client.longitude }}], 16);
+           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+               maxZoom: 25,
+               attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+           }).addTo(map);
+           var marker = L.marker([lat,lng], {draggable: true}).addTo(map);
+           marker.on('dragend',function (ev) {
+               var mk = ev.target;
+               var pos = mk.getLatLng();
+
+               /*lat = marker.getPosition().lat();
+               lng = marker.getPosition().lng();*/
+               lat = pos.lat; lng = pos.lng;
+               //Guardamos las variables en sus respectivos inputs
+               $("#client_form_latitude").val(lat);
+               $("#client_form_longitude").val(lng);
+           })
         </script>
         <br>
         {{ form_row(clientForm.email) }}
@@ -75,11 +92,14 @@
                 $("#client_form_longitude").val(lng);
 
                 //Quitamos el anterior marcador
-                marker.setMap(null);
+                //marker.setMap(null);
+                map.removeLayer(marker);
 
                 //Centramos el mapa en las coordenadas obtenidas y situamos un marcador
-                map.setCenter({lat:lat, lng:lng});
-                marker = new google.maps.Marker({position:{lat:lat, lng:lng},map:map,draggable: true});
+                //map.setCenter({lat:lat, lng:lng});
+                map.panTo([lat,lng], 16);
+                //marker = new google.maps.Marker({position:{lat:lat, lng:lng},map:map,draggable: true});
+                marker = L.marker([lat,lng], {draggable: true}).addTo(map);
             });
         }
     </script>
