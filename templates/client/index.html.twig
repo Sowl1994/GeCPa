@@ -10,7 +10,7 @@
     <div class="col-md-12"><h1>Clientes</h1></div>
     <div class="col-md-12 clientOptions">
         <a href="{{ path('client_new') }}"><input type="button" class="btn btn-success" value="Añadir cliente"></a>
-        <input class="input search" type="text" placeholder="Buscar...">
+        <input class="input search" id="search" type="text" placeholder="Buscar...">
 
     </div>
     <div class="col-md-12 clientList"><br>
@@ -28,4 +28,19 @@
         {% endfor %}
     </div>
 
+{% endblock %}
+{% block headjs %}
+    {{ parent() }}
+    <script>
+        $('#search').on('keyup', function (e) {
+            $('.clientContainer').each(function () {
+                if( !$(this).find('.clientName').text().toLowerCase().includes( $('#search').val().toLowerCase()) &&
+                    !$(this).find('.clientAddress').text().toLowerCase().includes( $('#search').val().toLowerCase())
+                )
+                    $(this).css('display', 'none');
+                else
+                    $(this).css('display', 'inline-table');
+            })
+        })
+    </script>
 {% endblock %}

@@ -10,7 +10,7 @@
     <div class="col-md-12"><h1>Productos</h1></div>
     <div class="col-md-12 productOptions">
         <a href="{{ path('product_new') }}"><input type="button" class="btn btn-success" value="Añadir producto"></a>
-        <input class="input search" type="text" placeholder="Buscar...">
+        <input class="input search" id="search" type="text" placeholder="Buscar...">
 
     </div>
     <div class="col-md-12 productList"><br>
@@ -26,10 +26,23 @@
                         {% if product.active %} class="btn btn-danger">Desactivar
                         {% else %} class="btn btn-success"> Activar {% endif %} </a>
                     </div>
-
                 </a>
             </div>
         {% endfor %}
     </div>
-
+{% endblock %}
+{% block headjs %}
+    {{ parent() }}
+    <script>
+        $('#search').on('keyup', function (e) {
+            $('.productContainer').each(function () {
+                if( !$(this).find('.productName').text().toLowerCase().includes( $('#search').val().toLowerCase()) &&
+                    !$(this).find('.productPrice').text().toLowerCase().includes( $('#search').val().toLowerCase())
+                )
+                    $(this).css('display', 'none');
+                else
+                    $(this).css('display', 'inline-table');
+            })
+        })
+    </script>
 {% endblock %}
