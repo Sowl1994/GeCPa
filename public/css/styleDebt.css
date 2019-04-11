@@ -39,6 +39,10 @@
     display: inline-block;
 }
 
+.productItem {
+    margin-top: 4vh;
+}
+
 /*Desglose de productos*/
 .breakdownTable> thead{
     background-color: rgba(255,255,255,1);
