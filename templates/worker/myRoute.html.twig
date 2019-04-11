@@ -1,0 +1,68 @@
+{% extends 'client/index.html.twig' %}
+{% block title %}Ruta{% endblock %}
+{% block stylesheets %}{{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/graphhopper-js-api-client/dist/graphhopper-client.js"></script>
+    <script src="{{ asset('js/lrm-graphhopper.js') }}"></script>
+
+{% endblock %}
+{% block content %}
+    <script type='text/javascript' src='{{ asset('js/config.js') }}'></script>
+
+    <div class="col-md-12"><h1>Ruta completa</h1></div>
+
+    <div class="col-md-12 routeDetails">
+        <div class="map" id="map"  style="height: 80vh;"></div>
+        <script>
+            directions();
+            var lat;
+            var lng;
+
+
+            function setRoute(lat,lng){
+                var map = L.map('map').setView([lat,lng], 16);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 25,
+                    minZoom: 10,
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+
+                L.Routing.control({
+                    router: new L.Routing.GraphHopper(config.GH_KEY),
+                    waypoints: [
+                        L.latLng(lat,lng),
+                        {% for client in clients %}
+                            L.latLng({{ client.latitude }},{{ client.longitude }}),
+                        {% endfor %}
+                    ],
+                }).addTo(map);
+            }
+
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            };
+
+            function success(pos){
+                lat = pos.coords.latitude;
+                lng = pos.coords.longitude;
+
+                setRoute(lat,lng);
+            }
+
+            function error(err) {
+                console.warn('ERROR(' + err.code + '): ' + err.message);
+            };
+
+            function directions() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(success, error, options);
+                } else {
+                    alert("Este navegador no admite geolocalización.");
+                }
+            }
+
+        </script>
+    </div>
+{% endblock %}

@@ -242,4 +242,19 @@ class ClientController extends AbstractController
            'client' => $clientR,
         ]);
     }
+
+    /**
+     * @Route("/myroute", name="my_route")
+     * Funcion encargada de mostrar la ruta del trabajador
+     */
+    public function get_my_route(EntityManagerInterface $entityManager){
+        if(!$this->getUser()->isAdmin()){
+            $myClients = $entityManager->getRepository(Client::class)->getMyClients($this->getUser()->getId());
+
+
+            return $this->render('worker/myRoute.html.twig',[
+                'clients' => $myClients,
+            ]);
+        }
+    }
 }
