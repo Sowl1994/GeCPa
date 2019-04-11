@@ -26,7 +26,7 @@
 
             <label><span class="bold"> Usuario {% if client.active=="0" %}no {% endif %} activo</span></label><br>
             <label><span class="bold"> Dirección:</span> {{ client.address }}</label>
-            <a class="btn btn-primary" href="#" onclick="directions()">Cómo llegar</a><br><br>
+            <a class="btn btn-primary" href="{{ path('client_route', {'id': client.id}) }}">Cómo llegar</a><br><br>
             <div class="map" id="map"></div><br>
             <script>
                 /*var script = document.createElement("script");
@@ -58,8 +58,8 @@
                     var crd = pos.coords;
                     var lat = crd.latitude;
                     var lng = crd.longitude;
-                    var url = "https://graphhopper.com/maps/?point="+lat+"%2C"+lng+"&point={{ client.latitude }}%2C{{ client.longitude }}&locale=es-es&vehicle=car&weighting=fastest&elevation=true&use_miles=false&layer=Omniscale";
-                    var win = window.open(url, '_blank');
+                    //var url = "https://graphhopper.com/maps/?point="+lat+"%2C"+lng+"&point={{ client.latitude }}%2C{{ client.longitude }}&locale=es-es&vehicle=car&weighting=fastest&elevation=true&use_miles=false&layer=Omniscale";
+                    //var win = window.open(url, '_blank');
 
                 }
 

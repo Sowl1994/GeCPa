@@ -1,0 +1,90 @@
+{% extends 'client/index.html.twig' %}
+{% block title %}Ruta{% endblock %}
+{% block stylesheets %}{{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/graphhopper-js-api-client/dist/graphhopper-client.js"></script>
+    <script src="{{ asset('js/lrm-graphhopper.js') }}"></script>
+
+{% endblock %}
+{% block content %}
+    <script type='text/javascript' src='{{ asset('js/config.js') }}'></script>
+
+    <div class="col-md-12"><h1>Ruta hacia {{ client.firstName }}</h1></div>
+
+    <div class="col-md-12 routeDetails">
+        <div class="map" id="map"  style="height: 80vh;"></div>
+        <script>
+            directions();
+            var lat;
+            var lng;
+
+            var map = L.map('map').setView([{{ client.latitude }}, {{ client.longitude }}], 16);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 25,
+                minZoom: 10,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            function setRoute(lat,lng){
+                L.Routing.control({
+                    router: new L.Routing.GraphHopper(config.GH_KEY),
+                    waypoints: [
+                        L.latLng(lat,lng),
+                        L.latLng({{ client.latitude }}, {{ client.longitude }})
+                    ],
+                }).addTo(map);
+            }
+
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            };
+
+            function success(pos){
+                lat = pos.coords.latitude;
+                lng = pos.coords.longitude;
+
+                setRoute(lat,lng);
+            }
+
+            function error(err) {
+                console.warn('ERROR(' + err.code + '): ' + err.message);
+            };
+
+            function directions() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(success, error, options);
+                } else {
+                    alert("Este navegador no admite geolocalización.");
+                }
+            }
+
+
+
+
+            /*window.onload = function() {
+
+                var ghRouting = new GraphHopper.Routing({
+                    key: config.GH_KEY,
+                    vehicle: "car",
+                    elevation: false
+                });
+
+                ghRouting.addPoint(new GHInput({{ client.latitude }}, {{ client.longitude }}));
+                ghRouting.addPoint(new GHInput(lat, lng));
+
+                ghRouting.doRequest()
+                    .then(function(json) {
+                        // Add your own result handling here
+                        console.log(json);
+                    })
+                    .catch(function(err) {
+                        console.error(err.message);
+                    });
+
+
+            };*/
+
+        </script>
+    </div>
+{% endblock %}

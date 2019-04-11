@@ -230,4 +230,16 @@ class ClientController extends AbstractController
 
         return $this->redirectToRoute('client_detail',['id' => $id]);
     }
+
+    /**
+     * @Route("/client/route/{id}", name="client_route")
+     * Funcion encargada de mostrar la ruta hacia un cliente
+     */
+    public function route_client($id,EntityManagerInterface $entityManager){
+        $clientR = $entityManager->getRepository(Client::class)->findOneBy(['id'=>$id]);
+
+        return $this->render('client/route.html.twig',[
+           'client' => $clientR,
+        ]);
+    }
 }
