@@ -72,8 +72,8 @@
                 <img src="{{ asset('./uploads/client_avatar/'~clientForm.vars.data.avatar) }}" id="imgPreview" height="100">
             {% endif %}
         </div>
-        {% if is_granted('ROLE_ADMIN') %}{{ form_row(clientForm.user) }}{% endif %}
-        <button type="submit" class="btn btn-primary">Editar</button>
+        {% if is_granted('ROLE_ADMIN') %}{{ form_row(clientForm.user) }}{% endif %}<br>
+        <button type="submit" class="btn btn-primary">Editar</button><br><br>
         {{ form_end(clientForm) }}
     </div>
     <script>

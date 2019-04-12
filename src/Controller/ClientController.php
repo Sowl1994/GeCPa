@@ -174,7 +174,8 @@ class ClientController extends AbstractController
 
             //Si no se quiere modificar la foto, dejamos la que tenia puesta anteriormente
             if (!$avatar instanceof UploadedFile) {
-                $client->setAvatar($oldAvatar);
+                if($oldAvatar != null)
+                    $client->setAvatar($oldAvatar);
             }
 
             //Introducimos los datos en la bbdd
