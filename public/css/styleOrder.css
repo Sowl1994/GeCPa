@@ -3,7 +3,7 @@
     display: inline-block;
 }
 /*Listado de clientes con deuda*/
-.clientContainer{
+.clientOrderContainer{
     border: 1px solid black;
     margin-right: 5vw;
     margin-bottom: 3vh;
@@ -12,8 +12,10 @@
     -moz-box-shadow: 4px 10px 7px 0px rgba(0,0,0,0.27);
     box-shadow: 4px 10px 7px 0px rgba(0,0,0,0.27);
     display: inline-table;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
-.debtOptions{text-align: right;}
+.orderOptions{text-align: right;}
 
 .clientImageContainer{
     padding-top: 5px;

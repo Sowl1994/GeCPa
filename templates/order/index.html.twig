@@ -1,25 +1,51 @@
 {% extends 'home/index.html.twig' %}
-
 {% block title %}Encargos{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/styleOrder.css') }}">
 {% endblock %}
-
 {% block content %}
     <div class="col-md-12"><h1>Encargos</h1></div>
-    <div class="col-md-12">
+    <div class="col-md-12 orderOptions" >
         <a href="{{ path('add_order') }}"><input type="button" class="btn btn-success" value="Crear encargo"></a>
-        <input class="input search" type="text" placeholder="Buscar...">
+        <input class="input search" id="search" type="text" placeholder="Buscar...">
+    </div><br>
+    <div class="col-md-12">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Fecha de entrega</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr class="orderData">
+                    <td class="clientName">{{ order.client.firstName }}</td>
+                    <td class="deliveryDate">{{ order.deliveryDate|date('d/m/Y') }}</td>
+                    <td>
+                        <a href="{{ path('order_details', {'id': order.id}) }}" class="btn btn-primary">Detalles</a>
+                        <a href="{{ path('finish_order', {'id': order.id}) }}" class="btn btn-success">Marcar como finalizado</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
-    <div class="col-md-12 clientOrderList"><br>
-        {% for order in orders %}
-            <a href="{{ path('order_details', {'id': order.id}) }}">
-                <div>
-                    Encargo de {{ order.client.firstName }} (Fecha de entrega: {{ order.deliveryDate|date('d/m/Y') }}) <a href="{{ path('finish_order', {'id': order.id}) }}" class="btn btn-success">Marcar como finalizado</a>
-                </div>
-            </a>
-
-        {% endfor %}
-    </div>
+{% endblock %}
+{% block headjs %}
+    {{ parent() }}
+    <script>
+        $('#search').on('keyup', function (e) {
+            $('.orderData').each(function () {
+                if( !$(this).find('.clientName').text().toLowerCase().includes( $('#search').val().toLowerCase()) &&
+                    !$(this).find('.deliveryDate').text().toLowerCase().includes( $('#search').val().toLowerCase())
+                )
+                    $(this).css('display', 'none');
+                else
+                    $(this).css('display', '');
+            })
+        })
+    </script>
 {% endblock %}
