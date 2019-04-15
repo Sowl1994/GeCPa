@@ -30,7 +30,7 @@ class ClientController extends AbstractController
         if (in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
             $clients = $repository->findAll();
         }else{
-            $clients = $repository->findBy(['user' => $this->getUser()->getId()]);
+            $clients = $repository->getMyClients($this->getUser()->getId());
         }
 
         return $this->render('client/index.html.twig', [
@@ -257,5 +257,22 @@ class ClientController extends AbstractController
                 'clients' => $myClients,
             ]);
         }
+    }
+
+    /**
+     * @Route("/editDO/{id}", name="edit_delivery_order")
+     */
+    public function edit_delivery_order($id, EntityManagerInterface $entityManager, Request $request){
+        $client = $entityManager->getRepository(Client::class)->findOneBy(['id'=>$id]);
+        $del_order = $request->request->get('order');
+        if ($del_order != "")
+            $client->setDeliveryOrder($del_order);
+        else
+            $client->setDeliveryOrder(null);
+        $entityManager->persist($client);
+        $entityManager->flush();
+        //Creamos mensaje para notificar de que se editó bien el cliente
+        $this->addFlash('success', 'Orden cambiado correctamente');
+        return $this->redirectToRoute('clients');
     }
 }

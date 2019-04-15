@@ -90,6 +90,11 @@ class Client
      */
     private $orders;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $delivery_order;
+
     public function __construct()
     {
         $this->debts = new ArrayCollection();
@@ -311,6 +316,18 @@ class Client
                 $order->setClient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDeliveryOrder(): ?int
+    {
+        return $this->delivery_order;
+    }
+
+    public function setDeliveryOrder(?int $delivery_order): self
+    {
+        $this->delivery_order = $delivery_order;
 
         return $this;
     }

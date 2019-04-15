@@ -29,7 +29,7 @@ class ClientRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->andWhere('c.user = :val')
             ->setParameter('val', $idWorker)
-            ->orderBy('c.id', 'ASC')
+            ->orderBy('c.delivery_order', 'ASC')
             ->getQuery()
             ->getResult()
         ;
