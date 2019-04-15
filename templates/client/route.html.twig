@@ -19,7 +19,7 @@
 
             var map = L.map('map').setView([{{ client.latitude }}, {{ client.longitude }}], 16);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 25,
+                maxZoom: 19,
                 minZoom: 10,
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
@@ -27,6 +27,14 @@
             function setRoute(lat,lng){
                 L.Routing.control({
                     router: new L.Routing.GraphHopper(config.GH_KEY),
+                    createMarker: function(waypointIndex, waypoint, numberOfWaypoints) {
+                        if(waypointIndex == 0)
+                            return  L.marker(waypoint.latLng)
+                            .bindPopup('Posición actual');
+                        else
+                            return L.marker(waypoint.latLng)
+                            .bindPopup("{{ client.firstName }} {{ client.lastName }}");
+                    },
                     waypoints: [
                         L.latLng(lat,lng),
                         L.latLng({{ client.latitude }}, {{ client.longitude }})
