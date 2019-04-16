@@ -79,9 +79,22 @@ class ClientController extends AbstractController
             $client = $form->getData();
             $client->setActive(true);
 
-            //Si el usuario no es admin, le asignamos su id al cliente que está creando
-            if (!$this->getUser()->isAdmin())  $client->setUser($this->getUser());
-            
+            //Si el usuario no es admin, le asignamos su id al cliente que está creando,
+            // asi como sacamos la ultima posicion en el orden de reparto
+            if (!$this->getUser()->isAdmin()){
+                $client->setUser($this->getUser());
+                $getClientLastPosition = $entityManager->getRepository(Client::class)->getLastClient($this->getUser()->getId());
+            }else
+                $getClientLastPosition = $entityManager->getRepository(Client::class)->getLastClient($client->getUser()->getId());
+
+            //Si no tiene clientes, le asignamos el valor 1, si no, le asignamos el valor de la ultima posición
+            if(empty($getClientLastPosition))
+                $client->setDeliveryOrder(1);
+            else
+                $client->setDeliveryOrder($getClientLastPosition[0]->getDeliveryOrder()+1);
+
+
+
             /**
              * Funcionalidad de subir imágenes de perfil
              */
@@ -302,19 +315,19 @@ class ClientController extends AbstractController
                     }
                 }
                 else{
-                    //Creamos mensaje para notificar de que se editó bien el cliente
+                    //Alerta
                     $this->addFlash('warning', 'Error: la posicion a intercambiar estaba fuera del rango (1-'.count($client_DO).')');
                     return $this->redirectToRoute('clients');
                 }
             }
         }
         else{
-            //Creamos mensaje para notificar de que se editó bien el cliente
+            //Alerta
             $this->addFlash('warning', 'Error: debe establecer una posicion a intercambiar dentro del siguiente rango (1-'.count($client_DO).')');
             return $this->redirectToRoute('clients');
         }
 
-        //Creamos mensaje para notificar de que se editó bien el cliente
+        //Finalización correcta
         $this->addFlash('success', 'Orden cambiado correctamente');
         return $this->redirectToRoute('clients');
     }

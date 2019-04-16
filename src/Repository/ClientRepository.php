@@ -61,6 +61,17 @@ class ClientRepository extends ServiceEntityRepository
             ;
     }
 
+    public function getLastClient($idWorker){
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.user = :val')
+            ->setParameter('val', $idWorker)
+            ->orderBy('c.delivery_order', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Client
