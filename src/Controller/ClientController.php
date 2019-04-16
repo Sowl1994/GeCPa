@@ -300,18 +300,20 @@ class ClientController extends AbstractController
                             $client = $client_aux;
                         }
                     }
-                }else{
+                }
+                /*else{
                     $client->setDeliveryOrder($del_order);
                     $entityManager->persist($client);
                     $entityManager->flush();
-                }
+                }*/
             }
-        }else{
+        }
+        /*else{
             $client->setDeliveryOrder(null);
             $entityManager->persist($client);
             $entityManager->flush();
 
-        }
+        }*/
 
         //Creamos mensaje para notificar de que se editó bien el cliente
         $this->addFlash('success', 'Orden cambiado correctamente');
