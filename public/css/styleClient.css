@@ -32,6 +32,10 @@
     text-overflow: ellipsis;
     width: 17vw;
 }
+.disabled{
+    background-color: rgba(255, 31, 41, 0.7);
+}
+
 /*Detalles*/
 .clientDetails{display: inline-flex;}
 .clientImageDetailContainer{

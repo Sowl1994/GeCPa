@@ -35,6 +35,18 @@ class ClientRepository extends ServiceEntityRepository
         ;
     }
 
+    public function getMyActiveClients($idWorker)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.active = 1')
+            ->andWhere('c.user = :val')
+            ->setParameter('val', $idWorker)
+            ->orderBy('c.delivery_order', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function getNextClient($idWorker, $pos){
         return $this->createQueryBuilder('c')
             ->andWhere('c.user = :val')

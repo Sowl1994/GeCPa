@@ -9,13 +9,18 @@
 {% block content %}
     <div class="col-md-12"><h1>Productos</h1></div>
     <div class="col-md-12 productOptions">
+        {%  if app.request.get('all') %}
+            <a href="{{ path('products') }}"><input type="button" class="btn btn-primary" value="Ver los productos activos"></a>
+        {% else %}
+            <a href="{{ path('products') }}?all=true"><input type="button" class="btn btn-primary" value="Ver todos los productos"></a>
+        {% endif %}
         <a href="{{ path('product_new') }}"><input type="button" class="btn btn-success" value="Añadir producto"></a>
         <input class="input search" id="search" type="text" placeholder="Buscar...">
 
     </div>
     <div class="col-md-12 productList"><br>
         {% for product in products %}
-            <div class="productContainer col-md-3">
+            <div class="productContainer col-md-3 {% if not product.active %} disabled {% endif %}">
                 <a href="#{#{{ path('product_detail', {'id': product.id}) }}#}">
                     <div class="productImageContainer"><img class="productImage"  src="{{ asset('./uploads/products/'~product.image) }}"></div><br>
                     <div class="productName"> {{ product.name }}</div>

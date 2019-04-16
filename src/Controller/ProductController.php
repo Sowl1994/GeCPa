@@ -16,11 +16,14 @@ class ProductController extends AbstractController
     /**
      * @Route("/products", name="products")
      */
-    public function index(EntityManagerInterface $entityManager)
+    public function index(EntityManagerInterface $entityManager, Request $request)
     {
         $repository = $entityManager->getRepository(Product::class);
-        $products = $repository->findAll();
-
+        if($request->get('all')){
+            $products = $repository->findAll();
+        }else{
+            $products = $repository->findBy(['active'=>1]);
+        }
 
         return $this->render('product/index.html.twig', [
             'products' => $products,

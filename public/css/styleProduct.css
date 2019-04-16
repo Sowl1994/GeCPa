@@ -30,6 +30,10 @@
     width: 8vw;
 }
 
+.disabled{
+    background-color: rgba(255, 31, 41, 0.7);
+}
+
 @media only screen and (max-width: 760px) {
     .productEdit>a,.productActivation>a{
         width: 35vw;

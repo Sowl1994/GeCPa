@@ -21,16 +21,24 @@ class ClientController extends AbstractController
     /**
      * @Route("/clients", name="clients")
      */
-    public function index(EntityManagerInterface $entityManager)
+    public function index(EntityManagerInterface $entityManager, Request $request)
     {
         $repository = $entityManager->getRepository(Client::class);
         /**
          * Si somos el administrador, obtenemos todos los clientes; si somos trabajador solo obtenemos nuestros clientes
          */
         if (in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
-            $clients = $repository->findAll();
+            if($request->get('all')){
+                $clients = $repository->findAll();
+            }else{
+                $clients = $repository->findBy(['active'=>1]);
+            }
         }else{
-            $clients = $repository->getMyClients($this->getUser()->getId());
+            if($request->get('all')){
+                $clients = $repository->getMyClients($this->getUser()->getId());
+            }else{
+                $clients = $repository->getMyActiveClients($this->getUser()->getId());
+            }
         }
 
         return $this->render('client/index.html.twig', [
@@ -263,7 +271,7 @@ class ClientController extends AbstractController
      */
     public function get_my_route(EntityManagerInterface $entityManager){
         if(!$this->getUser()->isAdmin()){
-            $myClients = $entityManager->getRepository(Client::class)->getMyClients($this->getUser()->getId());
+            $myClients = $entityManager->getRepository(Client::class)->getMyActiveClients($this->getUser()->getId());
 
 
             return $this->render('worker/myRoute.html.twig',[

@@ -9,13 +9,18 @@
 {% block content %}
     <div class="col-md-12"><h1>Clientes</h1></div>
     <div class="col-md-12 clientOptions">
+        {%  if app.request.get('all') %}
+            <a href="{{ path('clients') }}"><input type="button" class="btn btn-primary" value="Ver los clientes activos"></a>
+        {% else %}
+            <a href="{{ path('clients') }}?all=true"><input type="button" class="btn btn-primary" value="Ver todos los clientes"></a>
+        {% endif %}
         <a href="{{ path('client_new') }}"><input type="button" class="btn btn-success" value="Añadir cliente"></a>
         <input class="input search" id="search" type="text" placeholder="Buscar...">
 
     </div>
     <div class="col-md-12 clientList"><br>
         {% for client in clients %}
-            <div class="clientContainer col-md-3">
+            <div class="clientContainer col-md-3 {% if not client.active %} disabled {% endif %}">
                 <a href="{{ path('client_detail', {'id': client.id}) }}">
                     <div class="clientImageContainer"><img class="clientImage" {% if client.avatar is null %}  src="{{ asset('images/avatar.png') }}" {% else %} src="{{ asset('./uploads/client_avatar/'~client.avatar) }}" {% endif %}  > {# {{ client.avatar }} #}</div><br>
                     <div class="clientName"> {{ client.firstName }} {{ client.lastName }} {% if client.alias is not null %} "{{ client.alias }}" {% endif %}</div>
