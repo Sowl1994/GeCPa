@@ -52,7 +52,7 @@ class DebtRepository extends ServiceEntityRepository
             ->andWhere('d.paymentDate IS NULL')
             ->andWhere('u.id = :id')
             ->setParameter('id', $idWorker)
-            ->orderBy('d.client', 'ASC')
+            ->orderBy('c.delivery_order', 'ASC')
             ->getQuery()
             ->getResult()
         ;

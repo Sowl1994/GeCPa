@@ -27,12 +27,16 @@ class DebtController extends AbstractController
         //El admin verá todos los clientes, mientras que los usuarios normales solo verán a susu clientes asignados
         if($this->getUser()->isAdmin()){
             $clients_debts = $debtRepository->getClientsWithDebt();
+            $firstClient = "";
         }else{
             $clients_debts = $debtRepository->getMyClientsWithDebt($this->getUser()->getId());
+            $firstClient = $entityManager->getRepository(Client::class)->getMyClients($this->getUser()->getId());
+            //dd($firstClient[0]);
         }
 
         return $this->render('debt/index.html.twig', [
             'clients_debts' => $clients_debts,
+            'first_client' => $firstClient,
         ]);
     }
 
@@ -48,10 +52,15 @@ class DebtController extends AbstractController
         $products = $productR->findBy(['active' => true]);
         //Obtenemos los datos del cliente al que vamos a modificar su deuda
         //El administrador podrá obtener los datos de cualquier cliente, mientras que un trabajador solo podrá obtenerlo de sus propios clientes
+        //Además, los trabajadores tendrán la posibilidad de cambiar de cliente rápidamente para continuar con la facturación
         if ($this->getUser()->isAdmin()){
             $client = $clientR->findOneBy(['id' => $id]);
+            $nextClient = "";
+            $prevClient = "";
         }else{
             $client = $clientR->findOneBy(['id' => $id, 'user' => $this->getUser()->getId()]);
+            $nextClient = $clientR->getNextClient($this->getUser()->getId(), $client->getDeliveryOrder());
+            $prevClient = $clientR->getPrevClient($this->getUser()->getId(), $client->getDeliveryOrder());
         }
 
         /**
@@ -66,6 +75,8 @@ class DebtController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $data = $request->request->get("debt_form");
+            $next_submit = $request->request->get('nextSubmit');
+
             //Formateamos la fecha de forma adecuada
             $purDate = $data['purchaseDate']['year']."-".$data['purchaseDate']['month']."-".$data['purchaseDate']['day'];
             //Obtenemos las cantidades de los productos
@@ -88,16 +99,25 @@ class DebtController extends AbstractController
                     $entityManager->flush();
                 }
             }
+
             //Mensaje de éxito
             $this->addFlash('success', "Productos añadidos al cliente correctamente");
-            //Volvemos a la zona de facturación
-            return $this->redirectToRoute("debt");
+            if($next_submit == true){
+                //Pasamos al siguiente cliente
+                return $this->redirectToRoute("add_product", ['id' => $nextClient[0]->getId()]);
+            }else{
+                //Volvemos a la zona de facturación
+                return $this->redirectToRoute("debt");
+            }
+
         }
 
         return $this->render('debt/addProduct.html.twig',[
             'addPForm' => $form->createView(),
             'products' => $products,
             'client' => $client,
+            'next_client' => $nextClient,
+            'prev_client' => $prevClient,
         ]);
     }
 

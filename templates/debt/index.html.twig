@@ -9,8 +9,12 @@
 {% block content %}
     <div class="col-md-12"><h1>Gestionar clientes con deuda</h1></div>
     <div class="col-md-12">
+        {#El administrador no debe realizar el proceso de facturación de todos los clientes,
+         solo debería hacer algún ajuste si fuera necesario#}
+        {% if not is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('add_product', {'id': first_client[0].id}) }}" class="btn btn-success">Comenzar facturación</a>
+        {% endif %}
         <input class="input search" type="text" placeholder="Buscar...">
-
     </div>
     <div class="col-md-12 clientDebtsList"><br>
         {% for client in clients_debts %}

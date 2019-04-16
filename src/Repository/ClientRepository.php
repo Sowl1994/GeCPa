@@ -35,6 +35,32 @@ class ClientRepository extends ServiceEntityRepository
         ;
     }
 
+    public function getNextClient($idWorker, $pos){
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.user = :val')
+            ->andWhere('c.delivery_order > :pos')
+            ->setParameter('val', $idWorker)
+            ->setParameter('pos', $pos)
+            ->orderBy('c.delivery_order', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getPrevClient($idWorker, $pos){
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.user = :val')
+            ->andWhere('c.delivery_order < :pos')
+            ->setParameter('val', $idWorker)
+            ->setParameter('pos', $pos)
+            ->orderBy('c.delivery_order', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Client
