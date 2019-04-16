@@ -264,13 +264,55 @@ class ClientController extends AbstractController
      */
     public function edit_delivery_order($id, EntityManagerInterface $entityManager, Request $request){
         $client = $entityManager->getRepository(Client::class)->findOneBy(['id'=>$id]);
+        $client_DO = $entityManager->getRepository(Client::class)->getMyClients($this->getUser()->getId());
+        //dd($client_DO);
         $del_order = $request->request->get('order');
-        if ($del_order != "")
-            $client->setDeliveryOrder($del_order);
-        else
+        //Si hemos introducido un numero y no hemos dejado el espacio en blanco
+        if ($del_order != ""){
+            //Si el numero no es igual que el numero de orden que posee el cliente actualmente
+            if($del_order != $client->getDeliveryOrder()){
+                //Datos del cliente en la posición a ocupar
+                $position = $entityManager->getRepository(Client::class)->findOneBy(['delivery_order'=> $del_order, 'user' => $this->getUser()->getId()]);
+                //Si hay algun cliente en esa posicion
+                if($position != null){
+
+                    //Numero de la posicion que queremos asignar al cliente
+                    $i = intval($del_order);
+                    //Posicion actual del cliente a modificar el orden
+                    $end = $client->getDeliveryOrder();
+                    // Posicion de destino < posicion actual
+                    if(intval($del_order) < $client->getDeliveryOrder()){
+                        for($i; $i <= $end; $i++){
+                            $client_aux = $entityManager->getRepository(Client::class)->findOneBy(['delivery_order'=>$i, 'user' => $this->getUser()->getId()]);
+                            $client->setDeliveryOrder($i);
+                            $entityManager->persist($client);
+                            $entityManager->flush();
+                            $client = $client_aux;
+                        }
+                    }
+                    // Posicion de destino > posicion actual
+                    else{
+                        for($i; $i >= $end; $i--){
+                            $client_aux = $entityManager->getRepository(Client::class)->findOneBy(['delivery_order'=>$i, 'user' => $this->getUser()->getId()]);
+                            $client->setDeliveryOrder($i);
+                            $entityManager->persist($client);
+                            $entityManager->flush();
+                            $client = $client_aux;
+                        }
+                    }
+                }else{
+                    $client->setDeliveryOrder($del_order);
+                    $entityManager->persist($client);
+                    $entityManager->flush();
+                }
+            }
+        }else{
             $client->setDeliveryOrder(null);
-        $entityManager->persist($client);
-        $entityManager->flush();
+            $entityManager->persist($client);
+            $entityManager->flush();
+
+        }
+
         //Creamos mensaje para notificar de que se editó bien el cliente
         $this->addFlash('success', 'Orden cambiado correctamente');
         return $this->redirectToRoute('clients');

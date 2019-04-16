@@ -25,7 +25,7 @@
                     <a href="{{ path('add_product', {'id': client.id}) }}" class="btn btn-primary"> Añadir producto a deuda</a>
                     {#El administrador no puede cambiar el orden de reparto#}
                     {% if not is_granted('ROLE_ADMIN') %}
-                    <a href="#" onclick="$('#del_order{{ client.id }}').toggle()">Cambiar orden de reparto</a><br><br>
+                    <a  onclick="$('#del_order{{ client.id }}').toggle()" style="cursor: pointer;">Cambiar orden de reparto</a><br><br>
                     <div class="clientDelOrder" id="del_order{{ client.id }}" style="display: none;">
                         <form action="{{ path('edit_delivery_order', {'id': client.id}) }}" method="post">
                             <input type="number" name="order" value="{{ client.deliveryOrder }}">
