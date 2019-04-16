@@ -265,8 +265,8 @@ class ClientController extends AbstractController
     public function edit_delivery_order($id, EntityManagerInterface $entityManager, Request $request){
         $client = $entityManager->getRepository(Client::class)->findOneBy(['id'=>$id]);
         $client_DO = $entityManager->getRepository(Client::class)->getMyClients($this->getUser()->getId());
-        //dd($client_DO);
         $del_order = $request->request->get('order');
+
         //Si hemos introducido un numero y no hemos dejado el espacio en blanco
         if ($del_order != ""){
             //Si el numero no es igual que el numero de orden que posee el cliente actualmente
@@ -301,19 +301,18 @@ class ClientController extends AbstractController
                         }
                     }
                 }
-                /*else{
-                    $client->setDeliveryOrder($del_order);
-                    $entityManager->persist($client);
-                    $entityManager->flush();
-                }*/
+                else{
+                    //Creamos mensaje para notificar de que se editó bien el cliente
+                    $this->addFlash('warning', 'Error: la posicion a intercambiar estaba fuera del rango (1-'.count($client_DO).')');
+                    return $this->redirectToRoute('clients');
+                }
             }
         }
-        /*else{
-            $client->setDeliveryOrder(null);
-            $entityManager->persist($client);
-            $entityManager->flush();
-
-        }*/
+        else{
+            //Creamos mensaje para notificar de que se editó bien el cliente
+            $this->addFlash('warning', 'Error: debe establecer una posicion a intercambiar dentro del siguiente rango (1-'.count($client_DO).')');
+            return $this->redirectToRoute('clients');
+        }
 
         //Creamos mensaje para notificar de que se editó bien el cliente
         $this->addFlash('success', 'Orden cambiado correctamente');
