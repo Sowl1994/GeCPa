@@ -111,10 +111,12 @@ class OrdersController extends AbstractController
                     $entityManager->persist($orderProducts);
                 }
             }
-
-            //Guardamos los cambios
-            $entityManager->persist($order);
-            $entityManager->flush();
+            //Si el encargo tiene algún producto, lo guardamos
+            if($order->getOrderProducts()->count() > 0){
+                //Guardamos los cambios
+                $entityManager->persist($order);
+                $entityManager->flush();
+            }
 
             //Mensaje de éxito
             $this->addFlash('success', "Encargo creado correctamente");
