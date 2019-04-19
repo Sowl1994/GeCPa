@@ -22,7 +22,7 @@
             <tbody>
             {% for order in orders %}
                 <tr class="orderData">
-                    <td class="clientName">{{ order.client.firstName }}</td>
+                    <td class="clientNameOrder">{{ order.client.firstName }}</td>
                     <td class="deliveryDate">{{ order.deliveryDate|date('d/m/Y') }}</td>
                     <td>
                         <a href="{{ path('order_details', {'id': order.id}) }}" class="btn btn-primary">Detalles</a>

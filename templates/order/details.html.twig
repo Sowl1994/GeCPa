@@ -13,8 +13,8 @@
 
         <div class="clientData">
             <h3>Datos del cliente</h3>
-            <label>Nombre: </label><p>{{ order.client.firstName }} {{ order.client.lastName }} {{ order.client.alias }}</p>
-            <label>Domicilio: </label><p>{{ order.client.address }}</p>
+            <label class="bold">Nombre: </label><span> {{ order.client.firstName }} {{ order.client.lastName }} {{ order.client.alias }}</span><br>
+            <label class="bold">Domicilio: </label><span> {{ order.client.address }}</span>
         </div>
         <div style="float: right;">
             <h2>Opciones</h2>
@@ -22,34 +22,41 @@
             <a class="btn btn-success" href="{{ path('finish_order', {'id': order.id}) }}">Finalizar encargo</a>
         </div>
         <br><br>
-        <div class="dates">
-            <h3>Fechas</h3>
-            <div>
-                <label>Fecha de encargo:</label> <p>{{ order.orderDate|date('d-m-Y') }}</p>
-                <label>Fecha de entrega:</label> <p>{{ order.deliveryDate|date('d-m-Y') }}</p>
+        <div class="orderDetails">
+            <div class="dates">
+                <h3>Fechas</h3>
+                <div>
+                    <label class="bold">Fecha de encargo:</label> <span>{{ order.orderDate|date('d-m-Y') }}</span><br>
+                    <label class="bold">Fecha de entrega:</label> <span>{{ order.deliveryDate|date('d-m-Y') }}</span>
+                </div>
             </div>
-        </div>
-        <br>
-        <h3>Productos encargados</h3>
-        <div class="productData">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Producto (valor)</th>
-                        <th>Cantidad encargada</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for product in order.orderProducts %}
-                        <tr>
-                            <td>{{ product.product }}</td>
-                            <td>{{ product.quantity }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            {% if order.description is not empty %}
             <div>
-                <h2>Precio del encargo: {{ count }} €</h2>
+                <label class="bold">Descripcion: </label><span> {{ order.description }}</span>
+            </div>
+            {% endif %}
+            <br>
+            <h3>Productos encargados</h3>
+            <div class="productData">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Producto (valor)</th>
+                            <th>Cantidad encargada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in order.orderProducts %}
+                            <tr>
+                                <td>{{ product.product }}</td>
+                                <td>{{ product.quantity }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div>
+                    <h2>Precio del encargo: {{ count }} €</h2>
+                </div>
             </div>
         </div>
     </div>
