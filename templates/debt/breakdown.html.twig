@@ -1,13 +1,13 @@
 {% extends 'home/index.html.twig' %}
 
-{% block title %}Desglose{% endblock %}
+{% block title %}Histórico{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/styleDebt.css') }}">
 {% endblock %}
 
 {% block content %}
-    <div class="col-md-12"><h1>Desglose de la deuda</h1></div><br>
+    <div class="col-md-12"><h1>Histórico de la deuda</h1></div><br>
     <div class="col-md-12 clientDebtsList">
         {#{% set pdate = '2016-01-01' %}
         {% for product in products %}
@@ -30,6 +30,7 @@
                     <th>Precio</th>
                     <th>Cantidad adquirida</th>
                     <th>Fecha de compra</th>
+                    <th>Fecha de pago</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,14 +40,19 @@
                 <td>{{ product.product.price }} €</td>
                 <td>{{ product.quantity }}</td>
                 <td>{{ product.purchaseDate|date('d-m-Y') }}</td>
+                {% if product.paymentDate is not empty %}
+                    <td>{{ product.paymentDate|date('d-m-Y') }}</td>
+                {% else %}
+                    <td>No pagado</td>
+                {% endif %}
             </tr>
         {% endfor %}
             </tbody>
         </table>
 
-        <div>
+        {#<div>
             <h2> Total de la deuda: {{ count }} €</h2>
-        </div>
+        </div>#}
 
     </div>
 

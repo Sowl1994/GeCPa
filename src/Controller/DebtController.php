@@ -141,18 +141,18 @@ class DebtController extends AbstractController
         if ($client == null){
             return $this->redirectToRoute('debt');
         }else{
-            $bd = $debtRepository->getClientBreakdown($id);
+            $bd = $debtRepository->getClientCompleteDebt($id);
             //$bd = $this->breakdown_api($id, $debtRepository, $clientR);
             //$bd = json_decode($bd->getContent(),true);
             //$count = $this->calculate_debt($bd,new \DateTime('2019-04-01'),new \DateTime('2019-04-07'));
-            $count = $this->calculate_debt($bd);
+            //$count = $this->calculate_debt($bd);
 
         }
 
 
         return $this->render('debt/breakdown.html.twig',[
             'products' => $bd,
-            'count' => $count,
+            //'count' => $count,
         ]);
 
     }

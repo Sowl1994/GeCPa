@@ -19,16 +19,18 @@
     <div class="col-md-12 clientDebtsList"><br>
         {% for client in clients_debts %}
             <div class="clientContainer col-md-12">
-                <a href="{{ path('client_detail', {'id': client.id}) }}">
-                    <div class="clientImageContainer"><img class="clientImage" {% if client.avatar is null %}  src="{{ asset('images/avatar.png') }}" {% else %} src="{{ asset('./uploads/client_avatar/'~client.avatar) }}" {% endif %}  > {# {{ client.avatar }} #}</div>
-                    <div class="clientName"> {{ client.firstName }} {{ client.lastName }} {% if client.alias is not null %} "{{ client.alias }}" {% endif %}</div>
-                    <div class="clientDebtsOptions">
-                        <a class="btn btn-primary" href="{{ path('add_product', {'id': client.id}) }}">Añadir productos a la deuda</a>
-                        <a class="btn btn-primary" href="{{ path('collect_debt', {'id': client.id}) }}">Cobrar deuda</a>
-                        <a class="btn btn-primary" href="{{ path('breakdown', {'id': client.id}) }}">Desglose</a>
+                <div class="col-md-6" >
+                        <div class="clientImageContainer"><img class="clientImage" {% if client.avatar is null %}  src="{{ asset('images/avatar.png') }}" {% else %} src="{{ asset('./uploads/client_avatar/'~client.avatar) }}" {% endif %}  > {# {{ client.avatar }} #}</div>
+                    <a href="{{ path('client_detail', {'id': client.id}) }}">
+                        <div class="clientName"> {{ client.firstName }} {{ client.lastName }} {% if client.alias is not null %} "{{ client.alias }}" {% endif %}</div>
+                    </a>
+                </div>
 
-                    </div>
-                </a>
+                <div class="clientDebtsOptions col-md-6">
+                    <a class="btn btn-primary" href="{{ path('add_product', {'id': client.id}) }}">Añadir productos a la deuda</a>
+                    <a class="btn btn-primary" href="{{ path('collect_debt', {'id': client.id}) }}">Cobrar deuda</a>
+                    <a class="btn btn-primary" href="{{ path('breakdown', {'id': client.id}) }}">Histórico</a>
+                </div>
             </div>
         {% endfor %}
     </div>

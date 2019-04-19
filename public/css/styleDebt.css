@@ -1,5 +1,5 @@
 /*Opciones generales*/
-.clientName,.clientAddress,.clientImageDetailContainer,.clientData, .clientDebtsOptions{
+.clientName,.clientAddress,.clientImageDetailContainer,.clientData, .clientDebtsOptions, .clientContainer>div{
     display: inline-block;
 }
 /*Listado de clientes con deuda*/

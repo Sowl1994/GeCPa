@@ -95,6 +95,18 @@ class DebtRepository extends ServiceEntityRepository
         return $bd;
     }
 
+    public function getClientCompleteDebt($id){
+        return $this->createQueryBuilder('d')
+            ->innerJoin('d.product','p')
+            ->select('d, p')
+            ->andWhere('d.client = :id')
+            ->setParameter('id', $id)
+            ->orderBy('d.purchaseDate', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Debt
