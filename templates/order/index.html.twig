@@ -39,7 +39,7 @@
     <script>
         $('#search').on('keyup', function (e) {
             $('.orderData').each(function () {
-                if( !$(this).find('.clientName').text().toLowerCase().includes( $('#search').val().toLowerCase()) &&
+                if( !$(this).find('.clientNameOrder').text().toLowerCase().includes( $('#search').val().toLowerCase()) &&
                     !$(this).find('.deliveryDate').text().toLowerCase().includes( $('#search').val().toLowerCase())
                 )
                     $(this).css('display', 'none');
