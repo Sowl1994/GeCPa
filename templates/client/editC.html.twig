@@ -70,6 +70,8 @@
         <div class="col-sm-3 imagePreview" style="display: inline-block">
             {% if clientForm.vars.data.avatar %}
                 <img src="{{ asset('./uploads/client_avatar/'~clientForm.vars.data.avatar) }}" id="imgPreview" height="100">
+            {% else %}
+                <img src="{{ asset('./images/avatar.png') }}" id="imgPreview" height="100">
             {% endif %}
         </div>
         {% if is_granted('ROLE_ADMIN') %}{{ form_row(clientForm.user) }}{% endif %}<br>

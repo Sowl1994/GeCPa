@@ -35,7 +35,7 @@
                 L.Routing.control({
                     router: new L.Routing.GraphHopper(config.GH_KEY),
                     waypoints: [
-                        L.latLng(lat,lng),
+                        //L.latLng(lat,lng),
                         {% for client in clients %}
                         L.latLng({{ client.latitude }},{{ client.longitude }}),
                         {% endfor %}
