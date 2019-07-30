@@ -3,7 +3,7 @@
 {% block content %}
     <script type='text/javascript' src='{{ asset('js/config.js') }}'></script>
     <div class="col-md-12">
-        <div><h1>Cobrar deuda a {{ client.firstName }} {{ client.lastName }}</h1></div>
+        <div><h1>Cobrar deuda a <a href="{{ path('client_detail', {'id': client.id}) }}">{{ client.firstName }} {{ client.lastName }}</a></h1></div>
         {{ form_start(cDebtForm, {'attr': {'onsubmit': 'return confirm("¿Está todo correcto?")'}}) }}
         {{ form_row(cDebtForm.paymentDate) }}
         <h2>Desglose</h2><span><a href="#" onclick="$('.newDates').show();">Cambiar fechas</a></span>
