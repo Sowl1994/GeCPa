@@ -21,22 +21,21 @@ class DebtController extends AbstractController
      */
     public function index(EntityManagerInterface $entityManager)
     {
-        //Obtenemos los id de los clientes que tengan alguna deuda pendiente (administrador)
-        $debtRepository = $entityManager->getRepository(Debt::class);
-
-        //El admin verá todos los clientes, mientras que los usuarios normales solo verán a susu clientes asignados
+        //El admin verá todos los clientes que tengan alguna deuda, mientras que los trabajadores solo verán a susu clientes asignados
         if($this->getUser()->isAdmin()){
+            $debtRepository = $entityManager->getRepository(Debt::class);
             $clients_debts = $debtRepository->getClientsWithDebt();
             $firstClient = "";
         }else{
-            $clients_debts = $debtRepository->getMyClientsWithDebt($this->getUser()->getId());
+            $debtRepository = $entityManager->getRepository(Client::class);
+            $clients_debts = $debtRepository->getMyClients($this->getUser()->getId());
             $firstClient = $entityManager->getRepository(Client::class)->getMyClients($this->getUser()->getId());
             //dd($firstClient[0]);
         }
 
         return $this->render('debt/index.html.twig', [
             'clients_debts' => $clients_debts,
-            'first_client' => $firstClient,
+            //'first_client' => $firstClient,
         ]);
     }
 
