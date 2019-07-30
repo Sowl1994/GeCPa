@@ -51,6 +51,7 @@ class ClientRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->andWhere('c.user = :val')
             ->andWhere('c.delivery_order > :pos')
+            ->andWhere('c.active = 1')
             ->setParameter('val', $idWorker)
             ->setParameter('pos', $pos)
             ->orderBy('c.delivery_order', 'ASC')
@@ -64,6 +65,7 @@ class ClientRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->andWhere('c.user = :val')
             ->andWhere('c.delivery_order < :pos')
+            ->andWhere('c.active = 1')
             ->setParameter('val', $idWorker)
             ->setParameter('pos', $pos)
             ->orderBy('c.delivery_order', 'DESC')
@@ -76,6 +78,7 @@ class ClientRepository extends ServiceEntityRepository
     public function getLastClient($idWorker){
         return $this->createQueryBuilder('c')
             ->andWhere('c.user = :val')
+            ->andWhere('c.active = 1')
             ->setParameter('val', $idWorker)
             ->orderBy('c.delivery_order', 'DESC')
             ->setMaxResults(1)

@@ -29,13 +29,13 @@ class DebtController extends AbstractController
         }else{
             $debtRepository = $entityManager->getRepository(Client::class);
             $clients_debts = $debtRepository->getMyClients($this->getUser()->getId());
-            $firstClient = $entityManager->getRepository(Client::class)->getMyClients($this->getUser()->getId());
+            $firstClient = $entityManager->getRepository(Client::class)->getMyActiveClients($this->getUser()->getId());
             //dd($firstClient[0]);
         }
 
         return $this->render('debt/index.html.twig', [
             'clients_debts' => $clients_debts,
-            //'first_client' => $firstClient,
+            'first_client' => $firstClient,
         ]);
     }
 
@@ -63,9 +63,9 @@ class DebtController extends AbstractController
         }
 
         /**
-         * Si el cliente no es nuestro, nos mandará de vuelta a la zona de facturación
+         * Si el cliente no es nuestro o no está activo, nos mandará de vuelta a la zona de facturación
          */
-        if ($client == null){
+        if ($client == null || $client->getActive() == 0){
             return $this->redirectToRoute('debt');
         }
 

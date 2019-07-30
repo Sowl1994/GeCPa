@@ -12,8 +12,8 @@
         {#El administrador no debe realizar el proceso de facturación de todos los clientes,
          solo debería hacer algún ajuste si fuera necesario#}
         {% if not is_granted('ROLE_ADMIN') %}
-            {#Este enlace dirige al primer cliente del trabajador en orden de reparto#}
-            <a href="{{ path('add_product', {'id': clients_debts[0].id}) }}" class="btn btn-success">Comenzar facturación</a>
+            {#Este enlace dirige al primer cliente ativo del trabajador en orden de reparto#}
+            <a href="{{ path('add_product', {'id': first_client[0].id}) }}" class="btn btn-success">Comenzar facturación</a>
         {% endif %}
         <!--<input class="input search" type="text" placeholder="Buscar...">-->
     </div>
