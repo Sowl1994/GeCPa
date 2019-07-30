@@ -151,6 +151,7 @@ class DebtController extends AbstractController
 
         return $this->render('debt/breakdown.html.twig',[
             'products' => $bd,
+            'client' => $client,
             //'count' => $count,
         ]);
 
