@@ -72,8 +72,9 @@ class OrdersController extends AbstractController
         $clientR = $entityManager->getRepository(Client::class);
         $myClients = $clientR->findAll();
 
+        /*Si no somos administradores, cogemos solamente nuestros clientes activos*/
         if (!$this->getUser()->isAdmin()){
-            $myClients = $clientR->findBy(['user' => $this->getUser()->getId()]);
+            $myClients = $clientR->getMyActiveClients($this->getUser()->getId());//findBy(['user' => $this->getUser()->getId()]);
         }
 
         //Solo cogemos los productos que están activos

@@ -19,15 +19,17 @@
         <div class="productContainer">
             {% for product in products %}
                 <div class="productItem" id="{{ product.id }}">
-                    <div class="productName col-md-12"> {{ product }}</div><br>
-                    <div class="productQuantity col-md-1">
-                        <input type="number" name="order_form[quantity][{{ product.id }}]">
+                    <div class="productName col-md-12"> <img src="{{ asset('./uploads/products/'~product.image) }}" width="200" height="150"><br>{{ product }} </div><br>
+                    <div class="productQuantity col-md-12">
+                        <input class="form-control" type="number" name="order_form[quantity][{{ product.id }}]">
                     </div>
                 </div>
             {% endfor %}
         </div>
+        <br>
         {{ form_row(addOrderForm.description) }}
-        <br><button type="submit" class="btn btn-primary">Añadir producto/s</button>
+        <br><button type="submit" class="btn btn-primary">Crear encargo</button>
         {{ form_end(addOrderForm) }}
+        <br>
     </div>
 {% endblock %}
