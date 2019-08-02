@@ -47,8 +47,9 @@
         <div class="col-sm-3 imagePreview" style="display: inline-block">
             <img src="" id="imgPreview" height="100">
         </div>
-        {% if is_granted('ROLE_ADMIN') %}{{ form_row(clientForm.user) }}{% endif %}
-        <button type="submit" class="btn btn-primary">Crear</button>
+        {% if is_granted('ROLE_ADMIN') %}{{ form_row(clientForm.user) }}{% else %} <br>{% endif %}
+
+        <button type="submit" class="btn btn-primary">Crear</button> <br><br>
         {{ form_end(clientForm) }}
     </div>
 
