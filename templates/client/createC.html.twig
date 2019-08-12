@@ -14,18 +14,6 @@
         <input type="button" class="btn btn-primary" value="Mostrar" onclick="showMap()"><br><br>
         <div class="" id="map" style="height: 250px;"></div>
         <script>
-            /*var script = document.createElement("script");
-            script.setAttribute("src","https://maps.googleapis.com/maps/api/js?key="+config.GMAPS_KEY+"&callback=initMap");
-            document.getElementsByTagName("body")[0].appendChild(script);
-            var map;
-            var marker;
-            function initMap() {
-                map = new google.maps.Map(document.getElementById('map'), {
-                    center: {lat: -34.397, lng: 150.644},
-                    zoom: 16
-                });
-                marker = new google.maps.Marker({position:{lat:-34.397, lng:150.644},map:map});
-            }*/
             var map = L.map('map').setView([ -34.397 , 150.644], 16);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 25,
@@ -61,7 +49,6 @@
 
             $.getJSON(addressURL, function(data) {
                 //Quitamos el anterior marcador
-                // marker.setMap(null);
                 map.removeLayer(marker);
 
                 //Obtenemos coordenadas y las trasladamos al mapa, el cual hacemos visible
@@ -74,10 +61,8 @@
                 $("#client_form_longitude").val(lng);
 
                 //Centramos el mapa en las coordenadas obtenidas y situamos un marcador
-                //map.setCenter({lat:lat, lng:lng});
                 map.panTo([lat,lng], 16);
 
-                //marker = new google.maps.Marker({position:{lat:lat, lng:lng},map:map,draggable:true});
                 marker = L.marker([lat,lng], {draggable: true}).addTo(map);
 
                 //Permitimos el movimiento del marker, cambiando las coordenadas al soltarlo
@@ -89,13 +74,6 @@
                     $("#client_form_latitude").val(lat);
                     $("#client_form_longitude").val(lng);
                 })
-                /*marker.addListener('dragend', function() {
-                    lat = marker.getPosition().lat();
-                    lng = marker.getPosition().lng();
-                    //Guardamos las variables en sus respectivos inputs
-                    $("#client_form_latitude").val(lat);
-                    $("#client_form_longitude").val(lng);
-                });*/
             });
         }
     </script>

@@ -35,23 +35,13 @@
                 L.Routing.control({
                     router: new L.Routing.GraphHopper(config.GH_KEY),
                     waypoints: [
-                        //L.latLng(lat,lng),
                         {% for client in clients %}
                         L.latLng({{ client.latitude }},{{ client.longitude }}),
                         {% endfor %}
                     ],
                     createMarker: function(waypointIndex, waypoint, numberOfWaypoints) {
-                        //El primer marcador tendrá un popup en el que indicará que es la posición de inicio, el resto de marcadores
-                        //tendrán los nombres de los clientes
-                        if(waypointIndex == 0){
-                            return  L.marker(waypoint.latLng)
-                                .bindPopup('Posición actual');
-                        }
-                        else{
-                            return  L.marker(waypoint.latLng)
-                                .bindPopup(clientsName[waypointIndex-1]);
-                        }
-
+                        return  L.marker(waypoint.latLng)
+                            .bindPopup(clientsName[waypointIndex]);
                     },
 
                 }).addTo(map);
