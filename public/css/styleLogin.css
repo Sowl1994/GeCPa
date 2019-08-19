@@ -1,5 +1,7 @@
 body {
-    background-color: #fff;
+    overflow-x: hidden;
+    background-image: url("../images/texture2.jpg");
+    background-size: cover;
 }
 .form-signin {
     width: 100%;
@@ -7,6 +9,11 @@ body {
     padding: 15px;
     margin: auto;
     margin-top: 50px;
+    background-color: #fff;
+    border-radius: 10px;
+    -webkit-box-shadow: 4px 10px 7px 0px rgba(0,0,0,0.27);
+    -moz-box-shadow: 4px 10px 7px 0px rgba(0,0,0,0.27);
+    box-shadow: 4px 10px 7px 0px rgba(0,0,0,0.27);
 }
 .form-signin .checkbox {
     font-weight: 400;

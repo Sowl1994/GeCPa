@@ -1,6 +1,7 @@
 /*General settings*/
 body{
-    overflow-x: hidden;}
+    overflow-x: hidden;
+}
 .global-container{padding: 0;}
 .section-title{text-align: center; padding: 10px;}
 

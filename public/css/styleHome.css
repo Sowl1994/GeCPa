@@ -60,8 +60,8 @@ body{
 .dataHome{
     display: inline-block;
 }
-.personalArea{
-    border-left: 1px solid black;
+.commissionArea{
+    border-right: 1px solid black;
 }
 .avatarHome{
     width: 200px;

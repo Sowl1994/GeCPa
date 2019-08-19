@@ -1,9 +1,10 @@
 <div class="col-md-12">
     <h1 class="welcomeTitle center">Bienvenido {{ worker.firstName }}</h1>
+    {% if not is_granted('ROLE_ADMIN') %}
     <div class="commissionArea col-md-5">
         <h2 class="center" >Encargos</h2>
 
-        {% if not is_granted('ROLE_ADMIN') %}
+
         <h2>Para hoy tienes <span>{{ nOrders }}</span> encargo/s pendientes </h2>
             {% if nOrders > 0 %}
                 <ul>
@@ -21,9 +22,9 @@
                 <h2>Y para mañana tienes <span>{{ nOrdersTomorrow }}</span> encargos pendientes </h2>
             {% endif %}
             <a href="{{ path('orders') }}" class="btn btn-primary"> Ver más</a>
-        {% endif %}
     </div>
-    <div class="personalArea col-md-6">
+    {% endif %}
+    <div class="personalArea {% if not is_granted('ROLE_ADMIN') %}col-md-6 {% else %}col-md-12{% endif %}">
         <h2 class="center" >Área personal</h2>
         <div class="avatarContainerHome col-md-5">
             <img class="avatarHome" {% if worker.avatar is null  %} src="{{ asset('images/avatarW.png') }}"{% else %} src="{{ asset('./uploads/worker_avatar/'~worker.avatar) }}" {% endif %}>

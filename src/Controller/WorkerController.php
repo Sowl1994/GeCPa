@@ -42,20 +42,21 @@ class WorkerController extends AbstractController
      * Muestra en detalle al trabajador por el id pasado por parametro
      */
     public function worker_detail($id, EntityManagerInterface $entityManager){
-        $repository = $entityManager->getRepository(User::class);
-        $worker = $repository->findOneBy(['id' => $id]);
+        /*$repository = $entityManager->getRepository(User::class);
+        $worker = $repository->findOneBy(['id' => $id]);*/
 
         /**
          * Si no existe el trabajador o es otro admin, nos mandará de vuelta a la zona de trabajadores
          */
-        if ($worker == null || in_array('ROLE_ADMIN',$worker->getRoles())){
+        /*if ($worker == null || in_array('ROLE_ADMIN',$worker->getRoles())){
             return new RedirectResponse("/workers");
         }
 
         return $this->render('worker/detail.html.twig', [
             'id' => $id,
             'worker' => $worker,
-        ]);
+        ]);*/
+        return $this->redirectToRoute('workers');
     }
 
     /**
