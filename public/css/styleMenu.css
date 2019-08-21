@@ -36,6 +36,12 @@
 .appMenu.active .navbar-toggler, .appMenu .contract {
     display: block;
 }
+.appMenu.active .navbar-toggler {
+    background-color: rgba(255, 255, 255, 0.6);
+    border: 2px solid #7a756e;
+    margin-top: 1vh;
+    margin-left: 1vw;
+}
 .contractM{
     display: none;
 }
@@ -51,6 +57,9 @@
     }
     .appMenu .wrapper{
         position: fixed;
+    }
+    .menuHeader{
+        margin-left: 1vw;
     }
 }
 

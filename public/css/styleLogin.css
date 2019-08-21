@@ -1,6 +1,6 @@
 body {
     overflow-x: hidden;
-    background-image: url("../images/texture2.jpg");
+    background-image: url("../images/loginbkg.jpg");
     background-size: cover;
 }
 .form-signin {
@@ -37,4 +37,7 @@ body {
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+.loginButton{
+    width: 100%;
 }

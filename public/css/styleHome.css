@@ -1,7 +1,8 @@
 /*Ajustes generales*/
 body{
     overflow-x: hidden;
-    background-image: url("../images/texture2.jpg");
+    /*background-image: url("../images/texture2.jpg");*/
+    background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("../images/homebkg.jpg");
     background-size: cover;
 }
 .bold{font-weight: bold;}
