@@ -65,5 +65,5 @@ body{
     border-right: 1px solid black;
 }
 .avatarHome{
-    width: 200px;
+    width: 200px; height: 35vh;
 }
