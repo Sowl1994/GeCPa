@@ -19,11 +19,10 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
-    // /**
-    //  * @return Client[] Returns an array of Client objects
-    //  * Devuelve todos los clientes de un trabajador
-    //  */
-
+     /**
+      * @return Client[] Devuelve un array de objetos Client
+      * Devuelve todos los clientes de un trabajador, ordenados por orden de reparto
+      */
     public function getMyClients($idWorker)
     {
         return $this->createQueryBuilder('c')
@@ -35,6 +34,10 @@ class ClientRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return Client[] Devuelve un array de objetos Client
+     * Devuelve todos los clientes activos de un trabajador, ordenados por orden de reparto
+     */
     public function getMyActiveClients($idWorker)
     {
         return $this->createQueryBuilder('c')
@@ -47,6 +50,10 @@ class ClientRepository extends ServiceEntityRepository
             ;
     }
 
+    /**
+     * @return Client Devuelve un objeto Client
+     * Devuelve el cliente siguiente a la posición $pos según el orden de reparto
+     */
     public function getNextClient($idWorker, $pos){
         return $this->createQueryBuilder('c')
             ->andWhere('c.user = :val')
@@ -61,6 +68,10 @@ class ClientRepository extends ServiceEntityRepository
             ;
     }
 
+    /**
+     * @return Client Devuelve un objeto Client
+     * Devuelve el cliente anterior a la posición $pos según el orden de reparto
+     */
     public function getPrevClient($idWorker, $pos){
         return $this->createQueryBuilder('c')
             ->andWhere('c.user = :val')
@@ -75,6 +86,10 @@ class ClientRepository extends ServiceEntityRepository
             ;
     }
 
+    /**
+     * @return Client Devuelve un objeto Client
+     * Devuelve el último cliente según el orden de reparto
+     */
     public function getLastClient($idWorker){
         return $this->createQueryBuilder('c')
             ->andWhere('c.user = :val')
@@ -86,17 +101,4 @@ class ClientRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-
-
-    /*
-    public function findOneBySomeField($value): ?Client
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

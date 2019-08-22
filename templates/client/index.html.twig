@@ -46,6 +46,7 @@
 {% endblock %}
 {% block headjs %}
     {{ parent() }}
+    {# Filtros #}
     <script>
         $('#search').on('keyup', function (e) {
             $('.clientContainer').each(function () {

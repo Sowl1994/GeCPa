@@ -12,11 +12,13 @@
         {{ form_row(clientForm.latitude) }}
         {{ form_row(clientForm.longitude) }}
         <input type="button" class="btn btn-primary" value="Mostrar" onclick="showMap()"><br><br>
+        {# Mapa para el geocoding #}
         <div class="" id="map" style="height: 250px;"></div>
         <script>
             var map = L.map('map').setView([ -34.397 , 150.644], 16);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 25,
+                maxZoom: 19,
+                minZoom: 10,
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
             var marker = L.marker([-34.397,150.644]).addTo(map);
@@ -35,8 +37,8 @@
         <div class="col-sm-3 imagePreview" style="display: inline-block">
             <img src="" id="imgPreview" height="100">
         </div>
+        {# Al admin se le aparece un select con los trabajadores para asignar al cliente #}
         {% if is_granted('ROLE_ADMIN') %}{{ form_row(clientForm.user) }}{% else %} <br>{% endif %}
-
         <button type="submit" class="btn btn-primary">Crear</button> <br><br>
         {{ form_end(clientForm) }}
     </div>

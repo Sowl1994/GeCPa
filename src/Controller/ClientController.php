@@ -20,20 +20,23 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/clients", name="clients")
+     * Index de clientes
      */
     public function index(EntityManagerInterface $entityManager, Request $request)
     {
+        //Cargamos el repository de Client
         $repository = $entityManager->getRepository(Client::class);
-        /**
-         * Si somos el administrador, obtenemos todos los clientes; si somos trabajador solo obtenemos nuestros clientes
-         */
+
+        //Si somos el administrador, obtenemos todos los clientes; si somos trabajador solo obtenemos nuestros clientes
         if (in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
+            //Si por GET obtenemos el parámetro all, mostramos todos los clientes, activos y desactivados. Si no, solo mostramos los clientes activos
             if($request->get('all')){
                 $clients = $repository->findAll();
             }else{
                 $clients = $repository->findBy(['active'=>1]);
             }
         }else{
+            //Si por GET obtenemos el parámetro all, mostramos todos los clientes del trabajador, activos y desactivados. Si no, solo mostramos los clientes activos
             if($request->get('all')){
                 $clients = $repository->getMyClients($this->getUser()->getId());
             }else{
@@ -48,25 +51,23 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/client/{id}", name="client_detail")
+     * Página de detalles del cliente con id = {id}
      */
     public function clientDetail($id,EntityManagerInterface $entityManager){
+        //Cargamos el repositorio de Client
         $repository = $entityManager->getRepository(Client::class);
+        //Obtenemos los datos del cliente con id = $id
         $client = $repository->findOneBy(['id' => $id]);
 
-        /**
-         * Si somos trabajador, comprobamos si el cliente es nuestro.
-         */
+        //Si somos trabajador, comprobamos si el cliente es nuestro.
         if (!$this->getUser()->isAdmin()) {
             $client = $repository->findOneBy(['id' => $id, 'user' => $this->getUser()->getId()]);
         }
 
-        /**
-         * Si el cliente no es nuestro, nos mandará de vuelta a la zona de clientes
-         */
+        //Si el cliente no es nuestro, nos mandará de vuelta a la zona de clientes
         if ($client == null){
             return new RedirectResponse("/clients");
         }
-
 
         return $this->render("client/detail.html.twig",[
            "client" => $client,
@@ -78,24 +79,26 @@ class ClientController extends AbstractController
      * Encargada de la creación de clientes
      */
     public function new_client(Request $request, EntityManagerInterface $entityManager, UploaderService $uploaderService){
+        //Creamos el formulario que viene de ClientFormType
         $form = $this->createForm(ClientFormType::class);
-        //Si el usuario no es un admin, quitamos la opción de asignar trabajador, ya que el cliente se asignará a él mismo
+        //Si el usuario no es un admin, quitamos la opción de asignar trabajador, ya que el cliente se asignará al propio usuario
         if (!$this->getUser()->isAdmin())  $form->remove('user');
 
+        //el formulario manejará los datos que le vienen del $request
         $form->handleRequest($request);
+        //Si el formulario se ha enviado y es válido, accedemos
         if ($form->isSubmitted() && $form->isValid()) {
             $client = $form->getData();
             $client->setActive(true);
 
-            //Si el usuario no es admin, le asignamos su id al cliente que está creando,
-            // asi como sacamos la ultima posicion en el orden de reparto
+            //Si el usuario no es admin, le asignamos su id al cliente que está creando, asi como sacamos la ultima posicion en el orden de reparto
             if (!$this->getUser()->isAdmin()){
                 $client->setUser($this->getUser());
                 $getClientLastPosition = $entityManager->getRepository(Client::class)->getLastClient($this->getUser()->getId());
             }else
                 $getClientLastPosition = $entityManager->getRepository(Client::class)->getLastClient($client->getUser()->getId());
 
-            //Si no tiene clientes, le asignamos el valor 1, si no, le asignamos el valor de la ultima posición
+            //Si no tiene clientes, le asignamos el valor 1, si no, le asignamos el valor de la ultima posición (el nuevo cliente será el último en el reparto)
             if(empty($getClientLastPosition))
                 $client->setDeliveryOrder(1);
             else
@@ -106,16 +109,12 @@ class ClientController extends AbstractController
             /**
              * Funcionalidad de subir imágenes de perfil
              */
-            //Obtenemos los datos del fichero
+            //Obtenemos los datos de la imagen
             /** @var UploadedFile $avatar */
             $avatar = $form['avatar']->getData();
-            //Elegimos la carpeta de destino y le modificamos el nombre con un id unico
-            /*$destiny = $this->getParameter('kernel.project_dir').'/public/uploads';
-            $originalFilename = pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME);
-            $newFilename = $originalFilename.'-'.uniqid().'.'.$avatar->guessExtension();
-            //Movemos la imagen al directorio especificado
-            $avatar->move($destiny, $newFilename);*/
+            //Si el fichero existe
             if($avatar){
+                //LLamamos al uploaderService para que se encargue de la subida de la imagen
                 $newFilename = $uploaderService->uploadImage($avatar,"client_avatar");
                 //Si no ha habido problemas en la subida, procedemos
                 if($newFilename != "0"){
@@ -130,11 +129,12 @@ class ClientController extends AbstractController
                 }
             }
 
+            //Guardamos los datos en la BBDD
             $entityManager->persist($client);
             $entityManager->flush();
+
             //Creamos mensaje para notificar de que se creó bien el trabajador
             $this->addFlash('success', 'Cliente creado con éxito');
-
             return $this->redirectToRoute('clients');
         }
 
@@ -151,16 +151,13 @@ class ClientController extends AbstractController
         //Primero comprobamos si el cliente lo tenemos asignado
         $repository = $entityManager->getRepository(Client::class);
         $cl = $repository->findOneBy(['id' => $id]);
-        /**
-         * Si somos trabajador, comprobamos si el cliente es nuestro.
-         */
+
+        //Si somos trabajador, comprobamos si el cliente es nuestro.
         if (!$this->getUser()->isAdmin()) {
             $cl = $repository->findOneBy(['id' => $id, 'user' => $this->getUser()->getId()]);
         }
 
-        /**
-         * Si el cliente no es nuestro, nos mandará de vuelta a la zona de clientes
-         */
+        //Si el cliente no es nuestro, nos mandará de vuelta a la zona de clientes
         if ($cl == null){
             return new RedirectResponse("/clients");
         }
@@ -219,23 +216,21 @@ class ClientController extends AbstractController
      * Funcion encargada de activar/desactivar clientes
      */
     public function activate_client($id,EntityManagerInterface $entityManager){
+        //Obtenemos el repositorio de Client y cargamos los datos del cliente cuyo id = $id
         $repository = $entityManager->getRepository(Client::class);
         $client = $repository->findOneBy(['id' => $id]);
 
-        /**
-         * Si somos trabajador, comprobamos si el cliente es nuestro.
-         */
+        //Si somos trabajador, comprobamos si el cliente es nuestro.
         if (!$this->getUser()->isAdmin()) {
             $client = $repository->findOneBy(['id' => $id, 'user' => $this->getUser()->getId()]);
         }
 
-        /**
-         * Si el cliente no es nuestro, nos mandará de vuelta a la zona de clientes
-         */
+        //Si el cliente no es nuestro, nos mandará de vuelta a la zona de clientes
         if ($client == null){
             return new RedirectResponse("/clients");
         }
 
+        //Si el cliente está activo, lo desactivamos y viceversa
         if ($client->getActive() == true){
             $client->setActive(false);
             $msg = "Cliente desactivado con éxito";
@@ -258,6 +253,7 @@ class ClientController extends AbstractController
      * Funcion encargada de mostrar la ruta hacia un cliente
      */
     public function route_client($id,EntityManagerInterface $entityManager){
+        //Cargamos el repositorio de Client y obtenemos los datos del cliente cuyo id = $id
         $clientR = $entityManager->getRepository(Client::class)->findOneBy(['id'=>$id]);
 
         return $this->render('client/route.html.twig',[
@@ -267,12 +263,12 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/myroute", name="my_route")
-     * Funcion encargada de mostrar la ruta del trabajador
+     * Funcion encargada de mostrar la ruta del trabajador (función exclusiva de los trabajadores)
      */
     public function get_my_route(EntityManagerInterface $entityManager){
+        //Si no es admin, obtenemos los clientes activos, los cuales mostraremos en el mapa de la ruta
         if(!$this->getUser()->isAdmin()){
             $myClients = $entityManager->getRepository(Client::class)->getMyActiveClients($this->getUser()->getId());
-
 
             return $this->render('worker/myRoute.html.twig',[
                 'clients' => $myClients,
@@ -282,6 +278,7 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/editDO/{id}", name="edit_delivery_order")
+     * Encargado de modificar el orden de reparto de los clientes
      */
     public function edit_delivery_order($id, EntityManagerInterface $entityManager, Request $request){
         $client = $entityManager->getRepository(Client::class)->findOneBy(['id'=>$id]);

@@ -29,17 +29,6 @@
             <a class="btn btn-primary" href="{{ path('client_route', {'id': client.id}) }}">Cómo llegar</a><br><br>
             <div class="map" id="map"></div><br>
             <script>
-                /*var script = document.createElement("script");
-                script.setAttribute("src","https://maps.googleapis.com/maps/api/js?key="+config.GMAPS_KEY+"&callback=initMap");
-                document.getElementsByTagName("body")[0].appendChild(script);*/
-                /*var map;
-                function initMap() {
-                    var address = {lat: {{ client.latitude }}, lng: {{ client.longitude }}};
-                    map = new google.maps.Map(document.getElementById('map'), {
-                    center: address,zoom: 16
-                    });
-                    var marker = new google.maps.Marker({position:address,map:map});
-                }*/
                 var map = L.map('map').setView([{{ client.latitude }}, {{ client.longitude }}], 13);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 25,
@@ -58,15 +47,13 @@
                     var crd = pos.coords;
                     var lat = crd.latitude;
                     var lng = crd.longitude;
-                    //var url = "https://graphhopper.com/maps/?point="+lat+"%2C"+lng+"&point={{ client.latitude }}%2C{{ client.longitude }}&locale=es-es&vehicle=car&weighting=fastest&elevation=true&use_miles=false&layer=Omniscale";
-                    //var win = window.open(url, '_blank');
-
                 }
 
                 function error(err) {
                     console.warn('ERROR(' + err.code + '): ' + err.message);
                 };
 
+                // Con esta función obtenemos los datos de posicionamiento gracias al navegador
                 function directions() {
                     if (navigator.geolocation) {
                       navigator.geolocation.getCurrentPosition(success, error, options);
