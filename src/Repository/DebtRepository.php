@@ -29,7 +29,7 @@ class DebtRepository extends ServiceEntityRepository
     {
         $clients = $this->createQueryBuilder('d')
             ->innerJoin('d.client','c')
-            ->select('DISTINCT c.id, c.firstName, c.lastName, c.avatar, c.alias')
+            ->select('DISTINCT c.id, c.firstName, c.lastName, c.avatar, c.alias, c.active')
             ->andWhere('d.paymentDate IS NULL')
             ->orderBy('d.client', 'ASC')
             ->getQuery()
