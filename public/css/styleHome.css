@@ -67,3 +67,21 @@ body{
 .avatarHome{
     width: 200px; height: 35vh;
 }
+
+@media only screen and (max-width: 760px) {
+    body{
+        background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("../images/homebkg.jpg");
+        background-size: cover;
+    }
+    .appContent {
+        margin-top: 45px;
+    }
+    .appMenu{
+        background-color:rgba(255, 255, 255, 1);
+        position: fixed;
+        z-index: 1;
+    }
+    .commissionArea{
+        border-right: none;
+    }
+}
