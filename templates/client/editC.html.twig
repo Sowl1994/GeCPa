@@ -2,60 +2,62 @@
 {% block title %}Edición de clientes{% endblock %}
 {% block content %}
     <script type='text/javascript' src='{{ asset('js/config.js') }}'></script>
-
     <div class="col-md-12">
         <div><h1>Editar cliente</h1></div>
-        {{ form_start(clientForm) }}
-        {{ form_row(clientForm.firstName) }}
-        {{ form_row(clientForm.lastName) }}
-        {{ form_row(clientForm.alias) }}
-        {{ form_row(clientForm.address) }}
-        {{ form_row(clientForm.latitude) }}
-        {{ form_row(clientForm.longitude) }}
-        <input type="button" class="btn btn-primary" value="Mostrar" onclick="showMap()"><br><br>
-        <div id="map" style="height: 250px;"></div>
-        <script>
-            var lat = {{ client.latitude }};
-            var lng = {{ client.longitude}};
-           var map = L.map('map').setView([{{ client.latitude }}, {{ client.longitude }}], 16);
-           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-               maxZoom: 19,
-               minZoom: 10,
-               attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-           }).addTo(map);
-           var marker = L.marker([lat,lng], {draggable: true}).addTo(map);
-           marker.on('dragend',function (ev) {
-               var mk = ev.target;
-               var pos = mk.getLatLng();
+        <div class="clientForm">
+            {{ form_start(clientForm) }}
+            {{ form_row(clientForm.firstName) }}
+            {{ form_row(clientForm.lastName) }}
+            {{ form_row(clientForm.alias) }}
+            {{ form_row(clientForm.address) }}
+            {{ form_row(clientForm.latitude) }}
+            {{ form_row(clientForm.longitude) }}
+            <input type="button" class="btn btn-primary showButton" value="Mostrar" onclick="showMap()"><br><br>
+            {# Mapa para el geocoding #}
+            <div class="clientFormMap" id="map" style="height: 250px;"></div>
+            <script>
+                var lat = {{ client.latitude }};
+                var lng = {{ client.longitude}};
+               var map = L.map('map').setView([{{ client.latitude }}, {{ client.longitude }}], 16);
+               L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                   maxZoom: 19,
+                   minZoom: 10,
+                   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+               }).addTo(map);
+               var marker = L.marker([lat,lng], {draggable: true}).addTo(map);
+               marker.on('dragend',function (ev) {
+                   var mk = ev.target;
+                   var pos = mk.getLatLng();
 
-               lat = pos.lat; lng = pos.lng;
-               //Guardamos las variables en sus respectivos inputs
-               $("#client_form_latitude").val(lat);
-               $("#client_form_longitude").val(lng);
-           })
-        </script>
-        <br>
-        {{ form_row(clientForm.email) }}
-        {{ form_row(clientForm.telephone) }}
-        {{ form_row(clientForm.sex) }}
-        <div class="col-sm-8" style="display: inline-block; padding: 0;">
-            {{ form_row(clientForm.avatar, {
-                attr: {
-                    'placeholder': 'Clique aquí para seleccionar una imagen'
-                }
-            }) }}
+                   lat = pos.lat; lng = pos.lng;
+                   //Guardamos las variables en sus respectivos inputs
+                   $("#client_form_latitude").val(lat);
+                   $("#client_form_longitude").val(lng);
+               })
+            </script>
+            <br>
+            {{ form_row(clientForm.email) }}
+            {{ form_row(clientForm.telephone) }}
+            {{ form_row(clientForm.sex) }}
+            <div class="col-sm-8" style="display: inline-block; padding: 0;">
+                {{ form_row(clientForm.avatar, {
+                    attr: {
+                        'placeholder': 'Clique aquí para seleccionar una imagen'
+                    }
+                }) }}
+            </div>
+            {# Pintamos la imagen actual #}
+            <div class="col-sm-3 imagePreview" style="display: inline-block">
+                {% if clientForm.vars.data.avatar %}
+                    <img src="{{ asset('./uploads/client_avatar/'~clientForm.vars.data.avatar) }}" id="imgPreview" height="100">
+                {% else %}
+                    <img src="{{ asset('./images/avatar.png') }}" id="imgPreview" height="100">
+                {% endif %}
+            </div>
+            {% if is_granted('ROLE_ADMIN') %}{{ form_row(clientForm.user) }}{% endif %}<br>
+            <button type="submit" class="btn btn-primary editClientButton">Editar</button><br><br>
+            {{ form_end(clientForm) }}
         </div>
-        {# Pintamos la imagen actual #}
-        <div class="col-sm-3 imagePreview" style="display: inline-block">
-            {% if clientForm.vars.data.avatar %}
-                <img src="{{ asset('./uploads/client_avatar/'~clientForm.vars.data.avatar) }}" id="imgPreview" height="100">
-            {% else %}
-                <img src="{{ asset('./images/avatar.png') }}" id="imgPreview" height="100">
-            {% endif %}
-        </div>
-        {% if is_granted('ROLE_ADMIN') %}{{ form_row(clientForm.user) }}{% endif %}<br>
-        <button type="submit" class="btn btn-primary">Editar</button><br><br>
-        {{ form_end(clientForm) }}
     </div>
     <script>
         function showMap() {

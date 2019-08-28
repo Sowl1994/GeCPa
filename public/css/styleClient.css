@@ -35,6 +35,10 @@
 .disabled{
     background-color: rgba(255, 31, 41, 0.7);
 }
+.addProduct, .delOrder, .clientDelOrder input[type='submit']{width: 100%;}
+.delOrder, .clientDelOrder input[type='submit']{margin-top: 10px;}
+.clientDelOrder{margin-bottom: 10px;}
+.clientName,.clientAddress,.delOrderNumber{text-align: center;}
 
 /*Detalles*/
 .clientDetails{display: inline-flex;}
@@ -45,11 +49,15 @@
 .clientImageDetail{
     width: 200px;
 }
+.clientDetailOptions{width:100%;margin-bottom: 10px;}
 #map {
     width: 80%;
     height: 80%;
 }
-/*Creación clientes*/
+
+.clientDetailsHeaderData,.clientDetailsHeaderMap{display: none;}
+
+/*Formularios*/
 .hiddenMap{
     display: none;
 }
@@ -57,9 +65,33 @@
     width: 80%;
     height: 500px;
 }
+.clientForm label{font-weight: bold;}
+.imagePreview{text-align: center;}
 
+/*Moviles*/
 @media only screen and (max-width: 760px) {
     .clientName,.clientAddress, .clientPhone{
         width: 75vw;
     }
+    .clientOptions input{width: 100%;    margin-bottom: 10px;}
+
+    /*Detalles*/
+    .clientDetailsHeaderData,.clientDetailsHeaderMap{display: inline-block; margin-top: 20px;}
+    .clientDetailsHeader{text-align: center;}
+    .clientDetails{display: inline;}
+    .clientRouteButton{width:100vw;margin-bottom: 10px;}
+    .clientData{text-align: center; font-size: 1.5em;}
+    .clientData label, .clientData h2{width: 100vw;}
+    .clientDetailsMap #map {
+        width: 100vw;
+        height: 80vh;
+    }
+    .clientFormMap {
+        width: 100%!important;
+    }
+
+    /*Formularios*/
+    .showButton,.createClientButton,.editClientButton{width: 100%;
+        margin-top: 10px;}
 }
+

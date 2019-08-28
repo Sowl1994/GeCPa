@@ -9,6 +9,7 @@ class IndexController extends AbstractController
 {
     /**
      * @Route("/", name="index")
+     * Página principal
      */
     public function index()
     {

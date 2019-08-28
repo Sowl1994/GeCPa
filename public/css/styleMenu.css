@@ -65,9 +65,10 @@
 
 @media only screen and (max-width: 760px) {
     .appMenu{
-        width: 100vw;
+        width: 100%;
         text-align: center;
         border-right: none;
+        z-index: 9999;
     }
     #sidemenu{
         -webkit-box-shadow: 4px 4px 9px -1px rgba(0,0,0,0.27);

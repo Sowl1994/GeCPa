@@ -22,19 +22,19 @@
         {% for client in clients %}
             <div class="clientContainer col-md-3 {% if not client.active %} disabled {% endif %}">
                 <a href="{{ path('client_detail', {'id': client.id}) }}">
-                    <div class="clientImageContainer"><img class="clientImage" {% if client.avatar is null %}  src="{{ asset('images/avatar.png') }}" {% else %} src="{{ asset('./uploads/client_avatar/'~client.avatar) }}" {% endif %}  > {# {{ client.avatar }} #}</div><br>
+                    <div class="clientImageContainer"><img class="clientImage" {% if client.avatar is null %}  src="{{ asset('images/avatar.png') }}" {% else %} src="{{ asset('./uploads/client_avatar/'~client.avatar) }}" {% endif %}  > {# {{ client.avatar }} #}</div>
                     <div class="clientName"> {{ client.firstName }} {{ client.lastName }} {% if client.alias is not null %} "{{ client.alias }}" {% endif %}</div>
                     <div class="clientAddress">{{ client.address }}</div>
                 </a>
                 <div class="center">
-                    <a href="{{ path('add_product', {'id': client.id}) }}" class="btn btn-primary"> Añadir producto a deuda</a>
+                    <a href="{{ path('add_product', {'id': client.id}) }}" class="btn btn-primary addProduct"> Añadir producto a deuda</a>
                     {#El administrador no puede cambiar el orden de reparto#}
                     {% if not is_granted('ROLE_ADMIN') %}
-                    <a  onclick="$('#del_order{{ client.id }}').toggle()" style="cursor: pointer;">Cambiar orden de reparto</a><br><br>
+                    <a  class="btn btn-warning delOrder" onclick="$('#del_order{{ client.id }}').toggle()">Cambiar orden de reparto</a><br><br>
                     <div class="clientDelOrder" id="del_order{{ client.id }}" style="display: none;">
                         <form action="{{ path('edit_delivery_order', {'id': client.id}) }}" method="post">
-                            <input type="number" name="order" value="{{ client.deliveryOrder }}">
-                            <input type="submit" value="Cambiar orden">
+                            <input class="form-control delOrderNumber" type="number" name="order" value="{{ client.deliveryOrder }}">
+                            <input class="btn btn-success" type="submit" value="Cambiar orden">
                         </form>
                     </div>
                     {% endif %}

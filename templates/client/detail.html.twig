@@ -3,19 +3,19 @@
 {% block content %}
     <script type='text/javascript' src='{{ asset('js/config.js') }}'></script>
 
-    <div class="col-md-12"><h1>Detalles del cliente</h1></div>
+    <div class="col-md-12 clientDetailsHeader"><h1>Detalles del cliente</h1></div>
 
     <div class="col-md-12 clientDetails">
         <div class="col-md-3 clientImageDetailContainer">
             <img class="clientImageDetail" {% if client.avatar is null %}  src="{{ asset('images/avatar.png') }}" {% else %} src="{{ asset('./uploads/client_avatar/'~client.avatar) }}" {% endif %}">
-            <br><br>
-            <a class="btn btn-primary" href="{{ path('client_edit', {'id': client.id}) }}">Editar cliente</a>
-            <br><br>
-            <a {% if client.active %} class="btn btn-danger"{% else %}class="btn btn-success"{% endif %} href="{{ path('client_activate', {'id': client.id}) }}">
+            <h2 class="clientDetailsHeaderOptions">Opciones</h2>
+            <a class="btn btn-primary clientDetailOptions" href="{{ path('client_edit', {'id': client.id}) }}">Editar cliente</a>
+            <a {% if client.active %} class="btn btn-danger clientDetailOptions"{% else %}class="btn btn-success clientDetailOptions"{% endif %} href="{{ path('client_activate', {'id': client.id}) }}">
              {% if client.active %} Desactivar {% else %}Activar{% endif %}
             </a>
         </div>
-        <div class="col-md-9 clientData">
+        <div class="col-md-8 clientData">
+            <h2 class="clientDetailsHeaderData">Datos del cliente</h2>
             <label><span class="bold"> Nombre:</span> {{ client.firstName }}</label><br>
             <label><span class="bold"> Apellidos:</span> {{ client.lastName }}</label><br>
             {% if client.alias is not null %}<label><span class="bold"> Alias:</span> "{{ client.alias }}" </label><br>{% endif %}
@@ -26,8 +26,9 @@
 
             <label><span class="bold"> Usuario {% if client.active=="0" %}no {% endif %} activo</span></label><br>
             <label><span class="bold"> Dirección:</span> {{ client.address }}</label>
-            <a class="btn btn-primary" href="{{ path('client_route', {'id': client.id}) }}">Cómo llegar</a><br><br>
-            <div class="map" id="map"></div><br>
+            <a class="btn btn-primary clientRouteButton" href="{{ path('client_route', {'id': client.id}) }}">Cómo llegar</a><br><br>
+            <h2 class="clientDetailsHeaderMap">Ubicación del domicilio</h2>
+            <div class="clientDetailsMap"><div class="map" id="map"></div><br></div>
             <script>
                 var map = L.map('map').setView([{{ client.latitude }}, {{ client.longitude }}], 13);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
