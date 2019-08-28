@@ -42,6 +42,7 @@
 {% block headjs %}
     {{ parent() }}
     <script>
+        {#Esta funcion nos permite modificar a tiempo real el desglose, para situarlo en un intervalo de tiempo#}
         function changeBD(){
             $(document).ready(function() {
                 var d1 = $('#d1').val();

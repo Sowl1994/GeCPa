@@ -3,7 +3,7 @@
 {% block content %}
     <div class="col-md-12">
         <div><h2>Añadir productos a la deuda de <a href="{{ path('client_detail', {'id': client.id}) }}">{{ client.firstName }} {{ client.lastName }}</a></h2></div>
-        {#El administrador no tiene que ver estos botones#}
+        {#El administrador no tiene que ver estos , ya que son los de la facturacion continuada#}
         {% if not is_granted('ROLE_ADMIN') %}
         <div>
             {% if prev_client is not empty %}
@@ -18,8 +18,6 @@
         {{ form_row(addPForm.purchaseDate) }}
         <h2>Productos</h2>
         <div class="productContainer">
-            {#{{ form_row(addPForm.product) }}
-            <a class="btn btn-primary">Nuevo producto a la deuda</a>#}
             {% for product in products %}
                 <div class="productItem" id="{{ product.id }}">
                     <div class="productName col-md-12"> <img src="{{ asset('./uploads/products/'~product.image) }}" width="200" height="150"><br>{{ product }} </div><br>

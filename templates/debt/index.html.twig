@@ -15,7 +15,6 @@
             {#Este enlace dirige al primer cliente ativo del trabajador en orden de reparto#}
             <a href="{{ path('add_product', {'id': first_client[0].id}) }}" class="btn btn-success">Comenzar facturación</a>
         {% endif %}
-        <!--<input class="input search" type="text" placeholder="Buscar...">-->
     </div>
     <div class="col-md-12 clientDebtsList"><br>
         {% for client in clients_debts %}
@@ -26,7 +25,7 @@
                         <div class="clientName"> {{ client.firstName }} {{ client.lastName }} {% if client.alias is not null %} "{{ client.alias }}" {% endif %}</div>
                     </a>
                 </div>
-
+                {#Si el cliente está activo, se le pueden añadir productos a la deuda#}
                 <div class="clientDebtsOptions col-md-6">
                     {% if client.active == 1 %}
                         <a class="btn btn-primary" href="{{ path('add_product', {'id': client.id}) }}">Añadir productos a la deuda</a>
