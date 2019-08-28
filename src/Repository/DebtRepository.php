@@ -20,10 +20,10 @@ class DebtRepository extends ServiceEntityRepository
         parent::__construct($registry, Debt::class);
     }
 
-    // /**
-    //  * @return Debt[] Returns an array of Debt objects
-    //  * Nos devuelve los clientes que posean al menos un producto en deuda
-    //  */
+    /**
+     * @return Client[] Devuelve un array de objetos Client
+     * Nos devuelve los clientes que posean al menos un producto en deuda
+     */
 
     public function getClientsWithDebt()
     {
@@ -38,10 +38,10 @@ class DebtRepository extends ServiceEntityRepository
         return $clients;
     }
 
-    // /**
-    //  * @return Debt[] Returns an array of Debt objects
-    //  * Nos devuelve los clientes que están asignados al id del trabajador que pasamos por parámetro que posean al menos un producto en deuda
-    //  */
+    /**
+     * @return Client[] Devuelve un array de objetos Client
+     * Nos devuelve los clientes que están asignados al id del trabajador que pasamos por parámetro que posean al menos un producto en deuda
+     */
 
     public function getMyClientsWithDebt($idWorker)
     {
@@ -59,11 +59,11 @@ class DebtRepository extends ServiceEntityRepository
         return $clients;
     }
 
-    // /**
-    //  * @return Debt[] Returns an array of Debt objects
-    //  * Obtenemos el listado de los porductos que debe un cliente (TODO)
-    //  */
-
+    /**
+     * @return Debt[] Devuelve un array de objetos Debt
+     * Obtenemos el listado de las deudas que tiene un cliente. Este listado puede ser el listado total
+     * o estar en un intervalo con fecha de inicio(d1) y fecha de fin(d2)
+     */
     public function getClientBreakdown($id, $d1=null, $d2=null)
     {
         $bd = $this->createQueryBuilder('d')
@@ -95,6 +95,10 @@ class DebtRepository extends ServiceEntityRepository
         return $bd;
     }
 
+     /**
+      * @return Debt[] Devuelve un array de objetos Debt
+      * Obtenemos el listado completo de los productos que debe un cliente
+      */
     public function getClientCompleteDebt($id){
         return $this->createQueryBuilder('d')
             ->innerJoin('d.product','p')
@@ -106,17 +110,4 @@ class DebtRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
-
-    /*
-    public function findOneBySomeField($value): ?Debt
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
