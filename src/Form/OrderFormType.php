@@ -26,15 +26,7 @@ class OrderFormType extends AbstractType
             ->add('orderDate',DateType::class,['label' => 'Fecha de encargo','format' => 'dd/MM/yyyy','data' => new \DateTime('@'.strtotime('now'))])
             ->add('deliveryDate',DateType::class,['label' => 'Fecha de entrega','format' => 'dd/MM/yyyy','data' => new \DateTime('@'.strtotime('now'))])
             ->add('description', TextareaType::class, ['label' => 'Descripción', 'required' => false])
-            /*->add('client', EntityType::class, [
-                'label'=>'Asignar cliente',
-                'class' => Client::class,
-                'choices'=> $this->clientRepository->findAll(),
-                'choice_label' => function ($client) {
-                    return $client;
-                }
-            ])*/
-        ;
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -31,13 +31,14 @@ class OrdersController extends AbstractController
 {
     /**
      * @Route("/orders", name="orders")
+     * Index de encargos
      */
     public function index(EntityManagerInterface $entityManager)
     {
+        //Cargamos el repositortio Orders
         $repository = $entityManager->getRepository(Orders::class);
-        /**
-         * Si somos el administrador, obtenemos todos los encargos; si somos trabajador solo obtenemos los de nuestros clientes
-         */
+
+        //Si somos el administrador, obtenemos todos los encargos; si somos trabajador solo obtenemos los de nuestros clientes
         if ($this->getUser()->isAdmin()) {
             $orders = $repository->getClientsWithActiveOrder();
         }else{
@@ -51,10 +52,16 @@ class OrdersController extends AbstractController
 
     /**
      * @Route("/order/{id}", name="order_details")
+     * Detalles del encargo
      */
     public function order_details($id, EntityManagerInterface $entityManager){
+        //Cargamos el encargo con el id que obtenemos por GET
         $orderR = $entityManager->getRepository(Orders::class)->findOneBy(['id'=>$id]);
+
+        //Inicializamos el total a 0
         $count = 0;
+
+        //Recorremos los productos del encargo para obtener el coste total del encargo
         foreach ($orderR->getOrderProducts() as $product)
             $count += $product->getQuantity() * $product->getProduct()->getPrice();
 
@@ -66,23 +73,29 @@ class OrdersController extends AbstractController
 
     /**
      * @Route("/addorder", name="add_order")
+     * Creación de encargos
      */
     public function add_order(EntityManagerInterface $entityManager, Request $request){
+        //Cargamos repositorios de Product y Client
         $productR = $entityManager->getRepository(Product::class);
         $clientR = $entityManager->getRepository(Client::class);
         $myClients = $clientR->findAll();
 
-        /*Si no somos administradores, cogemos solamente nuestros clientes activos*/
+        //Si no somos administradores, cogemos solamente nuestros clientes activos
         if (!$this->getUser()->isAdmin()){
             $myClients = $clientR->getMyActiveClients($this->getUser()->getId());//findBy(['user' => $this->getUser()->getId()]);
         }
 
         //Solo cogemos los productos que están activos
         $products = $productR->findBy(['active' => true]);
-
+        //Creamos el formulario OrderFormType
         $form = $this->createForm(OrderFormType::class);
+
+         //el formulario manejará los datos que le vienen del $request
         $form->handleRequest($request);
+        //Si el formulario se ha enviado y es válido, accedemos
         if($form->isSubmitted() && $form->isValid()){
+            //Obtenemos los datos del formulario
             $data = $request->request->get('order_form');
 
             //Formateamos la fecha de forma adecuada
@@ -100,6 +113,7 @@ class OrdersController extends AbstractController
             $order->setClient($clientR->findOneBy(['id'=>$data['client']]));
             $order->setIsFinish(false);
 
+            //Por cada producto que incluyamos en el encargo, lo introduciremos como objeto OrderProduct
             foreach ($quantity as $idp => $value) {
                 if($value > 0){
                     $orderProducts = new OrderProduct();
@@ -134,8 +148,10 @@ class OrdersController extends AbstractController
 
     /**
      * @Route("/finishorder/{id}", name="finish_order")
+     * Marcar producto como finalizado
      */
     public function finish_order($id, EntityManagerInterface $entityManager){
+        //Cargamos el encargo con id que obtenemos de GET
         $order = $entityManager->getRepository(Orders::class)->findOneBy(['id' => $id]);
 
         // Si no es admin, se comprueba que el encargo a finalizar pertenezca a un cliente cuyo trabajador
@@ -147,18 +163,24 @@ class OrdersController extends AbstractController
             }
         }
 
+        //Marcamos como finalizado el encargo
         $order->setIsFinish(true);
 
+        //Lo guardamos en la base de datos
         $entityManager->persist($order); $entityManager->flush();
+        //Mensaje de alerta
         $this->addFlash('success','Encargo marcado como finalizado correctamente');
         return $this->redirectToRoute("orders");
     }
 
     /**
      * @Route("/ordertodebt/{id}", name="order_debt")
+     * Transformacion de encargo a deuda
      */
     public function add_order_debt($id, EntityManagerInterface $entityManager){
+        //Cargamos el encargo $id
         $orderR = $entityManager->getRepository(Orders::class)->findOneBy(['id'=>$id]);
+        //Obtenemos los productos del encargo
         $products = $orderR->getOrderProducts();
 
         //Marcamos el encargo como finalizado

@@ -56,4 +56,18 @@ table > tbody{
 .newDates{
     display: none;
 }
+.submitButton{width: 100%;    margin-bottom: 10px;}
+.productName p{ text-align: center;margin-top: 10px;}
+.productInput {
+    text-align: center;
+}
+
+/*Moviles*/
+@media only screen and (max-width: 760px) {
+    .orderOptions input{width: 100%;    margin-bottom: 10px;}
+    .orderHeader{text-align: center;}
+    .orderData td a{width:100%; margin-bottom: 10px;}
+    #order_form_orderDate select, #order_form_deliveryDate select{width:31%!important;}
+    .productItem, .productItem img, .addProductOptions button{width:100%;}
+}
 

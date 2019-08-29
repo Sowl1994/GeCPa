@@ -7,19 +7,19 @@
 {% endblock %}
 
 {% block content %}
-    <div class="col-md-12"><h1>Detalles del encargo</h1></div>
+    <div class="col-md-12"><h1 class="orderHeader">Detalles del encargo</h1></div>
 
     <div class="col-md-12 clientOrderDetail"><br>
 
         <div class="clientData">
             <h3>Datos del cliente</h3>
-            <label class="bold">Nombre: </label><span> {{ order.client.firstName }} {{ order.client.lastName }} "{{ order.client.alias }}"</span><br>
+            <label class="bold">Nombre: </label><span> {{ order.client.firstName }} {{ order.client.lastName }} {% if order.client.alias is not null %} "{{ order.client.alias }}"{% endif %}</span><br>
             <label class="bold">Domicilio: </label><span> {{ order.client.address }}</span>
         </div>
         <div style="float: right;">
             <h2>Opciones</h2>
-            <a class="btn btn-primary" href="{{ path('order_debt', {'id': order.id}) }}">Añadir encargo a la deuda</a>
-            <a class="btn btn-success" href="{{ path('finish_order', {'id': order.id}) }}">Finalizar encargo</a>
+            <a class="btn btn-primary submitButton" href="{{ path('order_debt', {'id': order.id}) }}">Añadir encargo a la deuda</a>
+            <a class="btn btn-success submitButton" href="{{ path('finish_order', {'id': order.id}) }}">Finalizar encargo</a>
         </div>
         <br><br>
         <div class="orderDetails">
@@ -55,7 +55,7 @@
                     </tbody>
                 </table>
                 <div>
-                    <h2>Precio del encargo: {{ count }} €</h2>
+                    <h2 class="orderHeader">Total: {{ count }} €</h2>
                 </div>
             </div>
         </div>

@@ -19,6 +19,10 @@ class OrdersRepository extends ServiceEntityRepository
         parent::__construct($registry, Orders::class);
     }
 
+    /**
+     * @return Orders[] Devuelve un array de objetos Orders
+     * Encargos activos (sin pagar)
+     */
     public function getClientsWithActiveOrder(){
         return $this->createQueryBuilder('o')
             ->andWhere('o.isFinish = :var')
@@ -29,9 +33,10 @@ class OrdersRepository extends ServiceEntityRepository
             ;
     }
 
-    // /**
-    //  * @return Orders[] Returns an array of Orders objects
-    //  */
+    /**
+      * @return Orders[] Devuelve un array de objetos Orders
+      * Encargos activos de los clientes del trabajador con id $idWorker
+      */
     public function getMyClientsWithActiveOrder($idWorker)
     {
         return $this->createQueryBuilder('o')
@@ -48,6 +53,10 @@ class OrdersRepository extends ServiceEntityRepository
             ;
     }
 
+    /**
+     * @return Orders[] Devuelve un array de objetos Orders
+     * Obtención de los datos de un encargo según una fecha
+     */
     public function getOrders($date,$idWorker){
         return $this->createQueryBuilder('o')
             ->innerJoin('o.client','c')
@@ -64,15 +73,4 @@ class OrdersRepository extends ServiceEntityRepository
             ;
     }
 
-    /*
-    public function findOneBySomeField($value): ?Orders
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

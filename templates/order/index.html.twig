@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('css/styleOrder.css') }}">
 {% endblock %}
 {% block content %}
-    <div class="col-md-12"><h1>Encargos</h1></div>
+    <div class="col-md-12"><h1 class="orderHeader">Encargos</h1></div>
     <div class="col-md-12 orderOptions" >
         <a href="{{ path('add_order') }}"><input type="button" class="btn btn-success" value="Crear encargo"></a>
         <input class="input search" id="search" type="text" placeholder="Buscar...">
@@ -26,7 +26,7 @@
                     <td class="deliveryDate">{{ order.deliveryDate|date('d/m/Y') }}</td>
                     <td>
                         <a href="{{ path('order_details', {'id': order.id}) }}" class="btn btn-primary">Detalles</a>
-                        <a href="{{ path('finish_order', {'id': order.id}) }}" class="btn btn-success">Marcar como finalizado</a>
+                        <a href="{{ path('finish_order', {'id': order.id}) }}" class="btn btn-success">Finalizado</a>
                     </td>
                 </tr>
             {% endfor %}

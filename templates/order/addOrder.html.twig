@@ -8,7 +8,7 @@
             <label class="required" for="order_form_client">Asignar cliente</label>
             <select id="order_form_client" name="order_form[client]" class="form-control">
                 {% for client in clients %}
-                    <option value="{{ client.id }}">{{ client.firstName }} {{ client.lastName }} {{ client.alias }} </option>
+                    <option value="{{ client.id }}">{{ client.firstName }} {{ client.lastName }}{% if client.alias is not null %} "{{ client.alias }}"{% endif %} </option>
                 {% endfor %}
             </select>
         </div>
@@ -18,16 +18,16 @@
         <div class="productContainer">
             {% for product in products %}
                 <div class="productItem" id="{{ product.id }}">
-                    <div class="productName col-md-12"> <img src="{{ asset('./uploads/products/'~product.image) }}" width="200" height="150"><br>{{ product }} </div><br>
+                    <div class="productName col-md-12"> <img src="{{ asset('./uploads/products/'~product.image) }}" width="200" height="150"><br> <p class="bold">{{ product }} </p></div><br>
                     <div class="productQuantity col-md-12">
-                        <input class="form-control" type="number" name="order_form[quantity][{{ product.id }}]">
+                        <input class="form-control productInput" type="number" name="order_form[quantity][{{ product.id }}]">
                     </div>
                 </div>
             {% endfor %}
         </div>
         <br>
         {{ form_row(addOrderForm.description) }}
-        <br><button type="submit" class="btn btn-primary">Crear encargo</button>
+        <br><button type="submit" class="btn btn-primary submitButton">Crear encargo</button>
         {{ form_end(addOrderForm) }}
         <br>
     </div>
