@@ -20,7 +20,7 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Product[] Returns an array of Product objects
+    //  * @return Product[] Devuelve un array de objetos Product
     //  * Nos devuelve los productos activos
     //  */
     public function getActiveProducts()
@@ -34,16 +34,4 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
-    /*
-    public function findOneBySomeField($value): ?Product
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

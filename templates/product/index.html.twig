@@ -21,33 +21,36 @@
     <div class="col-md-12 productList"><br>
         {% for product in products %}
             <div class="productContainer col-md-3 {% if not product.active %} disabled {% endif %}">
-                <a href="#{#{{ path('product_detail', {'id': product.id}) }}#}">
+                {#<a href="#{#{{ path('product_detail', {'id': product.id}) }}#">#}
                     <div class="productImageContainer"><img class="productImage"  src="{{ asset('./uploads/products/'~product.image) }}"></div><br>
                     <div class="productName"> {{ product.name }}</div>
                     <div class="productPrice">{{ product.price }} €</div>
-                    <div class="productEdit"><a href="{{ path('product_edit',{'id': product.id}) }}" class="btn btn-warning">Editar</a> </div>
-                    <div class="productActivation">
-                        <a href="{{ path('product_activate', {'id': product.id}) }}"
-                        {% if product.active %} class="btn btn-danger">Desactivar
-                        {% else %} class="btn btn-success"> Activar {% endif %} </a>
-                    </div>
-                </a>
-            </div>
-        {% endfor %}
+                {#</a>   #}
+    <div class="productEdit">
+        <a href="{{ path('product_edit',{'id': product.id}) }}" class="btn btn-warning">Editar</a>
     </div>
+    <div class="productActivation">
+        <a href="{{ path('product_activate', {'id': product.id}) }}"
+        {% if product.active %} class="btn btn-danger">Desactivar
+        {% else %} class="btn btn-success"> Activar {% endif %} </a>
+    </div>
+
+</div>
+{% endfor %}
+</div>
 {% endblock %}
 {% block headjs %}
-    {{ parent() }}
-    <script>
-        $('#search').on('keyup', function (e) {
-            $('.productContainer').each(function () {
-                if( !$(this).find('.productName').text().toLowerCase().includes( $('#search').val().toLowerCase()) &&
-                    !$(this).find('.productPrice').text().toLowerCase().includes( $('#search').val().toLowerCase())
-                )
-                    $(this).css('display', 'none');
-                else
-                    $(this).css('display', 'inline-table');
-            })
-        })
-    </script>
+{{ parent() }}
+<script>
+$('#search').on('keyup', function (e) {
+$('.productContainer').each(function () {
+if( !$(this).find('.productName').text().toLowerCase().includes( $('#search').val().toLowerCase()) &&
+    !$(this).find('.productPrice').text().toLowerCase().includes( $('#search').val().toLowerCase())
+)
+    $(this).css('display', 'none');
+else
+    $(this).css('display', 'inline-table');
+})
+})
+</script>
 {% endblock %}

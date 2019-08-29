@@ -20,22 +20,31 @@
     width: 100px;
     height: 100px;
 }
+
+.productName, .productPrice{
+    text-align: center;
+}
+
 .productEdit, .productActivation{
     display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
 }
 .productEdit{
     margin-right: 3px;
 }
 .productEdit>a, .productActivation > a {
-    width: 8vw;
+    width: 100%;
 }
 
 .disabled{
     background-color: rgba(255, 31, 41, 0.7);
 }
 
+.imagePreview{text-align: center;}
+.productForm label{font-weight: bold;}
+
 @media only screen and (max-width: 760px) {
-    .productEdit>a,.productActivation>a{
-        width: 35vw;
-    }
+    .productOptions input{width: 100%;    margin-bottom: 10px;}
+    .editProductButton,.createProductButton{width:100%;}
 }
