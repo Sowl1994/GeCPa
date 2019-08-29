@@ -4,6 +4,9 @@ body{
     /*background-image: url("../images/texture2.jpg");*/
     background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("../images/homebkg.jpg");
     background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 .bold{font-weight: bold;}
 .center{text-align: center;}
@@ -72,6 +75,9 @@ body{
     body{
         background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("../images/homebkg.jpg");
         background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
     }
     .appContent {
         margin-top: 45px;
