@@ -8,11 +8,11 @@
 
 {% block content %}
     <div class="col-md-12"><h1>Facturación</h1></div>
-    <div class="col-md-12">
+    <div class="col-md-12 debtOptions">
         {#El administrador no debe realizar el proceso de facturación de todos los clientes,
          solo debería hacer algún ajuste si fuera necesario#}
         {% if not is_granted('ROLE_ADMIN') %}
-            {#Este enlace dirige al primer cliente ativo del trabajador en orden de reparto#}
+            {#Este enlace dirige al primer cliente activo del trabajador en orden de reparto#}
             <a href="{{ path('add_product', {'id': first_client[0].id}) }}" class="btn btn-success">Comenzar facturación</a>
         {% endif %}
     </div>
@@ -20,10 +20,12 @@
         {% for client in clients_debts %}
             <div class="clientContainer col-md-12 {% if client.active == 0 %} disabled {% endif %}">
                 <div class="col-md-6" >
-                        <div class="clientImageContainer"><img class="clientImage" {% if client.avatar is null %}  src="{{ asset('images/avatar.png') }}" {% else %} src="{{ asset('./uploads/client_avatar/'~client.avatar) }}" {% endif %}  > {# {{ client.avatar }} #}</div>
-                    <a href="{{ path('client_detail', {'id': client.id}) }}">
-                        <div class="clientName"> {{ client.firstName }} {{ client.lastName }} {% if client.alias is not null %} "{{ client.alias }}" {% endif %}</div>
-                    </a>
+                    <div class="clientImageContainer"><img class="clientImage" {% if client.avatar is null %}  src="{{ asset('images/avatar.png') }}" {% else %} src="{{ asset('./uploads/client_avatar/'~client.avatar) }}" {% endif %}  > {# {{ client.avatar }} #}</div>
+                    <div class="clientName">
+                        <a href="{{ path('client_detail', {'id': client.id}) }}">
+                         {{ client.firstName }} {{ client.lastName }} {% if client.alias is not null %} "{{ client.alias }}" {% endif %}
+                        </a>
+                    </div>
                 </div>
                 {#Si el cliente está activo, se le pueden añadir productos a la deuda#}
                 <div class="clientDebtsOptions col-md-6">

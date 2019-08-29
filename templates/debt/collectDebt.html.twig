@@ -6,11 +6,12 @@
         <div><h1>Cobrar deuda a <a href="{{ path('client_detail', {'id': client.id}) }}">{{ client.firstName }} {{ client.lastName }}</a></h1></div>
         {{ form_start(cDebtForm, {'attr': {'onsubmit': 'return confirm("¿Está todo correcto?")'}}) }}
         {{ form_row(cDebtForm.paymentDate) }}
-        <h2>Desglose</h2><span><a href="#" onclick="$('.newDates').show();">Cambiar fechas</a></span>
+        <h2>Desglose</h2>
+        <span><a href="#" class="btn btn-primary changeDatesButton" onclick="$('.newDates').toggle();">Cambiar fechas</a></span>
         <div class="newDates">
-            <label>Fecha inicio</label><input type="date" name="debt_form[d1]" id="d1">
-            <label>Fecha fin</label><input type="date" name="debt_form[d2]" id="d2">
-            <a href="#" onclick="changeBD()">Cambiar</a>
+            <label>Fecha inicio</label><br><input type="date" name="debt_form[d1]" id="d1"><br><br>
+            <label>Fecha fin</label><br><input type="date" name="debt_form[d2]" id="d2"><br><br>
+            <a href="#" class="btn btn-success submitButton" onclick="changeBD()">Cambiar</a>
         </div>
         <div class="clientDebtsList">
             <table class="table table-hover breakdownTable">
@@ -34,8 +35,8 @@
                 </tbody>
             </table>
         </div>
-        <h2>Valor del desglose: <span class="count">{{ count }}</span> €</h2>
-        <br><button type="submit" class="btn btn-primary">Marcar como cobrado</button><br><br>
+        <h2>Total: <span class="count">{{ count }}</span> €</h2>
+        <br><button type="submit" class="btn btn-primary submitButton">Marcar como cobrado</button><br><br>
         {{ form_end(cDebtForm) }}
     </div>
 {% endblock %}

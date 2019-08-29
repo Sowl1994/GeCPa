@@ -2,35 +2,38 @@
 {% block title %}Añadir productos{% endblock %}
 {% block content %}
     <div class="col-md-12">
-        <div><h2>Añadir productos a la deuda de <a href="{{ path('client_detail', {'id': client.id}) }}">{{ client.firstName }} {{ client.lastName }}</a></h2></div>
+        <div><h1>Añadir productos a la deuda de <a href="{{ path('client_detail', {'id': client.id}) }}">{{ client.firstName }} {{ client.lastName }}</a></h1></div>
         {#El administrador no tiene que ver estos , ya que son los de la facturacion continuada#}
         {% if not is_granted('ROLE_ADMIN') %}
         <div>
             {% if prev_client is not empty %}
-                <a href="{{ path('add_product', {'id': prev_client[0].id}) }}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Anterior cliente</a>
+                <a href="{{ path('add_product', {'id': prev_client[0].id}) }}" class="btn btn-primary prevClient"><i class="fa fa-arrow-left"></i> Anterior cliente (sin añadir productos)</a>
             {% endif %}
             {% if next_client is not empty %}
-                <a href="{{ path('add_product', {'id': next_client[0].id}) }}" class="btn btn-primary">Siguiente cliente <i class="fa fa-arrow-right"></i></a>
+                <a href="{{ path('add_product', {'id': next_client[0].id}) }}" class="btn btn-primary nextClient">Siguiente cliente (sin añadir productos) <i class="fa fa-arrow-right"></i></a>
             {% endif %}
         </div>
         {% endif %}
         {{ form_start(addPForm) }}
         {{ form_row(addPForm.purchaseDate) }}
-        <h2>Productos</h2>
+        <h2 class="productHeader">Productos</h2>
         <div class="productContainer">
             {% for product in products %}
                 <div class="productItem" id="{{ product.id }}">
-                    <div class="productName col-md-12"> <img src="{{ asset('./uploads/products/'~product.image) }}" width="200" height="150"><br>{{ product }} </div><br>
+                    <div class="productName col-md-12"> <img src="{{ asset('./uploads/products/'~product.image) }}" width="200" height="150"><br><p class="bold">{{ product }} </p></div><br>
                     <div class="productQuantity col-md-12">
-                        <input class="form-control" type="number" name="debt_form[quantity][{{ product.id }}]">
+                        <input class="form-control productInput" type="number" name="debt_form[quantity][{{ product.id }}]">
                     </div>
                 </div>
             {% endfor %}
+        </div><br>
+        <h2 class="productHeader">Añadir producto/s</h2>
+        <div class="addProductOptions">
+            <button type="submit" class="btn btn-success">Finalizar facturación <i class="fa fa-check"></i></button><br>
+            {% if next_client is not empty %}
+                <button type="submit" class="btn btn-primary" name="nextSubmit" value="true">Continuar facturación <i class="fa fa-arrow-right"></i></button>
+            {% endif %}
         </div>
-        <br><button type="submit" class="btn btn-success">Añadir producto/s y finalizar facturación <i class="fa fa-check"></i></button>
-        {% if next_client is not empty %}
-            <button type="submit" class="btn btn-primary" name="nextSubmit" value="true">Añadir producto/s y pasar al siguiente cliente <i class="fa fa-arrow-right"></i></button>
-        {% endif %}
         <br><br>
         {{ form_end(addPForm) }}
     </div>
