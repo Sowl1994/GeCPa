@@ -28,6 +28,7 @@ class WorkerController extends AbstractController
      */
     public function index(EntityManagerInterface $entityManager)
     {
+        //Cargamos el repositorio de la clase User
         $repository = $entityManager->getRepository(User::class);
         //Cogemos los usuarios que no son administrador
         $workers = $repository->getWorkers();
@@ -45,9 +46,7 @@ class WorkerController extends AbstractController
         /*$repository = $entityManager->getRepository(User::class);
         $worker = $repository->findOneBy(['id' => $id]);*/
 
-        /**
-         * Si no existe el trabajador o es otro admin, nos mandará de vuelta a la zona de trabajadores
-         */
+        //Si no existe el trabajador o es otro admin, nos mandará de vuelta a la zona de trabajadores
         /*if ($worker == null || in_array('ROLE_ADMIN',$worker->getRoles())){
             return new RedirectResponse("/workers");
         }
@@ -115,13 +114,16 @@ class WorkerController extends AbstractController
      * Edita a los trabajadores
      */
     public function edit_worker(User $user, EntityManagerInterface $entityManager, Request $request){
+        //Creamos el formulario
         $form = $this->createForm(WorkerForm::class,$user);
 
         //Para editar no necesitamos la contraseña ni el avatar, eso va aparte
         $form->remove('password');
         $form->remove('avatar');
 
+        //el formulario manejará los datos que le vienen del $request
         $form->handleRequest($request);
+        //Si el formulario se ha enviado y es válido, accedemos
         if ($form->isSubmitted() && $form->isValid()) {
 
             //Introducimos los datos en la bbdd
@@ -143,13 +145,17 @@ class WorkerController extends AbstractController
      * Funcion encargada de activar/desactivar trabajadores
      */
     public function activate_worker($id,EntityManagerInterface $entityManager){
+        //Cargamos el repositorio de la clase User y cogemos el usuario con id=$id
         $repository = $entityManager->getRepository(User::class);
         $worker = $repository->findOneBy(['id' => $id]);
+
+        //Si el trabajador está activo, lo desactivamos y viceversa
         if ($worker->getActive() == true){
             $worker->setActive(false);
         }else{
             $worker->setActive(true);
         }
+
         //Pasamos los cambios a la bbdd
         $entityManager->persist($worker);
         $entityManager->flush();

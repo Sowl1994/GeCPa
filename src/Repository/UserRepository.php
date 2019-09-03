@@ -20,7 +20,7 @@ class UserRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return User[] Returns an array of User objects
+    //  * @return User[] Devuelve un array de Usuarios/Trabajadores
     //  * Devuelve los usuarios que no son administrador (trabajadores)
     //  */
 
@@ -36,7 +36,7 @@ class UserRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return User[] Returns an array of User objects
+    //  * @return User[] Devuelve un array de Usuarios/Trabajadores
     //  * Devuelve los trabajadores disponibles para ser asignados (no pueden estar desactivados)
     //  */
 
@@ -51,17 +51,4 @@ class UserRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-
-
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

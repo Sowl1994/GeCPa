@@ -88,6 +88,7 @@ class ClientController extends AbstractController
         $form->handleRequest($request);
         //Si el formulario se ha enviado y es válido, accedemos
         if ($form->isSubmitted() && $form->isValid()) {
+            //Formamos un objeto Client con los datos del formulario y marcamos active a true
             $client = $form->getData();
             $client->setActive(true);
 
